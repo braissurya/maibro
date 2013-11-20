@@ -1,0 +1,113 @@
+/* basic styles */
+/* body { font-family: Tahoma, Arial, Helvetica, sans-serif; height: 100%; font-size: 0.8em; }
+.err { display: block; color: red; }
+h3 { margin-top: 0; } */
+
+/* main divs */ 
+/* #header { border-bottom: 1px solid grey; padding: 0.5em; }
+#nav { float: left; padding: 0.5em; border-right: 1px solid grey; }
+#content { float: left; padding: 0.5em; }
+#footer { border-top: 1px solid grey; border-bottom: 1px solid grey; padding: 0.5em;  clear: both; display: block; }
+ */
+/* table */
+/* table tr th, table tr td { font-size: 0.8em; }
+
+.list { border: 1px solid black; }
+.list tr th, .list tr td{ padding: 0.2em; } */
+
+/* main divs */ 
+#nav { padding: 0.5em;  }
+
+#nav li{
+	margin-left: 15px;
+}
+
+table.inputan{
+	margin-left: 30px;width: 800px;
+	font-size: 1em;
+}
+
+table.inputan caption{
+	font-weight: bolder;
+	text-align: left;
+}
+table.inputan td{
+	vertical-align: top;
+}
+
+table.inputan td.gap{
+	width: 10px;
+}
+
+table.inputan td.sorong{
+	padding-left: 20px;
+}
+
+.datepicker {
+	width: 80px;
+	text-align: center;
+}
+
+.labelError {
+	color: red !important;
+}
+
+.inputError {
+	border: 1px solid red !important;
+}
+
+.fullwidth {
+	width: 100% !important;
+}
+
+table.report {
+	margin: 1em;
+}
+
+table.report th, table.report td{
+	padding: 0.5em;
+}
+
+.right {
+	text-align: right;
+}
+
+.desc{
+  font-style: italic;
+  color: #8C8C8C;
+  font-size: .9em;
+}
+
+.mandatory{
+  color: red;
+  font-weight: bolder;
+}
+
+table.sidebar {
+	margin: 0.5em;
+}
+
+table.sidebar th, table.sidebar td{
+	padding: 0.2em;
+}
+
+table.grid {
+	margin: 0.5em;
+}
+
+table.grid th, table.grid td{
+	padding: 0.2em;	
+}
+
+.messageBox {
+	border: 1px solid red; 
+	background-color: #FFFF99;
+}
+
+.text_field_readonly {
+	background-color: #E8E8E8;
+}
+
+.merah {
+	color: red;
+}

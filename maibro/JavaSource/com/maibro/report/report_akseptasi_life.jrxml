@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_akseptasi_life" pageWidth="3721" pageHeight="595" orientation="Landscape" columnWidth="3721" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" scriptletClass="com.maibro.utils.JasperScriptlet">
+	<property name="com.jasperassistant.designer.DataSource" value="localMySql"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
+	<parameter name="asuransi_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="param" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" AND 1= 1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="jenis" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="begdate" class="java.lang.String"/>
+	<parameter name="enddate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  p.id,p.posisi posisipolis,
+		p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
+		p.ins_period,p.ins_period_bln, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+		p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+		c.nama namacustomer, c.jenis_medis,  c.gender, c.tempat_lahir, 
+		c.tgl_lahir, c.umur, c.berat_badan, c.tinggi_badan, c.no_identitas, 
+		c.pekerjaan, c.bagian, c.q1, c.q1_desc, c.q2, c.q2_desc, c.q3, c.q3_desc, 
+		c.q4, c.q4_desc, c.q5, c.q5_desc,
+		pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
+		mp.kode, mp.nama namaproduk, 	
+		mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank, 
+		a.alamat_rumah, o.alamat_rumah alamat_objek,
+		a.telp_rumah, a.telp_kantor, mb.polis_induk, a.telp_hp, a.kota_rumah, a.kodepos_rumah,
+		b.clause,o.kota_rumah kota_objek, o.kodepos_rumah kodepos_objek, o.jenis_Bangunan, o.no_sertifikat,
+		o.penggunaan_bangunan, o.kondisi_kiri, o.kondisi_kanan, o.kondisi_depan, o.kondisi_belakang,
+		o.luas_bangunan, o.luas_tanah, o.harga_bangunan, o.harga_stock, o.harga_perabot, o.harga_lainnya
+FROM policy p left join mst_bank mb on p.asuransi_id = mb.id ,customer c left join address o on  c.objek_pertanggungan = o.id, product pr, 
+	 mst_product mp, group_policy gp, 
+	 bank b, mst_cab_bank mcb, mst_bank mb2,
+	 address a
+ where gp.id = p.group_policy_id
+ and p.customer_id = c.id
+ and pr.policy_id = p.id
+ and mp.id= pr.mst_product_id
+ and b.policy_id = p.id
+ and c.address_id = a.id
+ and b.mst_cab_bank_id = mcb.id
+ and mcb.mst_bank_id = mb2.id
+ and p.posisi=3
+ and mp.jenis = $P{jenis}
+ $P!{param}]]>
+	</queryString>
+	<field name="alamat_objek" class="java.lang.String"/>
+	<field name="alamat_rumah" class="java.lang.String"/>
+	<field name="asuransi_id" class="java.lang.Integer"/>
+	<field name="bagian" class="java.lang.String"/>
+	<field name="beg_date" class="java.util.Date"/>
+	<field name="berat_badan" class="java.math.BigDecimal"/>
+	<field name="clause" class="java.lang.String"/>
+	<field name="dealref" class="java.lang.String"/>
+	<field name="end_date" class="java.util.Date"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="gol_debitur" class="java.lang.String"/>
+	<field name="harga_bangunan" class="java.math.BigDecimal"/>
+	<field name="harga_lainnya" class="java.math.BigDecimal"/>
+	<field name="harga_perabot" class="java.math.BigDecimal"/>
+	<field name="harga_stock" class="java.math.BigDecimal"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="ins_period" class="java.lang.Integer"/>
+	<field name="ins_period_bln" class="java.lang.Integer"/>
+	<field name="jenis_Bangunan" class="java.lang.Integer"/>
+	<field name="jenis_manfaat" class="java.lang.Integer"/>
+	<field name="jenis_medis" class="java.lang.Integer"/>
+	<field name="kode" class="java.lang.String"/>
+	<field name="kode_cabang" class="java.lang.String"/>
+	<field name="kodepos_objek" class="java.lang.String"/>
+	<field name="kodepos_rumah" class="java.lang.String"/>
+	<field name="kondisi_belakang" class="java.lang.String"/>
+	<field name="kondisi_depan" class="java.lang.String"/>
+	<field name="kondisi_kanan" class="java.lang.String"/>
+	<field name="kondisi_kiri" class="java.lang.String"/>
+	<field name="kota_objek" class="java.lang.String"/>
+	<field name="kota_rumah" class="java.lang.String"/>
+	<field name="luas_bangunan" class="java.math.BigDecimal"/>
+	<field name="luas_tanah" class="java.math.BigDecimal"/>
+	<field name="namaasuransi" class="java.lang.String"/>
+	<field name="namabank" class="java.lang.String"/>
+	<field name="namacabang" class="java.lang.String"/>
+	<field name="namacustomer" class="java.lang.String"/>
+	<field name="namaproduk" class="java.lang.String"/>
+	<field name="no_identitas" class="java.lang.String"/>
+	<field name="no_sertifikat" class="java.lang.String"/>
+	<field name="nominal_paid" class="java.math.BigDecimal"/>
+	<field name="pay_mode" class="java.lang.Integer"/>
+	<field name="pekerjaan" class="java.lang.String"/>
+	<field name="penggunaan_bangunan" class="java.lang.String"/>
+	<field name="plafon_kredit" class="java.math.BigDecimal"/>
+	<field name="policy_no" class="java.lang.String"/>
+	<field name="polis_induk" class="java.lang.String"/>
+	<field name="posisipolis" class="java.lang.Integer"/>
+	<field name="premi" class="java.math.BigDecimal"/>
+	<field name="q1" class="java.lang.Integer"/>
+	<field name="q1_desc" class="java.lang.String"/>
+	<field name="q2" class="java.lang.Integer"/>
+	<field name="q2_desc" class="java.lang.String"/>
+	<field name="q3" class="java.lang.Integer"/>
+	<field name="q3_desc" class="java.lang.String"/>
+	<field name="q4" class="java.lang.Integer"/>
+	<field name="q4_desc" class="java.lang.String"/>
+	<field name="q5" class="java.lang.Integer"/>
+	<field name="q5_desc" class="java.lang.String"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="spaj_date" class="java.util.Date"/>
+	<field name="spaj_no" class="java.lang.String"/>
+	<field name="telp_hp" class="java.lang.String"/>
+	<field name="telp_kantor" class="java.lang.String"/>
+	<field name="telp_rumah" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.util.Date"/>
+	<field name="tgl_paid" class="java.sql.Timestamp"/>
+	<field name="tinggi_badan" class="java.math.BigDecimal"/>
+	<field name="umur" class="java.lang.Integer"/>
+	<field name="up" class="java.math.BigDecimal"/>
+	<field name="username" class="java.lang.String"/>
+	<title>
+		<band height="15">
+			<staticText>
+				<reportElement x="167" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[No SPAJ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="0" width="216" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="583" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Tgl Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Tmp Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="683" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Berat Badan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="783" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Tinggi Badan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1921" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Q1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2021" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Q2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2121" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Q3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2221" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Q4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2321" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Q5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2421" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[UP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2521" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Lama Tahun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2621" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Lama Bulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2721" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Mulai]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2821" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Akhir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3221" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3321" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Premi Pokok]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3421" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Extra Premi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2921" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Akseptasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3121" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Tgl Aksep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3521" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Premi Netto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3621" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[No Polis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="883" y="0" width="838" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Alamat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1721" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Telp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1821" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[HP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="167" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Asuransi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3021" y="0" width="100" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Keterangan Akseptasi]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="15">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="167" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{spaj_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="267" y="0" width="216" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{namacustomer}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="583" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.convertDateToString($F{tgl_lahir},"dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="683" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{berat_badan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="783" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tinggi_badan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1821" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telp_hp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="883" y="0" width="838" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_rumah}.replace("\n"," ")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1721" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telp_rumah}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2021" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{q2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1921" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{q1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="483" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tempat_lahir}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2121" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{q3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2221" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{q4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2321" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{q5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2421" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{up}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2521" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ins_period}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2621" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[new Integer($F{ins_period_bln}.intValue()%12)]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2721" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.convertDateToString($F{beg_date},"dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2821" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.convertDateToString($F{end_date},"dd/MM/yyyy")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="2921" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3121" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3321" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3221" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3521" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3421" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3621" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="0" y="0" width="167" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{namaasuransi}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="3021" y="0" width="100" height="15" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maibro.persistence.DbMapper">
+
+	<select id="selectSysdate" parameterType="String" resultType="Date" useCache="false">
+		select sysdate()
+	</select>
+	
+	<select id="selectDropDown" parameterType="java.util.HashMap" resultType="DropDown">
+		SELECT ${keycol} "key", ${valcol} "value" FROM ${tablename} 
+		<if test="where != null"> 
+			WHERE ${where}
+		</if>
+		ORDER BY ${ordercol}
+	</select>
+	
+	<select id="selectCountTable" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*) FROM ${tablename} 
+		<if test="where != null"> 
+			WHERE ${where}
+		</if>
+	</select>
+	
+	<!-- tarik MAX counter, digunakan untuk running number -->
+	<select id="selectMaxCounter" parameterType="Integer" resultType="java.util.HashMap">
+		SELECT VALUE , MAX
+		FROM counter
+		WHERE id = #{value}
+		FOR UPDATE 
+	</select>
+	
+	<select id="selectUser" parameterType="User" resultType="User">
+		SELECT 
+			u.id, u.username, u.password, u.group_menu_id, u.bank_id, u.cab_bank_id, 
+			u.active, u.createby, u.createdate, u.modifyby, u.modifydate, ifnull(b.jenis, 0) bank_jenis, ifnull(c.jenis, 0) cab_bank_jenis,
+			b.nama namabank, c.nama namacabang, u.mst_product_id, m.keterangan namaproduct
+		FROM user u
+			LEFT OUTER JOIN mst_bank b ON bank_id = b.id
+			LEFT OUTER JOIN mst_cab_bank c ON cab_bank_id = c.id
+			LEFT OUTER JOIN mst_master m ON mst_product_id = m.jenis AND m.id = 3
+		WHERE 
+			username = #{username} 
+			AND password = AES_ENCRYPT(#{password}, 'yusuf sutarko')
+	</select>
+	
+	<select id="selectAllUser" parameterType="java.util.HashMap" resultType="User">
+		SELECT u.*, gm.nama namagroup, AES_DECRYPT(u.password,'yusuf sutarko') passdecrypt, mb.nama namabank, cb.nama namacabang
+		FROM user u   
+		left JOIN mst_bank mb ON  mb.id = u.bank_id
+		left JOIN  mst_cab_bank cb ON cb.id = u.cab_bank_id,
+		 (select * from group_menu group by nama) gm 
+		where u.active =1
+		and u.group_menu_id = gm.id		
+		<if test="group_menu_id != null">  
+		and u.group_menu_id =#{group_menu_id}
+		</if>
+		<if test="id != null">
+		 and u.id = #{id} 
+		</if>
+	</select>
+	
+	<select id="selectListUserPaging" parameterType="java.util.HashMap" resultType="User">
+			select * from (
+		  		SELECT u.*, gm.nama namagroup, AES_DECRYPT(u.password,'yusuf sutarko') passdecrypt, mb.nama namabank, cb.nama namacabang
+				FROM user u  
+					left JOIN mst_bank mb ON  mb.id = u.bank_id
+					left JOIN  mst_cab_bank cb ON cb.id = u.cab_bank_id,
+					 (select * from group_menu group by nama) gm
+				where u.active =1
+				and u.group_menu_id = gm.id
+				<if test="group_menu_id != null">  
+					and u.group_menu_id =#{group_menu_id}
+				</if>
+			) x			
+			<if test="search != null">                                  
+				where (username LIKE CONCAT('%', #{search}, '%') OR namagroup LIKE CONCAT('%', #{search}, '%') )
+			</if>
+			 <if test="sort != null"> 
+			 order by ${sort} ${sort_type} 
+			 </if>
+			LIMIT #{offset}, #{rowcount}	
+	</select>	
+	
+	
+	<select id="selectListUserPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*) FROM user u , (select * from group_menu group by nama) gm
+				where u.active =1
+				and u.group_menu_id = gm.id
+				<if test="group_menu_id != null">  
+				and u.group_menu_id =#{group_menu_id}
+				</if>
+			<if test="search != null">                                  
+					AND (u.username LIKE CONCAT('%', #{search}, '%') OR gm.nama LIKE CONCAT('%', #{search}, '%') )
+	
+			</if> 
+	</select>
+	
+	<select id="selectMenuAccess" parameterType="java.util.HashMap" resultType="Menu">
+		SELECT child.parent, parent.nama parent_nama, parent.link parent_link, 
+		       child.id, child.nama, child.link, child.urut
+		FROM menu child
+		INNER JOIN menu parent ON child.parent = parent.id and parent.active = true
+		WHERE child.active = true AND exists (SELECT * FROM group_menu WHERE id = #{group_menu_id} and active=1 AND menu_id = child.id)
+		<if test="root != null">
+			AND not exists (SELECT * from menu WHERE parent = 1 AND id = child.id)
+		</if>
+		ORDER BY child.parent, child.urut
+	</select>
+	
+	<!-- list polis -->
+	<select id="selectListPolisPaging" resultType="Policy">
+			select * from (
+		  		SELECT p.* , c.nama debitur, mp.nama produk,mp.jenis , u.username createuser,
+		  			    pr.nominal_paid,pr.tgl_paid, pr.premi,pr.flag_paid, pr.nominal_remain , pr.up, pr.rate, u2.username inputpayuser,  
+						mba.nama namaasuransi, mba.diskon_premi, mba.ppn_premi,mba.pph_premi, 
+						ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi) diskon,
+						ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) ppn,
+						ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) pph,
+						(pr.premi-ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))
+						-ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))+ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))  premi_net,
+						mb.nama namabank, mcb.nama namacabbank,DATEDIFF(p.createdate,p.beg_date) noclaim,
+						(select keterangan from mst_master where id = 1 and jenis = p.posisi) posisiKet
+				FROM policy p left join mst_bank mba on p.asuransi_id = mba.id, product pr left join user u2 on u2.id = pr.inputpayby, 
+					mst_product mp, customer c, user u, group_policy gp,
+					bank b, mst_cab_bank mcb, mst_bank mb
+				WHERE p.customer_id = c.id
+				AND p.id = pr.policy_id
+				AND pr.mst_product_id = mp.id
+				AND gp.id= p.group_policy_id
+				AND p.createby = u.id
+				AND p.id = b.policy_id
+				AND b.mst_cab_bank_id = mcb.id
+				AND mcb.mst_bank_id = mb.id
+				<if test="cab_bank != null">
+					AND mcb.id = #{cab_bank}
+				</if>
+				<if test="asuransi_id != null">
+					AND p.asuransi_id = #{asuransi_id}
+				</if>
+				<if test="paid == 1">
+					AND pr.tgl_paid is not null
+					AND pr.flag_paid =1
+					<if test="begdatepaid != null"> 
+						AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+					</if>
+				</if>
+				<if test="paid == 2">
+					AND pr.tgl_paid is not null
+					AND pr.flag_paid =2
+					<if test="begdatepaid != null"> 
+						AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+					</if>
+				</if>
+				<if test="paid == 3">
+					AND pr.tgl_paid is not null
+					AND pr.flag_paid =3
+					<if test="begdatepaid != null"> 
+						AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+					</if>
+				</if>
+				<if test="paid == 0">
+					AND pr.tgl_paid is  null
+				</if>
+				<if test="groupjenis !=null">
+					and gp.jenis = #{groupjenis}
+				</if>
+				<if test="jenis !=null">
+					AND mp.jenis = #{jenis}
+				</if>
+				<if test="posisi != null"> 
+					AND ( p.posisi = #{posisi}
+					<if test="posisi == 6"> 
+						OR (p.posisi =5 AND mp.jenis in (1,2))
+					</if>					
+					<if test="posisi == 5"> 
+						OR (pr.flag_paid in (2,3))
+						OR (p.posisi  in (2,3,4,5) AND mp.jenis in (3))
+					</if>
+					)
+				</if>
+				<if test="begdate != null"> 
+					AND DATE(p.beg_date) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
+				</if>
+			) x			
+			<if test="search != null">                                  
+				where (id LIKE CONCAT('%', #{search}, '%') OR spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{search}, '%') OR
+				 debitur LIKE CONCAT('%', #{search}, '%') OR  produk LIKE CONCAT('%', #{search}, '%') OR  createuser LIKE CONCAT('%', #{search}, '%')  )
+			</if>
+			 <if test="sort != null"> 
+			 order by ${sort} ${sort_type} 
+			 </if>
+			 <if test="rowcount !=null">
+			LIMIT #{offset}, #{rowcount}	
+			</if>	
+	</select>	
+	
+	<select id="selectListPolisPagingCount" resultType="Integer">
+		SELECT count(*)  
+					FROM 
+						policy p, product pr left join user u2 on u2.id = pr.inputpayby, 
+						mst_product mp, customer c, user u, group_policy gp,
+						bank b, mst_cab_bank mcb, mst_bank mb
+					WHERE p.customer_id = c.id
+					AND p.id = pr.policy_id
+					AND pr.mst_product_id = mp.id
+					AND gp.id= p.group_policy_id
+					AND p.createby = u.id			
+					AND p.id = b.policy_id
+					AND b.mst_cab_bank_id = mcb.id
+					AND mcb.mst_bank_id = mb.id
+					<if test="cab_bank != null">
+						AND mcb.id = #{cab_bank}
+					</if>
+					<if test="asuransi_id != null">
+						AND p.asuransi_id = #{asuransi_id}
+					</if>
+					<if test="paid == 1">
+						AND pr.tgl_paid is not null
+						AND pr.flag_paid =1
+						<if test="begdatepaid != null"> 
+							AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+						</if>
+					</if>
+					<if test="paid == 2">
+						AND pr.tgl_paid is not null
+						AND pr.flag_paid =2
+						<if test="begdatepaid != null"> 
+							AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+						</if>
+					</if>
+					<if test="paid == 3">
+						AND pr.tgl_paid is not null
+						AND pr.flag_paid =3
+						<if test="begdatepaid != null"> 
+							AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE(#{begdatepaid}, '%d-%m-%Y') and STR_TO_DATE(#{enddatepaid}, '%d-%m-%Y')
+						</if>
+					</if>
+					<if test="paid == 0">
+						AND pr.tgl_paid is  null
+					</if>					
+					<if test="groupjenis !=null">
+						and gp.jenis = #{groupjenis}
+					</if>
+					<if test="jenis !=null">
+						AND mp.jenis = #{jenis}
+					</if>
+					<if test="posisi != null"> 
+						AND ( p.posisi = #{posisi}
+						<if test="posisi == 6"> 
+							OR (p.posisi =5 AND mp.jenis=2)
+						</if>
+						<if test="posisi == 5"> 
+							OR (pr.flag_paid in (2,3))
+						</if>
+						)
+					</if>
+					<if test="begdate != null"> 
+						AND DATE(p.beg_date) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
+					</if>
+			<if test="search != null">                                  
+					AND (p.id LIKE CONCAT('%', #{search}, '%') OR p.spaj_no LIKE CONCAT('%', #{search}, '%') OR p.policy_no LIKE CONCAT('%', #{search}, '%') OR
+							 c.nama  LIKE CONCAT('%', #{search}, '%') OR mp.nama  LIKE CONCAT('%', #{search}, '%') OR u.username  LIKE CONCAT('%', #{search}, '%')  )
+	
+			</if> 
+	</select>
+
+	<select id="selectTestDB" resultType="int">
+		SELECT jenis FROM mst_master WHERE id = 0
+	</select>
+	
+	<select id="selectPolicy" parameterType="java.util.HashMap" resultType="Policy">
+		SELECT	*
+		FROM(
+			SELECT p.* , c.nama debitur, mp.nama produk, u.username createuser,
+					pr.nominal_paid,pr.tgl_paid, pr.premi, pr.up, pr.rate, 
+					u2.username inputpayuser, mp.jenis,
+					mba.nama namaasuransi, mba.diskon_premi, mba.ppn_premi,mba.pph_premi,
+					ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi) diskon,
+					ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) ppn,
+					ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) pph,
+					(pr.premi-ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))
+					-ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))+ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))  premi_net,
+					mb.nama namabank, mcb.nama namacabbank,DATEDIFF(p.createdate,p.beg_date) noclaim
+			FROM policy p left join mst_bank mba on p.asuransi_id = mba.id,  
+			 product pr left join user u2 on u2.id = pr.inputpayby, mst_product mp,
+			 customer c, user u, group_policy gp, mst_cab_bank mcb, mst_bank mb,
+			bank b
+			WHERE p.customer_id = c.id
+			and p.id = b.policy_id
+			AND p.id = pr.policy_id
+			AND pr.mst_product_id = mp.id
+			AND gp.id= p.group_policy_id
+			AND p.createby = u.id
+			AND b.mst_cab_bank_id = mcb.id
+			AND mcb.mst_bank_id = mb.id
+		) x WHERE 1=1
+		 <if test="id != null">
+		 	and x.id = #{id}	
+		 </if>
+		 <if test="group_policy_id != null">
+		 	and x.group_policy_id = #{group_policy_id} 
+		 </if>
+		 <if test="jenis != null">
+			and x.jenis=#{jenis}
+		 </if>
+		  <if test="spaj_no != null">
+		 	and x.spaj_no = #{spaj_no}	
+		 </if>
+	</select>
+	
+	<select id="selectPolicyById" resultType="Policy">
+		SELECT 
+			p.spaj_no, p.policy_no, p.beg_date, p.end_date, p.asuransi_id, p.customer_id, p.ins_period,
+			m.keterangan posisiKet, pr.premi, pr.up, b.namabank, b.namacabbank,  
+			c.nama namacustomer, pr.nama namaproduk, asu.nama namaasuransi
+		FROM policy p
+			LEFT JOIN (SELECT * FROM mst_master WHERE id = 1) m ON m.jenis = p.posisi
+			LEFT JOIN customer c ON p.customer_id = c.id
+			LEFT JOIN (SELECT b.policy_id, mcb.id, mb.nama namabank, mcb.nama namacabbank FROM bank b, mst_bank mb, mst_cab_bank mcb WHERE b.mst_cab_bank_id = mcb.id AND mcb.mst_bank_id = mb.id) b ON p.id = b.policy_id
+			LEFT JOIN (SELECT p.policy_id, p.premi, p.up, mp.nama FROM product p, mst_product mp WHERE p.mst_product_id = mp.id) pr ON p.id = pr.policy_id
+			LEFT JOIN mst_bank asu ON p.asuransi_id = asu.id
+		WHERE p.id = #{value}
+	</select>	
+	
+	<select id="selectBeneficiary" resultType="Beneficiary">	
+	  		SELECT *  
+			FROM beneficiary
+			WHERE policy_id=#{value}	
+	</select>
+	
+	<select id="selectProduct" resultType="Product">	
+	  		SELECT p.*, mp.nama namaProduk  
+			FROM product p , mst_product mp
+			WHERE policy_id=#{value}
+			and p.mst_product_id= mp.id	
+	</select>
+	
+	<select id="selectAgent" resultType="Agent">	
+	  		SELECT *  
+			FROM agent
+			WHERE policy_id=#{value}	
+	</select>
+	
+	<select id="selectBank" resultType="Bank">	
+	  		SELECT b.*, mb.id mst_bank_id, mc.nama namaCabang, mb.nama namaBank
+			FROM bank b, mst_cab_bank mc, mst_bank mb
+			WHERE policy_id=#{value}
+			and b.mst_cab_bank_id = mc.id
+			and mc.mst_bank_id = mb.id
+	</select>
+	
+	<select id="selectCustomer" resultType="Customer">	
+	  		SELECT *  
+			FROM customer
+			WHERE id=#{value}
+	</select>
+	
+	<select id="selectAddress" resultType="Address">	
+	  		SELECT *  
+			FROM address
+			WHERE id=#{value}
+	</select>
+	
+	<select id="selectListMstBank" resultType="MstBank">
+		SELECT b.id, b.jenis, b.nama,  b.diskon_premi, b.diskon_brokerage, b.diskon_komisi, b.ppn_premi, b.pph_premi, b.pph_bpr, b.pph_agent, b.polis_induk, b.email, u.username createuser, b.createdate, b.active,  b.modifyby, b.modifydate
+		FROM mst_bank b, user u
+		WHERE b.createby = u.id
+		and b.active=1
+		<if test="value != null">
+		AND b.id = #{value}
+		</if>
+		ORDER BY b.id
+	</select>
+	
+	<select id="selectListMstBankPaging" parameterType="java.util.HashMap" resultType="MstBank">
+  		select * from (
+  			SELECT b.id, b.jenis, b.nama, b.diskon_premi, b.diskon_brokerage, b.diskon_komisi, b.ppn_premi, b.pph_premi, b.pph_bpr, b.pph_agent, b.polis_induk, b.email, u.username createuser, b.createdate, b.active,  b.modifyby, b.modifydate
+			FROM mst_bank b, user u
+			WHERE b.createby = u.id
+			and b.active=1
+		) x
+		<if test="search != null">                                  
+		where (id LIKE CONCAT('%', #{search}, '%') OR 
+			   nama LIKE CONCAT('%', #{search}, '%') OR 
+			   createuser LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMstBankPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*)  
+		FROM mst_bank b, user u
+		WHERE b.createby = u.id
+		and b.active=1
+		<if test="value != null">                                
+		AND (b.id LIKE CONCAT('%', #{search}, '%') OR 
+			 b.nama LIKE CONCAT('%', #{search}, '%') OR 
+			 u.username LIKE CONCAT('%', #{search}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectListMstCabBank" resultType="MstCabBank">
+		SELECT cb.id, cb.mst_bank_id, cb.cab_induk_id, cbi.nama namacabinduk, cb.jenis, cb.kode_bank, cb.nama, u.username createuser, cb.createdate, b.nama namabank, cb.active,  cb.modifyby, cb.modifydate
+		FROM mst_bank b, user u, mst_cab_bank cb 
+		left JOIN mst_cab_bank cbi ON cb.cab_induk_id = cbi.id
+		WHERE cb.createby = u.id
+		and b.active=1
+		and cb.active=1
+		<if test="mst_bank_id != null">  
+		 and cb.mst_bank_id =#{mst_bank_id}
+		</if>
+		<if test="kode_bank != null">  
+		 and cb.kode_bank =#{kode_bank}
+		</if>
+		<if test="id != null">
+		 AND cb.id = #{id}
+		</if>
+		ORDER BY cb.id
+	</select>
+	
+	<select id="selectListMstCabBankPaging" parameterType="java.util.HashMap" resultType="MstCabBank">
+  		select * from (
+	  		SELECT cb.id, cb.mst_bank_id, cb.cab_induk_id, cbi.nama namacabinduk, cb.jenis, cb.kode_bank, cb.nama, u.username createuser, cb.createdate, b.nama namabank, cb.active, cb.modifyby, cb.modifydate
+			FROM mst_bank b, user u, mst_cab_bank cb 
+			left JOIN mst_cab_bank cbi ON cb.cab_induk_id = cbi.id
+			WHERE cb.createby = u.id
+			AND b.id = cb.mst_bank_id
+			and b.active=1
+			and cb.active=1
+			<if test="mst_bank_id != null">  
+			 and cb.mst_bank_id =#{mst_bank_id}
+			</if>
+		)x
+		<if test="search != null">                                  
+		where (id LIKE CONCAT('%', #{search}, '%') OR 
+			   nama LIKE CONCAT('%', #{search}, '%') OR
+			   createuser LIKE CONCAT('%', #{search}, '%') OR 
+			   namabank LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMstCabBankPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*)  
+		FROM mst_bank b, user u, mst_cab_bank cb
+		left JOIN mst_cab_bank cbi ON cb.cab_induk_id = cbi.id
+		WHERE cb.createby = u.id
+		AND b.id = cb.mst_bank_id
+		and b.active=1
+		and cb.active=1
+		<if test="mst_bank_id != null">  
+		and cb.mst_bank_id =#{mst_bank_id}
+		</if>
+		<if test="search != null">                                   
+		and (cb.id LIKE CONCAT('%', #{search}, '%') OR  
+			 cb.nama LIKE CONCAT('%', #{search}, '%') OR
+			 b.nama LIKE CONCAT('%', #{search}, '%') OR 
+			 cb.kode_bank LIKE CONCAT('%', #{search}, '%') OR
+			 u.username LIKE CONCAT('%', #{search}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectListMstProduct" parameterType="java.util.HashMap" resultType="MstProduct">
+		SELECT p.id, p.nama,p.kode, u.username createuser, p.createdate, b.nama namabank, p.mst_bank_id, p.active, p.jenis, p.modifyby, p.modifydate, p.rek_no, p.rek_nama, p.group_product, m.keterangan group_product_name
+		FROM mst_bank b, user u, mst_product p, mst_master m		
+		WHERE p.createby = u.id
+		and p.active=1
+		AND b.id = p.mst_bank_id
+		AND p.group_product = m.jenis
+		AND m.id = 3
+		<if test="id != null">
+		AND p.id = #{id}
+		</if>
+		<if test="jenis != null">
+		AND p.jenis = #{jenis}
+		</if>
+		<if test="group_product != null">
+		AND p.group_product = #{group_product}
+		</if>
+		<if test="mst_bank_id != null">
+			AND p.mst_bank_id = #{mst_bank_id}
+		</if>
+		ORDER BY p.id
+	</select>
+	
+	<select id="selectListMstProductPaging" parameterType="java.util.HashMap" resultType="MstProduct">
+  		select * from (
+  		SELECT p.id, p.nama, p.kode, u.username createuser, p.createdate, b.nama namabank, p.mst_bank_id, p.active, p.jenis, p.modifyby, p.modifydate, mm.keterangan jenisName, p.rek_no, p.rek_nama, p.group_product, m.keterangan group_product_name
+		FROM mst_bank b, user u, mst_product p, mst_master mm, mst_master m
+		WHERE p.createby = u.id
+		and p.jenis = mm.jenis
+		and mm.id =4
+		AND b.id = p.mst_bank_id
+		AND p.group_product = m.jenis
+		AND m.id = 3
+		and p.active=1
+		) x
+		<if test="search != null">                                  
+		where (id LIKE CONCAT('%', #{search}, '%') OR 
+			 nama LIKE CONCAT('%', #{search}, '%') OR
+			 kode LIKE CONCAT('%', #{search}, '%') OR
+			 namabank LIKE CONCAT('%', #{search}, '%') OR 
+		  	 createuser LIKE CONCAT('%', #{search}, '%') OR
+		     mst_bank_id LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMstProductPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*)  
+		FROM mst_bank b, user u, mst_product p
+		WHERE p.createby = u.id
+		AND b.id = p.mst_bank_id
+		and p.active=1
+		<if test="value != null">                                   
+		AND (p.id LIKE CONCAT('%', #{search}, '%') OR 
+			 p.nama LIKE CONCAT('%', #{search}, '%') OR
+			 b.nama LIKE CONCAT('%', #{search}, '%') OR 
+			 u.username LIKE CONCAT('%', #{search}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectListMstRate" resultType="MstRate">
+		SELECT r.id, r.tenor, r.umur, r.jenis_bangunan, r.rate, u.username createuser, r.createdate, p.nama namaproduct,r.mst_product_id,  
+				r.modifyby,r.modifydate, mm.keterangan jenis_rateNama, r.jenis_rate
+		FROM mst_rate r, user u, mst_product p, mst_master mm
+		WHERE r.createby = u.id
+		and mm.id=11
+		AND mm.jenis=r.jenis_rate
+		AND p.id = r.mst_product_id
+		and p.active=1
+		<if test="mst_product_id != null">  
+		 and r.mst_product_id =#{mst_product_id}
+		</if>
+		<if test="id != null">
+		AND r.id = #{id}
+		</if>
+		<if test="tenor != null">
+			and r.tenor=#{tenor}
+		</if>
+		<if test="umur != null">
+			and r.umur=#{umur}
+		</if>
+		<if test="jenis_bangunan != null">
+			and r.jenis_bangunan= ${jenis_bangunan}
+		</if>
+		<if test="jenis_rate != null">
+			and r.jenis_rate= ${jenis_rate}
+		</if>
+		ORDER BY r.id
+	</select>
+	
+	<select id="selectListMstRatePaging" parameterType="java.util.HashMap" resultType="MstRate">
+		select * from (
+  		SELECT r.id, r.tenor, r.umur, r.jenis_bangunan, r.rate, u.username createuser, r.createdate, p.nama namaproduct,r.mst_product_id,
+  				 r.modifyby,r.modifydate, mm.keterangan  jenis_rateNama, r.jenis_rate
+		FROM mst_rate r, user u, mst_product p, mst_master mm
+		WHERE r.createby = u.id
+		AND p.id = r.mst_product_id
+		and p.active=1 
+		and mm.id=11
+		AND mm.jenis=r.jenis_rate
+		and r.mst_product_id =#{mst_product_id}
+		) x
+		<if test="search != null">                                  
+		where (id LIKE CONCAT('%', #{search}, '%') OR 
+			 tenor LIKE CONCAT('%', #{search}, '%') OR
+			 umur LIKE CONCAT('%', #{search}, '%') OR 
+			 jenis_bangunan LIKE CONCAT('%', #{search}, '%') OR 
+			 rate LIKE CONCAT('%', #{search}, '%') OR 
+			 createuser LIKE CONCAT('%', #{search}, '%') OR 
+			 namaproduct LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMstRatePagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*)  
+		FROM mst_rate r, user u, mst_product p
+		WHERE r.createby = u.id
+		AND p.id = r.mst_product_id
+		and p.active=1
+		and r.mst_product_id =#{mst_product_id}
+		<if test="id != null">                                  
+		AND (r.id LIKE CONCAT('%', #{search}, '%') OR 
+			 r.tenor LIKE CONCAT('%', #{search}, '%') OR
+			 r.umur LIKE CONCAT('%', #{search}, '%') OR 
+			 r.jenis_bangunan LIKE CONCAT('%', #{search}, '%') OR 
+			 r.rate LIKE CONCAT('%', #{search}, '%') OR 
+			 p.nama LIKE CONCAT('%', #{search}, '%') OR 
+			 u.username LIKE CONCAT('%', #{search}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectListMenu" parameterType="String" resultType="Menu">
+		SELECT child.parent, parent.nama parent_nama, parent.link parent_link, 
+		       child.id, child.nama, child.link, child.urut,
+		child.active, child.createby, child.createdate, child.modifyby, child.modifydate
+		FROM menu child
+		INNER JOIN menu parent ON child.parent = parent.id and parent.active = true
+		WHERE child.active = 1
+		<if test="value != null">
+		AND child.id = #{value}
+		</if>
+		ORDER BY child.parent, child.urut
+	</select>
+	
+	<select id="selectListMenuPaging" parameterType="java.util.HashMap" resultType="Menu">
+  		select * from (
+	  		SELECT 	child.parent, parent.nama parent_nama, parent.link parent_link, 
+		       		child.id, child.nama, child.link, child.urut,
+					child.active, child.createby, child.createdate, child.modifyby, child.modifydate
+			FROM menu child
+			INNER JOIN menu parent ON child.parent = parent.id and parent.active = true
+			WHERE child.active = 1
+		) x
+		<if test="search != null">                                  
+		where (parent_nama LIKE CONCAT('%', #{search}, '%') OR 
+			 parent_link LIKE CONCAT('%', #{search}, '%') OR
+			 id LIKE CONCAT('%', #{search}, '%') OR 
+		  	 nama LIKE CONCAT('%', #{search}, '%') OR
+		     urut LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMenuPagingCount" parameterType="String" resultType="Integer">
+		SELECT count(*)
+			FROM menu child
+			INNER JOIN menu parent ON child.parent = parent.id and parent.active = true
+			WHERE child.active = 1
+		<if test="value != null">                                   
+		AND (parent.nama LIKE CONCAT('%', #{value}, '%') OR 
+			 parent.link LIKE CONCAT('%', #{value}, '%') OR
+			 child.id LIKE CONCAT('%', #{value}, '%') OR 
+		  	 child.nama LIKE CONCAT('%', #{value}, '%') OR
+		     child.urut LIKE CONCAT('%', #{value}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectListGroupMenu" parameterType="java.util.HashMap" resultType="GroupMenu">
+		select gm.*, m.nama namamenu from group_menu gm, menu m
+		where gm.menu_id= m.id
+		and m.active = 1
+		<if test="aktif != null"> 
+			and gm.active=1
+		</if>
+		<if test="id != null">  
+		and gm.id = #{id}
+		</if>
+		<if test="menu_id != null">  
+		and gm.menu_id = #{menu_id}
+		</if>
+		<if test="grouping != null">  
+		group by gm.nama
+		</if>
+	</select>
+	
+	<select id="selectListGroupMenuPaging" parameterType="java.util.HashMap" resultType="GroupMenu">
+  		select * from (
+	  		select gm.*, m.nama namamenu from group_menu gm, menu m
+			where gm.menu_id= m.id
+			and gm.active=1
+			group by gm.nama
+		) x
+		<if test="search != null">                                  
+		where (nama LIKE CONCAT('%', #{search}, '%') )
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListGroupMenuPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		select count(*) from 
+		(SELECT gm.* FROM group_menu gm, menu m where gm.menu_id= m.id and gm.active=1
+			<if test="value != null">                                   
+			and (gm.nama LIKE CONCAT('%', #{value}, '%') )
+			</if> 
+		group by gm.nama) x
+		
+	</select>
+	
+	<!-- list group polis -->
+	<select id="selectListGroupPolicyPaging" resultType="GroupPolicy">
+		SELECT * FROM (
+			SELECT 
+				gp.id,life.id life_id, life.policy_no life_policy_no,life.spaj_no life_spaj_no, life.debitur life_debitur, life.produk life_produk, 
+				fire.id fire_id, fire.policy_no fire_policy_no,fire.spaj_no fire_spaj_no,  fire.debitur fire_debitur, fire.produk fire_produk,
+				u.username createuser, gp.createdate
+			FROM 
+				group_policy gp
+				INNER JOIN user u on gp.createby = u.id 
+				LEFT OUTER JOIN
+					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id
+					FROM policy p, product pr, mst_product mp, customer c
+					WHERE p.customer_id = c.id
+					AND p.id = pr.policy_id
+					AND pr. mst_product_id = mp.id
+					AND mp.jenis = 1
+					<if test="search != null">                                  
+					AND (
+						spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{search}, '%') OR 
+						debitur LIKE CONCAT('%', #{search}, '%') OR produk LIKE CONCAT('%', #{search}, '%')
+					</if>
+					) life ON gp.id = life.group_policy_id
+				LEFT OUTER JOIN 
+					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id
+					FROM policy p, product pr, mst_product mp, customer c
+					WHERE p.customer_id = c.id
+					AND p.id = pr.policy_id
+					AND pr. mst_product_id = mp.id
+					AND mp.jenis = 2
+					<if test="search != null">                                  
+					AND (
+						spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{					) life ON gp.id = life.group_policy_id
+					 debitur LIKE CONCAT('%', #{search}, '%') OR produk LIKE CONCAT('%', #{search}, '%')
+					)
+					</if>
+					) fire ON gp.id = fire.group_policy_id
+			WHERE gp.jenis = #{jenis}
+			<if test="posisi != null"> 
+				and gp.posisi=#{posisi}
+			</if>
+		) x			
+		<if test="sort != null"> 
+			ORDER BY ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>	
+	
+	<select id="selectListGroupPolicyPagingCount" resultType="Integer">
+		SELECT count(*)
+		FROM 
+			group_policy gp
+			LEFT OUTER JOIN
+				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id
+				FROM policy p, product pr, mst_product mp, customer c
+				WHERE p.customer_id = c.id
+				AND p.id = pr.policy_id
+				AND pr. mst_product_id = mp.id
+				AND mp.jenis = 1
+				<if test="search != null">                                  
+				AND (
+					spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{search}, '%') OR 
+					debitur LIKE CONCAT('%', #{search}, '%') OR produk LIKE CONCAT('%', #{search}, '%')
+				)
+				</if>
+				) life ON gp.id = life.group_policy_id
+			LEFT OUTER JOIN 
+				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id
+				FROM policy p, product pr, mst_product mp, customer c
+				WHERE p.customer_id = c.id
+				AND p.id = pr.policy_id
+				AND pr. mst_product_id = mp.id
+				AND mp.jenis = 2
+				<if test="search != null">                                  
+				AND (
+					spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{search}, '%') OR 
+					debitur LIKE CONCAT('%', #{search}, '%') OR produk LIKE CONCAT('%', #{search}, '%')
+				)
+				</if>
+				) fire ON gp.id = fire.group_policy_id
+		WHERE gp.jenis = #{jenis}
+	</select>
+	
+	<select id="selectGroupPolicy" parameterType="int" resultType="GroupPolicy">
+		SELECT
+			id, jenis, life_id, fire_id, createby, createdate, modifyby, modifydate
+		FROM group_policy WHERE id = #{value}	
+	</select>
+	
+	<select id="selectListMstMaster" parameterType="java.util.HashMap" resultType="MstMaster">
+		SELECT b.id, b.jenis, b.keterangan, u.username createuser, b.createdate, b.active,  b.modifyby, b.modifydate
+		FROM mst_master b, user u
+		WHERE b.createby = u.id
+		and b.active=1
+		<if test="id != null">
+		AND b.id = #{id}
+		</if>
+		<if test="jenis != null">
+		AND b.jenis = #{jenis}
+		</if>
+		ORDER BY b.id
+	</select>
+	
+	<select id="selectListMstMasterPaging" parameterType="java.util.HashMap" resultType="MstMaster">
+  		select * from (
+  		SELECT b.id, b.jenis, b.keterangan, u.username createuser, b.createdate, b.active,  b.modifyby, b.modifydate
+		FROM mst_master b, user u
+		WHERE b.createby = u.id
+		and b.active=1
+		and b.id not in (0)
+		) x
+		<if test="search != null">                                  
+		where (id LIKE CONCAT('%', #{search}, '%') OR 
+			 jenis LIKE CONCAT('%', #{search}, '%') OR 
+			 keterangan LIKE CONCAT('%', #{search}, '%') OR 
+			createuser LIKE CONCAT('%', #{search}, '%'))
+		</if>
+		order by id asc, jenis asc
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListMstMasterPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*)  
+		FROM mst_master b, user u
+		WHERE b.createby = u.id
+		and b.active=1
+		and b.id not in (0)
+		<if test="value != null">                                
+		AND (b.id LIKE CONCAT('%', #{search}, '%') OR 
+			 b.jenis LIKE CONCAT('%', #{search}, '%') OR 
+			 b.keterangan LIKE CONCAT('%', #{search}, '%') OR 
+			 u.username LIKE CONCAT('%', #{search}, '%'))
+		</if> 
+	</select>
+	
+	<select id="selectRate" resultType="Double">
+		SELECT rate FROM mst_rate WHERE mst_product_id = #{mst_product_id}
+		AND jenis_rate = #{jenis_rate} 
+		<if test="tenor != null">
+			AND tenor = #{tenor}
+		</if>
+		<if test="jenis_bangunan != null">
+			AND jenis_bangunan = #{jenis_bangunan}
+		</if>
+		<if test="umur != null">
+			AND umur = #{umur}
+		</if>
+	</select>
+	
+	<select id="selectClaim" resultType="Claim">
+		select * from (
+		  		SELECT cl.*, p.posisi posisipolis,
+						p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
+						p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+						p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+						c.nama namacustomer, 
+						pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
+						mp.kode, mp.nama namaproduk, u.username klaimusername,
+						mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank
+				FROM claim cl, policy p,customer c, product pr, 
+					 mst_product mp, group_policy gp, user u,
+			 		mst_bank mb, bank b, mst_cab_bank mcb, mst_bank mb2
+				where cl.policy_id = p.id
+				and gp.id = p.group_policy_id
+				and p.customer_id = c.id
+				and pr.policy_id = p.id
+				and mp.id= pr.mst_product_id
+				and cl.createby = u.id
+				and p.asuransi_id = mb.id
+				and b.policy_id = p.id
+				and b.mst_cab_bank_id = mcb.id
+				and mcb.mst_bank_id = mb2.id
+				) x
+		<if test="value != null">		
+			where x.id = #{value}
+		</if>
+	</select>
+	
+	<select id="selectListClaimPaging" parameterType="java.util.HashMap" resultType="Claim">
+  		select * from (
+  		SELECT cl.*, p.posisi posisipolis,
+				p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
+				p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+				p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+				c.nama namacustomer, 
+				pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
+				mp.kode, mp.nama namaproduk, u.username klaimusername,
+				mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank,
+				mm.keterangan posisiklaim
+		FROM claim cl, policy p,customer c, product pr, 
+			 mst_product mp, group_policy gp, user u,
+			 mst_bank mb, bank b, mst_cab_bank mcb, mst_bank mb2, mst_master mm
+		where cl.policy_id = p.id
+		and gp.id = p.group_policy_id
+		and p.customer_id = c.id
+		and mm.id=13
+		and mm.jenis = cl.posisi
+		and pr.policy_id = p.id
+		and mp.id= pr.mst_product_id
+		and cl.createby = u.id
+		and p.asuransi_id = mb.id
+		and b.policy_id = p.id
+		and b.mst_cab_bank_id = mcb.id
+		and mcb.mst_bank_id = mb2.id
+		<if test="cab_bank != null">
+			AND mcb.id = #{cab_bank}
+		</if>
+		<if test="group_product != null">
+			AND mp.group_product = #{group_product}
+		</if>
+		<if test="asuransi_id != null">
+			AND p.asuransi_id = #{asuransi_id}
+		</if>
+		<if test="begdate != null"> 
+			AND DATE(cl.createdate) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
+		</if>
+		<if test="posisi != null"> 
+			<choose>
+				<when test="posisi == -1">
+					AND cl.posisi in (1,4)
+				</when>
+				<when test="posisi == -2">
+					AND cl.posisi in (2,3)
+				</when>
+				<otherwise>
+					AND cl.posisi =#{posisi}
+				</otherwise>
+			</choose>
+		</if>
+		) x
+		<if test="search != null">                                  
+		where (
+			keterangan LIKE CONCAT('%', #{search}, '%')
+		    or spaj_no LIKE CONCAT('%', #{search}, '%')
+		    or policy_no LIKE CONCAT('%', #{search}, '%')
+		    or namacustomer LIKE CONCAT('%', #{search}, '%')
+		    or namaasuransi LIKE CONCAT('%', #{search}, '%')
+		    or namacabang LIKE CONCAT('%', #{search}, '%')
+		     or namabank LIKE CONCAT('%', #{search}, '%')
+		)
+		</if>
+		<if test="sort != null"> 
+		order by ${sort} ${sort_type} 
+		</if>
+		LIMIT #{offset}, #{rowcount}	
+	</select>
+	
+	<select id="selectListClaimPagingCount" parameterType="java.util.HashMap" resultType="Integer">
+		select count(*) from (
+  		SELECT cl.*, p.posisi posisipolis,
+				p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
+				p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+				p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+				c.nama namacustomer, 
+				pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
+				mp.kode, mp.nama namaproduk, u.username klaimusername,
+				mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank
+		FROM claim cl, policy p,customer c, product pr, 
+			 mst_product mp, group_policy gp, user u,
+			 mst_bank mb, bank b, mst_cab_bank mcb, mst_bank mb2
+		where cl.policy_id = p.id
+		and gp.id = p.group_policy_id
+		and p.customer_id = c.id
+		and pr.policy_id = p.id
+		and mp.id= pr.mst_product_id
+		and cl.createby = u.id
+		and p.asuransi_id = mb.id
+		and b.policy_id = p.id
+		and b.mst_cab_bank_id = mcb.id
+		and mcb.mst_bank_id = mb2.id
+		<if test="cab_bank != null">
+			AND mcb.id = #{cab_bank}
+		</if>
+		<if test="group_product != null">
+			AND mp.group_product = #{group_product}
+		</if>
+		<if test="asuransi_id != null">
+			AND p.asuransi_id = #{asuransi_id}
+		</if>
+		<if test="begdate != null"> 
+			AND DATE(cl.createdate) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
+		</if>
+		<if test="posisi != null"> 
+			<choose>
+				<when test="posisi == -1">
+					AND cl.posisi in (1,4)
+				</when>
+				<when test="posisi == -2">
+					AND cl.posisi in (2,3)
+				</when>
+				<otherwise>
+					AND cl.posisi =#{posisi}
+				</otherwise>
+			</choose>
+		</if>
+		<if test="search != null">                                  
+		and (
+			cl.keterangan LIKE CONCAT('%', #{search}, '%')
+		    or p.spaj_no LIKE CONCAT('%', #{search}, '%')
+		    or p.policy_no LIKE CONCAT('%', #{search}, '%')
+		    or c.nama LIKE CONCAT('%', #{search}, '%')
+		    or mb.nama LIKE CONCAT('%', #{search}, '%')
+		    or mcb.nama LIKE CONCAT('%', #{search}, '%')
+		     or mb2.nama LIKE CONCAT('%', #{search}, '%')
+		)
+		</if>
+		) x
+		
+		
+	</select>
+	
+	<select id="selectKeteranganMaster" resultType="String">
+		select keterangan from mst_master where id = #{id} and jenis = #{jenis}
+	</select>
+	
+	<select id="selectHistoryPolis" parameterType="int" resultType="History">
+		SELECT h.createdate, u.username, h.keterangan, m.keterangan posisiKet
+		FROM history h
+		LEFT OUTER JOIN (SELECT * FROM mst_master WHERE id = 1) m ON m.jenis = h.posisi
+		LEFT OUTER JOIN user u ON u.id = h.createby
+		WHERE h.policy_id = #{value}
+		ORDER BY h.createdate
+	</select>
+	
+	<select id="selectMstProductName" parameterType="int" resultType="String">
+		SELECT nama FROM mst_product WHERE id = #{value}
+	</select>
+	
+</mapper>

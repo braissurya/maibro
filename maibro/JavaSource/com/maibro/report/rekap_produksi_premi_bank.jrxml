@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_produksi_premi_bank" pageWidth="600" pageHeight="842" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	<property name="com.jasperassistant.designer.DataSource" value="MySql-Maibro"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="5"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="5"/>
+	<property name="com.jasperassistant.designer.Margins" value="true"/>
+	<property name="com.jasperassistant.designer.Rulers" value="true"/>
+	<property name="com.jasperassistant.designer.SnapToGuides" value="true"/>
+	<parameter name="beg_date" class="java.lang.String"/>
+	<parameter name="end_date" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
+	<parameter name="param" class="java.lang.String"/>
+	<parameter name="param2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" AND 1 = 1 "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="beg_date1" class="java.lang.String"/>
+	<parameter name="end_date1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage, ass.diskon_komisi, ass.ppn_premi, ass.pph_premi, ass.pph_bpr, ass.pph_agent, 
+	   COALESCE(SUM(jum_polis), 0) jum_polis,
+	   COALESCE(SUM(up), 0) up, COALESCE(SUM(premi), 0) premi, 
+	   COALESCE(SUM(gross_bkg), 0) gross_bkg, COALESCE(SUM(premi) - SUM(gross_bkg), 0) premi_netto,
+	   COALESCE(SUM(gross_bkg * (ass.ppn_premi / 100)), 0) ppn10, COALESCE(SUM(gross_bkg * (ass.pph_premi / 100)), 0) pph2
+FROM (
+	SELECT pro.nama jenis_produk, ass.nama ass_name, p.asuransi_id, 1 jum_polis, pr.up, pr.premi, 
+		   ROUND((pr.premi * ass.diskon_premi) / 100, 2) gross_bkg
+	FROM policy p, bank b, mst_cab_bank cb, mst_bank ba, mst_bank ass, 
+		 product pr, mst_product pro
+	WHERE p.id = b.policy_id
+	AND b.mst_cab_bank_id = cb.id
+	AND cb.mst_bank_id = ba.id
+	AND p.asuransi_id = ass.id
+	AND p.id = pr.policy_id
+	AND pr.mst_product_id = pro.id
+	AND $P!{param}
+) x ,( SELECT p.nama as jenis_produk, b.nama ass_name, b.id, b.diskon_premi, b.diskon_brokerage, b.diskon_komisi, b.ppn_premi, b.pph_premi, b.pph_bpr, b.pph_agent
+				 FROM mst_bank b, mst_product p
+				 WHERE b.jenis IN (2,4)
+			     $P!{param2}
+			   ) ass where x.asuransi_id = ass.id AND x.jenis_produk = ass.jenis_produk
+GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage, ass.diskon_komisi, ass.ppn_premi, ass.pph_premi, ass.pph_bpr, ass.pph_agent
+;]]>
+	</queryString>
+	<field name="ass_name" class="java.lang.String"/>
+	<field name="diskon_brokerage" class="java.math.BigDecimal"/>
+	<field name="diskon_komisi" class="java.math.BigDecimal"/>
+	<field name="diskon_premi" class="java.math.BigDecimal"/>
+	<field name="gross_bkg" class="java.math.BigDecimal"/>
+	<field name="jenis_produk" class="java.lang.String"/>
+	<field name="jum_polis" class="java.math.BigDecimal"/>
+	<field name="pph2" class="java.math.BigDecimal"/>
+	<field name="pph_agent" class="java.math.BigDecimal"/>
+	<field name="pph_bpr" class="java.math.BigDecimal"/>
+	<field name="pph_premi" class="java.math.BigDecimal"/>
+	<field name="ppn10" class="java.math.BigDecimal"/>
+	<field name="ppn_premi" class="java.math.BigDecimal"/>
+	<field name="premi" class="java.math.BigDecimal"/>
+	<field name="premi_netto" class="java.math.BigDecimal"/>
+	<field name="up" class="java.math.BigDecimal"/>
+	<variable name="tot_up" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{up}]]></variableExpression>
+	</variable>
+	<variable name="tot_up_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{up}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_netto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi_netto}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_netto_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi_netto}]]></variableExpression>
+	</variable>
+	<variable name="tot_gross_bkg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gross_bkg}]]></variableExpression>
+	</variable>
+	<variable name="tot_gross_bkg_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{gross_bkg}]]></variableExpression>
+	</variable>
+	<variable name="tot_ppn10" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ppn10}]]></variableExpression>
+	</variable>
+	<variable name="tot_ppn10_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{ppn10}]]></variableExpression>
+	</variable>
+	<variable name="tot_pph2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph2}]]></variableExpression>
+	</variable>
+	<variable name="tot_pph2_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph2}]]></variableExpression>
+	</variable>
+	<variable name="premi_ke_ass" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($F{premi_netto}.doubleValue() - $F{ppn10}.doubleValue() + $F{pph2}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_ke_ass" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{premi_ke_ass}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_ke_ass_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{premi_ke_ass}]]></variableExpression>
+	</variable>
+	<variable name="tot_jum_polis" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jum_polis}]]></variableExpression>
+	</variable>
+	<variable name="tot_jum_polis_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$F{jum_polis}]]></variableExpression>
+	</variable>
+	<variable name="net_bkg" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($F{gross_bkg}.doubleValue() - $F{pph2}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_bkg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_bkg}]]></variableExpression>
+	</variable>
+	<variable name="tot_net_bkg_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_bkg}]]></variableExpression>
+	</variable>
+	<variable name="fee_base" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal(($V{net_bkg}.doubleValue() * $F{diskon_brokerage}.doubleValue()) / 100)]]></variableExpression>
+	</variable>
+	<variable name="tot_fee_base" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{fee_base}]]></variableExpression>
+	</variable>
+	<variable name="tot_fee_base_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{fee_base}]]></variableExpression>
+	</variable>
+	<variable name="pph_bpr" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{fee_base}.doubleValue() * 0.02)]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_bpr" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_bpr}]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_bpr_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_bpr}]]></variableExpression>
+	</variable>
+	<variable name="net_fee_base" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{fee_base}.doubleValue() - $V{pph_bpr}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_fee_base" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_fee_base}]]></variableExpression>
+	</variable>
+	<variable name="tot_net_fee_base_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_fee_base}]]></variableExpression>
+	</variable>
+	<variable name="komisi_pb" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal(($V{net_bkg}.doubleValue() * $F{diskon_komisi}.doubleValue()) / 100)]]></variableExpression>
+	</variable>
+	<variable name="tot_komisi_pb" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{komisi_pb}]]></variableExpression>
+	</variable>
+	<variable name="tot_komisi_pb_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{komisi_pb}]]></variableExpression>
+	</variable>
+	<variable name="pph_agent" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{komisi_pb}.doubleValue() * 0.025)]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_agent" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_agent}]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_agent_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_agent}]]></variableExpression>
+	</variable>
+	<variable name="kom_net" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{komisi_pb}.doubleValue() - $V{pph_agent}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_kom_net" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{kom_net}]]></variableExpression>
+	</variable>
+	<variable name="tot_kom_net_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{kom_net}]]></variableExpression>
+	</variable>
+	<variable name="net_maibro" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{net_bkg}.doubleValue() - $V{kom_net}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_maibro" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_maibro}]]></variableExpression>
+	</variable>
+	<variable name="tot_net_maibro_produk" class="java.math.BigDecimal" resetType="Group" resetGroup="produk" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_maibro}]]></variableExpression>
+	</variable>
+	<group name="produk">
+		<groupExpression><![CDATA[$F{jenis_produk}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField hyperlinkType="None">
+					<reportElement x="30" y="0" width="195" height="20"/>
+					<box padding="2"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL " + $F{jenis_produk}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+					<reportElement x="226" y="0" width="121" height="20"/>
+					<box padding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_up_produk}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+					<reportElement x="347" y="0" width="121" height="20"/>
+					<box padding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_premi_produk}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true" hyperlinkType="None">
+					<reportElement x="468" y="0" width="46" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_jum_polis_produk}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="99">
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="106" y="59" width="120" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{username}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="59" width="106" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[User:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="79" width="106" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Waktu:]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="106" y="79" width="120" height="20"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="106" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Laporan:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="106" y="0" width="240" height="20"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["REKAPITULASI PRODUKSI PREMI "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="106" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periode Akseptasi:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="106" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periode Asuransi:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="106" y="40" width="240" height="20"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{beg_date} + " s/d " + $P{end_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="106" y="20" width="240" height="20"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{beg_date1} + " s/d " + $P{end_date1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="0" width="31" height="40"/>
+				<box padding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="226" y="0" width="121" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nilai 
+Pertanggungan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="121" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="0" width="46" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="0" width="195" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama 
+Asuransi]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<elementGroup/>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="31" y="0" width="195" height="20"/>
+				<box padding="2">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{jenis_produk} + " " + $F{ass_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="0" y="0" width="31" height="20"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="226" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{up}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="347" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="468" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{jum_polis}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="226" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_up}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="347" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_premi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="0" width="195" height="20"/>
+				<box padding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRAND TOTAL]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="468" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_jum_polis}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

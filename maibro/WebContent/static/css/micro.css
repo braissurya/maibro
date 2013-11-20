@@ -1,0 +1,42 @@
+#header {  
+  background-color: #006666;
+}
+
+#mainfooter {
+ 	background-color: #006666;
+} 
+
+#main-navigation {
+  background-color: #008c8c;
+
+}
+
+#user-navigation a.logout {
+  background: #008ccf;
+}
+
+.table th {
+  background: #008c8c;
+  color: #FFF;
+}
+
+
+.secondary-navigation {
+  background-color: #008c8c;
+  background-image: url("/static/pilu/css/themes/default/images/boxbar-background3.png");
+}
+
+.secondary-navigation ul li a {
+  color: white !important;
+}
+
+.ddsubmenustyle li a{
+	color: white;
+	background-color: #008c8c;
+	border-bottom: 1px solid white;
+}
+
+.ddsubmenustyle li a:hover{
+	background-color: #008ccf;
+	color: white;
+}

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maibro.persistence.DbMapper">
+
+	<!-- untuk kolom2 yang bisa diisi NULL, harus diset jdbcType nya -->
+<!-- 	<insert id="insertUser" parameterType="User"> -->
+<!-- 		INSERT INTO eka.test_user (username, password, nama, tgl_lahir, create_id, create_dt, email) -->
+<!-- 		VALUES (#{username}, #{password}, #{nama, jdbcType=VARCHAR}, #{tgl_lahir, jdbcType=DATE}, #{create_id}, SYSDATE, #{email, jdbcType=VARCHAR}) -->
+<!-- 	</insert> -->
+
+	<insert id="insertMstBank" parameterType="MstBank" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO mst_bank ( jenis, nama, diskon_brokerage, diskon_premi, diskon_komisi, ppn_premi, pph_premi, pph_bpr, pph_agent, createby, createdate, active, polis_induk, email) 
+		VALUES ( #{jenis, jdbcType=INTEGER}, #{nama, jdbcType=VARCHAR}, #{diskon_brokerage, jdbcType=DOUBLE}, #{diskon_premi, jdbcType=DOUBLE}, #{diskon_komisi, jdbcType=DOUBLE}, #{ppn_premi, jdbcType=DOUBLE}, #{pph_premi, jdbcType=DOUBLE}, #{pph_bpr, jdbcType=DOUBLE}, #{pph_agent, jdbcType=DOUBLE}, #{createby, jdbcType=INTEGER}, sysdate(), #{active, jdbcType=INTEGER}, #{polis_induk}, #{email});
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+ 
+	<insert id="insertMstCabBank" parameterType="MstCabBank"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO mst_cab_bank (mst_bank_id, cab_induk_id, jenis, kode_bank, nama, createby, createdate, active) 
+		VALUES (  #{mst_bank_id, jdbcType=INTEGER}, #{cab_induk_id, jdbcType=INTEGER}, #{jenis, jdbcType=INTEGER}, #{kode_bank, jdbcType=VARCHAR}, #{nama, jdbcType=VARCHAR}, #{createby, jdbcType=INTEGER}, sysdate(),#{active, jdbcType=INTEGER});
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertMstProduct" parameterType="MstProduct"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO mst_product (nama,kode, mst_bank_id, rek_no, rek_nama, group_product, createby, createdate,active,jenis) 
+		VALUES ( #{nama, jdbcType=VARCHAR},#{kode, jdbcType=VARCHAR}, #{mst_bank_id, jdbcType=INTEGER}, #{rek_no, jdbcType=VARCHAR}, #{rek_nama, jdbcType=VARCHAR}, #{group_product, jdbcType=INTEGER}, #{createby, jdbcType=INTEGER}, sysdate(),#{active, jdbcType=INTEGER},#{jenis, jdbcType=INTEGER});
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertMstRate" parameterType="MstRate"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO mst_rate (mst_product_id, tenor, umur, jenis_bangunan, rate,jenis_rate createby, createdate) 
+		VALUES ( #{mst_product_id, jdbcType=INTEGER}, #{tenor, jdbcType=INTEGER}, #{umur, jdbcType=INTEGER}, #{jenis_bangunan, jdbcType=INTEGER}, #{rate, jdbcType=DOUBLE}, #{jenis_rate}, #{createby, jdbcType=INTEGER}, sysdate());
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<insert id="insertPolicy" parameterType="Policy" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO policy
+			(customer_id, spaj_no, policy_no, plafon_kredit, spaj_date, ins_period, ins_period_bln,flag_akseptasi,flag_akseptasi_mb,tgl_aksep,desc_akseptasi,tgl_print_spaj,tgl_upload_spaj,
+			beg_date, end_date, jenis_manfaat, pay_mode, createby, createdate, gol_debitur, kode_cabang, username, dealref, group_policy_id,posisi,asuransi_id,asuransi_desc,
+			filetype_spaj,filetype_kuesioner,filetype_klaim,filetype_ktp)
+		VALUES
+			(#{customer_id}, #{spaj_no}, #{policy_no}, #{plafon_kredit}, #{spaj_date}, #{ins_period}, #{ins_period_bln},#{flag_akseptasi},#{flag_akseptasi_mb},#{tgl_aksep},#{desc_akseptasi},#{tgl_print_spaj},#{tgl_upload_spaj},
+			#{beg_date}, #{end_date}, #{jenis_manfaat}, #{pay_mode}, #{createby}, #{createdate}, #{gol_debitur}, #{kode_cabang}, #{username}, #{dealref}, #{group_policy_id},#{posisi},#{asuransi_id},#{asuransi_desc},
+			#{filetype_spaj},#{filetype_kuesioner},#{filetype_klaim},#{filetype_ktp})
+	</insert>
+
+	<insert id="insertBeneficiary" parameterType="Beneficiary">
+		INSERT INTO beneficiary
+			(policy_id, nama, relasi, relasi_lain, createby, createdate)
+		VALUES
+			(#{policy_id}, #{nama}, #{relasi}, #{relasi_lain}, #{createby}, #{createdate})
+	</insert>
+
+	<insert id="insertBank" parameterType="Bank">
+		INSERT INTO bank
+			(policy_id, mst_cab_bank_id, clause, createby, createdate)
+		VALUES
+			(#{policy_id}, #{mst_cab_bank_id}, #{clause}, #{createby}, #{createdate})
+	</insert>
+
+	<insert id="insertAgent" parameterType="Agent">
+		INSERT INTO agent
+			(policy_id, nama, telp_hp,jabatan, createby, createdate)
+		VALUES
+			(#{policy_id}, #{nama}, #{telp_hp},#{jabatan}, #{createby}, #{createdate})
+	</insert>
+
+	<insert id="insertProduct" parameterType="Product">
+		INSERT INTO product
+			(policy_id, premi_pokok,premi_extra,biaya_admin,premi,rate, up, mst_product_id,jenis_rate, createby, createdate)
+		VALUES
+			(#{policy_id},#{premi_pokok},#{premi_extra},#{biaya_admin}, #{premi},#{rate}, #{up}, #{mst_product_id},#{jenis_rate}, #{createby}, #{createdate})
+	</insert>
+
+	<insert id="insertHistory" parameterType="History">
+		INSERT INTO history
+			(id, policy_id,jenis, posisi, keterangan, createby, createdate)
+		VALUES
+			(#{id}, #{policy_id},#{jenis}, #{posisi}, #{keterangan}, #{createby}, #{createdate})
+	</insert>
+	
+	<insert id="insertCustomer" parameterType="Customer"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO customer
+			( address_id, objek_pertanggungan, jenis_medis, standar, nama, gender, tempat_lahir, tgl_lahir, umur, berat_badan, tinggi_badan, no_identitas, pekerjaan, bagian, q1, q1_desc, q2, q2_desc, q3, q3_desc, q4, q4_desc, q5, q5_desc, createby, createdate, modifyby, modifydate) 
+		VALUES 
+			(#{address_id},#{objek_pertanggungan},#{jenis_medis}, #{standar}, #{nama},#{gender},#{tempat_lahir},#{tgl_lahir},#{umur}, #{berat_badan},#{tinggi_badan},#{no_identitas},#{pekerjaan},#{bagian},#{q1},#{q1_desc},#{q2},#{q2_desc},#{q3},#{q3_desc},#{q4},#{q4_desc},#{q5},#{q5_desc},#{createby},#{createdate},#{modifyby},#{modifydate})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAddress" parameterType="Address"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO address 
+			(tipe, alamat_kantor, kota_kantor, kodepos_kantor, alamat_rumah, kota_rumah, kodepos_rumah, telp_kantor, telp_hp, telp_rumah, jenis_bangunan, no_sertifikat,type_sertifikat, penggunaan_bangunan, kondisi_kiri, kondisi_kanan, kondisi_depan, kondisi_belakang, luas_bangunan, luas_tanah, harga_bangunan, harga_stock, harga_perabot, harga_lainnya, createby, createdate, modifyby, modifydate, alamat1, alamat2, alamat3, alamat4, alamat5) 
+		VALUES 
+			(#{tipe},#{alamat_kantor},#{kota_kantor},#{kodepos_kantor},#{alamat_rumah},#{kota_rumah},#{kodepos_rumah},#{telp_kantor},#{telp_hp},#{telp_rumah},#{jenis_bangunan},#{no_sertifikat},#{type_sertifikat},#{penggunaan_bangunan},#{kondisi_kiri},#{kondisi_kanan},#{kondisi_depan},#{kondisi_belakang},#{luas_bangunan},#{luas_tanah},#{harga_bangunan},#{harga_stock},#{harga_perabot},#{harga_lainnya},#{createby},#{createdate},#{modifyby},#{modifydate}, #{alamat1}, #{alamat2}, #{alamat3}, #{alamat4}, #{alamat5})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="insertMenu" parameterType="Menu" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO menu 
+			( parent, nama, link, urut, active, createby, createdate, modifyby, modifydate) 
+		VALUES 
+			(#{parent},#{nama},#{link},#{urut},#{active},#{createby},#{createdate},#{modifyby},#{modifydate}) 
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertGroupMenu" parameterType="GroupMenu" >
+		INSERT INTO group_menu 
+			(id, menu_id, nama,active, createby, createdate, modifyby, modifydate) 
+		VALUES 
+			(#{id},#{menu_id},#{nama},#{active},#{createby},#{createdate},#{modifyby},#{modifydate}) 
+	</insert>
+	
+	<insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO user 
+			(username, password, group_menu_id,bank_id,cab_bank_id, mst_product_id, active, createby, createdate, modifyby, modifydate) 
+		VALUES 
+			(#{username},AES_ENCRYPT(#{password},'yusuf sutarko'),#{group_menu_id},#{bank_id},#{cab_bank_id},#{mst_product_id},#{active},#{createby},#{createdate},#{modifyby},#{modifydate})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<insert id="insertGroupPolicy" parameterType="GroupPolicy" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO group_policy 
+			(jenis, life_id, fire_id, createby, createdate)
+		VALUES
+			(#{jenis}, #{life_id, jdbcType=INTEGER}, #{fire_id, jdbcType=INTEGER}, #{createby}, #{createdate})
+	</insert>
+
+	<insert id="insertMstMaster" parameterType="MstMaster" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO mst_master ( id, jenis, keterangan, createby, createdate,active) 
+		VALUES ( #{id, jdbcType=INTEGER}, #{jenis, jdbcType=INTEGER}, #{keterangan, jdbcType=VARCHAR}, #{createby, jdbcType=INTEGER}, sysdate(),#{active, jdbcType=INTEGER});
+	</insert>
+	
+	<insert id="insertClaim" parameterType="Claim" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO maibro.claim 
+			(id, policy_id, posisi, keterangan, createby, createdate, modifyby, modifydate,jumlah_klaim,jumlah_bayar)
+		 VALUES 
+			 ( #{id},  #{policy_id},  #{posisi},  #{keterangan},  #{createby},  #{createdate},  #{modifyby},  #{modifydate},#{jumlah_klaim},#{jumlah_bayar})
+	</insert>
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_peserta_asuransi_sub" pageWidth="1200" pageHeight="842" columnWidth="1180" leftMargin="0" rightMargin="20" topMargin="50" bottomMargin="30">
+	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="5"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="5"/>
+	<property name="com.jasperassistant.designer.Margins" value="true"/>
+	<property name="com.jasperassistant.designer.Rulers" value="true"/>
+	<property name="com.jasperassistant.designer.SnapToGuides" value="true"/>
+	<parameter name="beg_date" class="java.lang.String"/>
+	<parameter name="end_date" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
+	<parameter name="param" class="java.lang.String"/>
+	<parameter name="param3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" AND 1 = 1 "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="beg_date1" class="java.lang.String"/>
+	<parameter name="end_date1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT y.nama as cab_bank, y.id id_cab,
+	   COALESCE(SUM(up), 0) up, COALESCE(SUM(premi), 0) premi, COALESCE(SUM(jum_polis), 0) jum_polis
+FROM (
+	SELECT cb.id id_cab, cb.nama nama_cab, pr.up, pr.premi, 1 jum_polis
+	FROM policy p, bank b, mst_cab_bank cb, mst_bank ba, 
+		 product pr, mst_product pro, mst_bank ass
+	WHERE p.id = b.policy_id
+	AND p.id = pr.policy_id
+	AND b.mst_cab_bank_id = cb.id
+	AND cb.mst_bank_id = ba.id
+	AND pr.mst_product_id = pro.id
+	AND p.asuransi_id = ass.id 
+	AND $P!{param}
+) x , ( SELECT b.* 
+				 FROM mst_bank a, mst_cab_bank b 
+				 WHERE a.id = b.mst_bank_id 
+				 AND a.jenis = 1 $P!{param3} ) y where x.id_cab = y.id
+GROUP BY y.nama, y.id, y.jenis, y.cab_induk_id
+ORDER BY y.id, y.jenis, y.cab_induk_id
+;]]>
+	</queryString>
+	<field name="cab_bank" class="java.lang.String"/>
+	<field name="id_cab" class="java.lang.Integer"/>
+	<field name="jum_polis" class="java.math.BigDecimal"/>
+	<field name="premi" class="java.math.BigDecimal"/>
+	<field name="up" class="java.math.BigDecimal"/>
+	<variable name="totup" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{up}]]></variableExpression>
+	</variable>
+	<variable name="totpremi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi}]]></variableExpression>
+	</variable>
+	<variable name="tot_jum_polis" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jum_polis}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="562" height="20"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rincian Per Cabang]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="31" height="20"/>
+				<box padding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="0" width="72" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nilai Pertanggungan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="0" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="0" width="80" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="0" width="137" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Cabang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<elementGroup/>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="31" y="0" width="137" height="20"/>
+				<box padding="2">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cab_bank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="0" y="0" width="31" height="20"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="240" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{up}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="361" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="482" y="0" width="80" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{jum_polis}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="168" y="0" width="72" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{id_cab}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<textField pattern="#,##0.##;(#,##0.##)" hyperlinkType="None">
+				<reportElement x="240" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totup}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" hyperlinkType="None">
+				<reportElement x="361" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totpremi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="0" width="137" height="20"/>
+				<box padding="2">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<textField hyperlinkType="None">
+				<reportElement x="482" y="0" width="80" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_jum_polis}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

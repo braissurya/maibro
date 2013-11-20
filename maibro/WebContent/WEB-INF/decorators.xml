@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/static/pilu/decorator">
+
+	<!-- Decorator untuk menyeragamkan styling html di semua jsp -->
+
+	<decorator name="exclude" page="">
+		<pattern>/static/*</pattern>
+	</decorator>
+	
+
+	
+	
+	
+	<decorator name="main" page="main.jsp">
+		<pattern>/home*</pattern>
+		<pattern>/input*</pattern>
+		<pattern>/master*</pattern>
+		<pattern>/maintenance/*</pattern>
+		<pattern>*</pattern>
+	</decorator>
+	
+	<decorator name="login" page="Login.jsp">
+		<pattern>/login*</pattern>
+	</decorator>
+	
+	
+
+
+
+</decorators>

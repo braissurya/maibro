@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_produksi_premi_sub" pageWidth="2200" pageHeight="842" columnWidth="2180" leftMargin="0" rightMargin="20" topMargin="50" bottomMargin="30">
+	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="5"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="5"/>
+	<property name="com.jasperassistant.designer.Margins" value="true"/>
+	<property name="com.jasperassistant.designer.Rulers" value="true"/>
+	<property name="com.jasperassistant.designer.SnapToGuides" value="true"/>
+	<parameter name="beg_date" class="java.lang.String"/>
+	<parameter name="end_date" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
+	<parameter name="param" class="java.lang.String"/>
+	<parameter name="param2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" AND 1 = 1 "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="beg_date1" class="java.lang.String"/>
+	<parameter name="end_date1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT y.nama as cab_bank, y.id id_cab, y.diskon_premi, y.diskon_brokerage, y.diskon_komisi, y.ppn_premi, y.pph_premi, y.pph_bpr, y.pph_agent, 
+	   COALESCE(SUM(jum_polis), 0) jum_polis,
+	   COALESCE(SUM(up), 0) up, COALESCE(SUM(premi), 0) premi, 
+	   COALESCE(SUM(gross_bkg), 0) gross_bkg, COALESCE(SUM(premi) - SUM(gross_bkg), 0) premi_netto,
+	   COALESCE(SUM(gross_bkg * (y.ppn_premi / 100)), 0) ppn10, COALESCE(SUM(gross_bkg * (y.pph_premi / 100)), 0) pph2
+FROM (
+	SELECT pro.nama jenis_produk, cb.id id_cab, cb.nama nama_cab, 1 jum_polis, pr.up, pr.premi, 
+		   ROUND((pr.premi * ass.diskon_premi) / 100, 2) gross_bkg
+	FROM policy p, bank b, mst_cab_bank cb, mst_bank ba, mst_bank ass, 
+		 product pr, mst_product pro
+	WHERE p.id = b.policy_id
+	AND b.mst_cab_bank_id = cb.id
+	AND cb.mst_bank_id = ba.id
+	AND p.asuransi_id = ass.id
+	AND p.id = pr.policy_id
+	AND pr.mst_product_id = pro.id
+	AND $P!{param}
+) x , ( SELECT p.nama as jenis_produk, c.nama, c.id, b.diskon_premi, b.diskon_brokerage, b.diskon_komisi, b.ppn_premi, b.pph_premi, b.pph_bpr, b.pph_agent
+		 FROM mst_bank b, mst_product p, mst_cab_bank c 
+		 WHERE b.jenis = 1
+		 $P!{param2}
+	   ) y
+WHERE x.id_cab = y.id 
+AND x.jenis_produk = y.jenis_produk
+GROUP BY y.jenis_produk, y.nama, y.id, y.diskon_premi, y.diskon_brokerage, y.diskon_komisi, y.ppn_premi, y.pph_premi, y.pph_bpr, y.pph_agent
+;]]>
+	</queryString>
+	<field name="cab_bank" class="java.lang.String"/>
+	<field name="diskon_brokerage" class="java.math.BigDecimal"/>
+	<field name="diskon_komisi" class="java.math.BigDecimal"/>
+	<field name="diskon_premi" class="java.math.BigDecimal"/>
+	<field name="gross_bkg" class="java.math.BigDecimal"/>
+	<field name="id_cab" class="java.lang.Integer"/>
+	<field name="jum_polis" class="java.math.BigDecimal"/>
+	<field name="pph2" class="java.math.BigDecimal"/>
+	<field name="pph_agent" class="java.math.BigDecimal"/>
+	<field name="pph_bpr" class="java.math.BigDecimal"/>
+	<field name="pph_premi" class="java.math.BigDecimal"/>
+	<field name="ppn10" class="java.math.BigDecimal"/>
+	<field name="ppn_premi" class="java.math.BigDecimal"/>
+	<field name="premi" class="java.math.BigDecimal"/>
+	<field name="premi_netto" class="java.math.BigDecimal"/>
+	<field name="up" class="java.math.BigDecimal"/>
+	<variable name="tot_up" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{up}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi}]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_netto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{premi_netto}]]></variableExpression>
+	</variable>
+	<variable name="tot_gross_bkg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gross_bkg}]]></variableExpression>
+	</variable>
+	<variable name="tot_ppn10" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ppn10}]]></variableExpression>
+	</variable>
+	<variable name="tot_pph2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph2}]]></variableExpression>
+	</variable>
+	<variable name="premi_ke_ass" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($F{premi_netto}.doubleValue() - $F{ppn10}.doubleValue() + $F{pph2}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_premi_ke_ass" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{premi_ke_ass}]]></variableExpression>
+	</variable>
+	<variable name="tot_jum_polis" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jum_polis}]]></variableExpression>
+	</variable>
+	<variable name="net_bkg" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($F{gross_bkg}.doubleValue() - $F{pph2}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_bkg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_bkg}]]></variableExpression>
+	</variable>
+	<variable name="fee_base" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal(($V{net_bkg}.doubleValue() * $F{diskon_brokerage}.doubleValue()) / 100)]]></variableExpression>
+	</variable>
+	<variable name="tot_fee_base" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{fee_base}]]></variableExpression>
+	</variable>
+	<variable name="pph_bpr" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{fee_base}.doubleValue() * 0.02)]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_bpr" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_bpr}]]></variableExpression>
+	</variable>
+	<variable name="net_fee_base" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{fee_base}.doubleValue() - $V{pph_bpr}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_fee_base" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_fee_base}]]></variableExpression>
+	</variable>
+	<variable name="komisi_pb" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal(($V{net_bkg}.doubleValue() * $F{diskon_komisi}.doubleValue()) / 100)]]></variableExpression>
+	</variable>
+	<variable name="tot_komisi_pb" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{komisi_pb}]]></variableExpression>
+	</variable>
+	<variable name="pph_agent" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{komisi_pb}.doubleValue() * 0.025)]]></variableExpression>
+	</variable>
+	<variable name="tot_pph_agent" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{pph_agent}]]></variableExpression>
+	</variable>
+	<variable name="kom_net" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{komisi_pb}.doubleValue() - $V{pph_agent}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_kom_net" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{kom_net}]]></variableExpression>
+	</variable>
+	<variable name="net_maibro" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($V{net_bkg}.doubleValue() - $V{kom_net}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="tot_net_maibro" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{net_maibro}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="2065" height="20"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rincian Per Cabang]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="0" width="31" height="40"/>
+				<box padding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="226" y="0" width="121" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nilai 
+Pertanggungan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gross]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1079" y="0" width="46" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peserta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="732" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="20" width="46" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[% BKG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premi Netto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gross BKG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="756" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="857" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="958" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premi Ke Asuransi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1125" y="0" width="470" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Brokerage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1125" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net (After Tax)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1246" y="20" width="46" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1292" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fee Base (Rp)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1393" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPH BPR / BJB 2%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1494" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net Fee Base]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1595" y="0" width="470" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Komisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1964" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net Maibro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1863" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kom Net PB BJB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1762" y="20" width="101" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PPH Agent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1595" y="20" width="46" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1641" y="20" width="121" height="20"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Komisi PB BJB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="0" width="137" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Cabang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="0" width="58" height="40"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Cabang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<elementGroup/>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="0" y="0" width="31" height="20"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="226" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{up}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="347" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1079" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{jum_polis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="468" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{diskon_premi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="958" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{premi_ke_ass}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="857" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pph2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="756" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ppn10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="635" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{gross_bkg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="514" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi_netto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1595" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{diskon_komisi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1246" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{diskon_brokerage}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1125" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{net_bkg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1292" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{fee_base}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1393" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pph_bpr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1494" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{net_fee_base}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1641" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{komisi_pb}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1762" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pph_agent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1863" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{kom_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1964" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{net_maibro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="31" y="0" width="137" height="20"/>
+				<box padding="2">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cab_bank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="168" y="0" width="58" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{id_cab}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="29">
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="226" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_up}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="347" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_premi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="0" width="195" height="20"/>
+				<box padding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRAND TOTAL]]></text>
+			</staticText>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="514" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_premi_netto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="635" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_gross_bkg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="756" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_ppn10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="857" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_pph2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="958" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_premi_ke_ass}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1079" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_jum_polis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1125" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_net_bkg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1292" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_fee_base}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1393" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_pph_bpr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1494" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_net_fee_base}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1641" y="0" width="121" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_komisi_pb}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1762" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_pph_agent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1863" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_kom_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="1964" y="0" width="101" height="20"/>
+				<box padding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{tot_net_maibro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

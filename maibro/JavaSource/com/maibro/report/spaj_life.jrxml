@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="spaj_life" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" scriptletClass="com.maibro.utils.JasperScriptlet">
+	<property name="com.jasperassistant.designer.DataSource" value="MySql-Maibro"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(284)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  p.id,p.posisi posisipolis,
+		p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
+		p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+		p.gol_debitur, p.kode_cabang, p.username, p.dealref, p.jenis_manfaat,
+		c.tempat_lahir, c.tgl_lahir, c.umur,p.createdate,
+		c.nama namacustomer, c.gender, c.berat_badan, c.tinggi_badan, c.pekerjaan,
+		c.bagian, c.q1,c.q1_desc,c.q2,c.q2_desc,c.q3,c.q3_desc,c.q4,c.q4_desc,c.q5,c.q5_desc,
+		mb.polis_induk, b.clause,
+		pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
+		mp.kode, mp.nama namaproduk, mp.rek_no, mp.rek_nama,
+		mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank, 
+		a.alamat_rumah,  a.kota_rumah, a.kodepos_rumah, a.alamat_kantor, a.kota_kantor, a.kodepos_kantor,
+		a.telp_rumah, a.telp_kantor,a.telp_hp, pr.biaya_admin,
+		bf.nama nama_benef, bf.relasi_benef, bf.relasi,
+		ag.nama nama_agen, ag.telp_hp telp_agen,ag.jabatan jabatan_agen
+		FROM policy p left join mst_bank mb   on p.asuransi_id = mb.id
+			left join (select bnf.*, if(bnf.relasi_lain is not null,mms.keterangan,bnf.relasi_lain) relasi_benef from beneficiary bnf, mst_master mms where bnf.relasi = mms.jenis and mms.id=2) bf on p.id = bf.policy_id  
+			left join agent ag on p.id = ag.policy_id,
+			customer c, product pr, 
+			 mst_product mp, group_policy gp, 
+			 bank b, mst_cab_bank mcb, mst_bank mb2,
+			 address a
+		where gp.id = p.group_policy_id
+		and p.customer_id = c.id
+		and pr.policy_id = p.id
+		and mp.id= pr.mst_product_id
+		and b.policy_id = p.id
+		and c.address_id = a.id
+		and b.mst_cab_bank_id = mcb.id
+		and mcb.mst_bank_id = mb2.id
+		and p.id=$P{id}]]>
+	</queryString>
+	<field name="alamat_kantor" class="java.lang.String"/>
+	<field name="alamat_rumah" class="java.lang.String"/>
+	<field name="asuransi_id" class="java.lang.Integer"/>
+	<field name="bagian" class="java.lang.String"/>
+	<field name="beg_date" class="java.util.Date"/>
+	<field name="berat_badan" class="java.lang.Integer"/>
+	<field name="biaya_admin" class="java.math.BigDecimal"/>
+	<field name="clause" class="java.lang.String"/>
+	<field name="createdate" class="java.sql.Timestamp"/>
+	<field name="dealref" class="java.lang.String"/>
+	<field name="end_date" class="java.util.Date"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="gol_debitur" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="ins_period" class="java.lang.Integer"/>
+	<field name="jabatan_agen" class="java.lang.String"/>
+	<field name="jenis_manfaat" class="java.lang.Integer"/>
+	<field name="kode" class="java.lang.String"/>
+	<field name="kode_cabang" class="java.lang.String"/>
+	<field name="kodepos_kantor" class="java.lang.String"/>
+	<field name="kodepos_rumah" class="java.lang.String"/>
+	<field name="kota_kantor" class="java.lang.String"/>
+	<field name="kota_rumah" class="java.lang.String"/>
+	<field name="nama_agen" class="java.lang.String"/>
+	<field name="nama_benef" class="java.lang.String"/>
+	<field name="namaasuransi" class="java.lang.String"/>
+	<field name="namabank" class="java.lang.String"/>
+	<field name="namacabang" class="java.lang.String"/>
+	<field name="namacustomer" class="java.lang.String"/>
+	<field name="namaproduk" class="java.lang.String"/>
+	<field name="nominal_paid" class="java.math.BigDecimal"/>
+	<field name="pay_mode" class="java.lang.Integer"/>
+	<field name="pekerjaan" class="java.lang.String"/>
+	<field name="plafon_kredit" class="java.math.BigDecimal"/>
+	<field name="policy_no" class="java.lang.String"/>
+	<field name="polis_induk" class="java.lang.String"/>
+	<field name="posisipolis" class="java.lang.Integer"/>
+	<field name="premi" class="java.math.BigDecimal"/>
+	<field name="q1" class="java.lang.Integer"/>
+	<field name="q1_desc" class="java.lang.String"/>
+	<field name="q2" class="java.lang.Integer"/>
+	<field name="q2_desc" class="java.lang.String"/>
+	<field name="q3" class="java.lang.Integer"/>
+	<field name="q3_desc" class="java.lang.String"/>
+	<field name="q4" class="java.lang.Integer"/>
+	<field name="q4_desc" class="java.lang.String"/>
+	<field name="q5" class="java.lang.Integer"/>
+	<field name="q5_desc" class="java.lang.String"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="rek_nama" class="java.lang.String"/>
+	<field name="rek_no" class="java.lang.String"/>
+	<field name="relasi" class="java.lang.Integer"/>
+	<field name="relasi_benef" class="java.lang.String"/>
+	<field name="spaj_date" class="java.util.Date"/>
+	<field name="spaj_no" class="java.lang.String"/>
+	<field name="telp_agen" class="java.lang.String"/>
+	<field name="telp_hp" class="java.lang.String"/>
+	<field name="telp_kantor" class="java.lang.String"/>
+	<field name="telp_rumah" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.util.Date"/>
+	<field name="tgl_paid" class="java.sql.Timestamp"/>
+	<field name="tinggi_badan" class="java.math.BigDecimal"/>
+	<field name="umur" class="java.lang.Integer"/>
+	<field name="up" class="java.math.BigDecimal"/>
+	<field name="username" class="java.lang.String"/>
+	<variable name="total_premi" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[new BigDecimal($F{premi}.doubleValue() + $F{biaya_admin}.doubleValue())]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="469">
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="80" y="16" width="358" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SURAT PERMINTAAN ASURANSI DAN PERNYATAAN KESEHATAN]]></text>
+			</staticText>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="152" width="126" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Kantor : "+$F{telp_kantor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="152" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="152" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["No. Telepon"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="302" y="152" width="126" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["HP : "+$F{telp_hp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="428" y="152" width="126" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Rumah : "+$F{telp_rumah}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<image hyperlinkType="None">
+				<reportElement positionType="Float" mode="Transparent" x="0" y="0" width="78" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\maibro_short.gif")]]></imageExpression>
+			</image>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="1" y="65" width="17" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["I. "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="17" y="65" width="310" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["DATA CALON TERTANGGUNG (terlampir Fotokopi KTP / SIM)"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="80" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Nama Lengkap"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="80" width="210" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{namacustomer}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="80" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="388" y="80" width="14" height="12"/>
+					<box padding="0">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{gender}.equals("P")?"V":""]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="404" y="80" width="30" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pria"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="456" y="80" width="14" height="12"/>
+					<box padding="0">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{gender}.equals("W")?"V":""]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="472" y="80" width="40" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Wanita"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="92" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Tempat & Tanggal Lahir"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="92" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="92" width="210" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tempat_lahir} + ", " + $P{REPORT_SCRIPTLET}.convertDateToString($F{tgl_lahir},"dd/MM/yyyy")]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="104" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Berat Badan & Tinggi Badan"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="104" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="104" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{berat_badan}+" kg "+$F{tinggi_badan}+" cm "]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="80" y="29" width="358" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ASURANSI JIWA KUMPULAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Transparent" x="426" y="11" width="129" height="43"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<text><![CDATA[Jl. Guntur Sari II No.37
+Buah Batu, Bandung 
+Ph. 022-7301591/7300942
+Fax.022-7301570
+Email : maibro.bandung@maibro.co.id]]></text>
+			</staticText>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="116" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pekerjaan"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="116" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="116" width="180" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{pekerjaan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="358" y="116" width="40" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Bagian"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="398" y="116" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="407" y="116" width="144" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{bagian}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="128" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Alamat Tempat Kerja"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="128" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="128" width="375" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_kantor}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="140" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Alamat Tempat Tinggal"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="140" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="140" width="375" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_rumah}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="164" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Jumlah Kredit / Plafon Pinjaman"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="164" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="164" width="240" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.formatCurrency("Rp", $F{plafon_kredit})]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="176" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Masa Asuransi"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="176" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="177" y="176" width="80" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ins_period}+" Tahun"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="259" y="176" width="109" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Mulai : "+ $P{REPORT_SCRIPTLET}.convertDateToString($F{beg_date},"dd/MM/yyyy")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="371" y="176" width="180" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Sampai dengan : "+ $P{REPORT_SCRIPTLET}.convertDateToString($F{end_date},"dd/MM/yyyy")]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="188" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Manfaat Asuransi"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="188" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="188" width="14" height="12"/>
+					<box padding="0">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{jenis_manfaat}.intValue()==1?"V":""]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="243" y="188" width="14" height="12"/>
+					<box padding="0">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{jenis_manfaat}.intValue()==2?"V":""]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="192" y="188" width="31" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Jiwa"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="260" y="188" width="216" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Jiwa+Cacat Tetap Total+Tunggakan+Denda"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="200" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Cara Pembayaran"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="200" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="200" width="374" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Sekaligus"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" mode="Transparent" x="17" y="212" width="534" height="12"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top" markup="none">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Yang Berhak Menerima Uang Asuransi :"]]></textFieldExpression>
+			</textField>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="224" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["1.   Kreditur "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="224" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="224" width="374" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{namabank} +" KC / KCP : "+$F{namacabang}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="236" width="150" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["2.   Yang Ditunjuk Nama "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="167" y="236" width="9" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="176" y="236" width="196" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nama_benef}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="373" y="236" width="177" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Hub dengan Debitur : "+$F{relasi_benef}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="0" y="257" width="17" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["II. "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" mode="Transparent" x="17" y="257" width="310" height="12"/>
+					<box padding="0">
+						<pen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["KETERANGAN KESEHATAN"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="273" width="24" height="12"/>
+					<box padding="0">
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["No."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="41" y="273" width="370" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pertanyaan"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="411" y="273" width="142" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Jawaban"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="285" width="24" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["1."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="41" y="285" width="370" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Apakah Anda sekarang dalam keadaan sehat? Jika \"Tidak\", mohon dijelaskan. "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="411" y="285" width="142" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{q1}.intValue()==1?"Ya":"Tidak, "+$F{q1_desc}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="297" width="24" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["2."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="41" y="297" width="370" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Apakah dalam 2 tahun terakhir Anda pernah dioperasi/dirawat di rumah sakit atau dalam masa pengobatan/perawatan yang membutuhkan obat-obatan dalam masa yang lama? Jika \"Ya\", mohon dijelaskan.  "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="411" y="297" width="142" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{q2}.intValue()==0?"Tidak":"Ya, "+$F{q2_desc}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="309" width="24" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["3."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="41" y="309" width="370" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Apakah Anda pernah atau sedang menderita penyakit: cacat, tumor/kanker, TBC, paru-paru, asma, kencing manis, hati, ginjal, stroke, jantung, tekanan darah tinggi, gangguan jiwa, atau penyakit lainnya? Jika \"Ya\", mohon dijelaskan."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="411" y="309" width="142" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{q4}.intValue()==0?"Tidak":"Ya, "+$F{q4_desc}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="411" y="321" width="142" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{q5}.intValue()==0?"Tidak":"Ya, "+$F{q5_desc}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="41" y="321" width="370" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Khusus untuk wanita: Apakah Anda sedang hamil? Jika \"Ya\", berapa minggu usia kandungan Anda? "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="17" y="321" width="24" height="12"/>
+					<box padding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["4."]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup/>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="17" y="349" width="536" height="14"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Demikian pernyataan di atas saya berikan dengan lengkap dan benar. Saya memahami apabila keterangan tersebut tidak benar, Asuransi ini menjadi batal dan Penanggung dibebaskan dari segala kewajibannya membayar uang asuransi atau bagian dari itu. Dengan menandatangani surat permintaan asuransi ini, Saya memberikan kuasa kepada dokter, Rumah Sakit / Klinik, Puskesmas, Perusahaan Asuransi Jiwa, Organisasi lain atau Perorangan yang mempunyai catatan atau mengetahui keadaan kesehatan Saya untuk memberitahukan kepada Penanggung segala keterangan mengenai diri dan kesehatan Saya yang diperlukan dalam hubungan dengan perjanjian asuransi ini. Pemberian kuasa ini tidak dapat ditarik kembali dan mengikat para Pengganti / Ahli Waris / Pihak Yang Ditunjuk dan tetap berlaku setelah Saya meninggal atau dalam keadaan cacat apabila dari hasil pemeriksaaan kesehatan Saya ditemukan kelainan, Saya bersedia membayar tambahan premi."]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="39" y="372" width="96" height="14"/>
+					<textElement textAlignment="Justified" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Ditandatangani di :"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="368" y="372" width="156" height="14"/>
+					<textElement textAlignment="Center" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Tanggal : " + $P{REPORT_SCRIPTLET}.formatDateIndonesian($F{createdate})]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="50" y="389" width="182" height="14"/>
+					<textElement textAlignment="Center" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Diketahui Kreditur"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="357" y="389" width="182" height="14"/>
+					<textElement textAlignment="Center" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Calon Tertanggung"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="50" y="402" width="182" height="44" forecolor="#C0C0C0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["TTD & CAP"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="357" y="403" width="182" height="44" forecolor="#C0C0C0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["TTD"]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup/>
+			<elementGroup/>
+			<elementGroup/>
+			<elementGroup/>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="50" y="445" width="182" height="24"/>
+					<textElement textAlignment="Center" markup="styled">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["<u>"+$F{nama_agen} + "</u>\n" +
+($F{jabatan_agen}==null?"":$F{jabatan_agen})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" hyperlinkType="None">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="357" y="455" width="182" height="14"/>
+					<textElement textAlignment="Center" markup="none">
+						<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{namacustomer}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="93">
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" x="2" y="67" width="521" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" isUnderline="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Premi mohon di transfer ke rekening giro No. A/C : "+$F{rek_no}+" a.n. "+$F{rek_nama}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" x="35" y="17" width="521" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" isUnderline="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nama Penanggung Jawab / No. HP : "+$F{nama_agen}+" / " +$F{telp_agen}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="19" y="3" width="16" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[")*"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" x="19" y="17" width="16" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" isUnderline="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="97" y="3" width="16" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" x="19" y="31" width="16" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" isUnderline="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" x="35" y="31" width="521" height="14"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="Arial" isUnderline="false" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mohon SPAJ ini diisi dengan <u>lengkap dan jelas </u> karena Asuransi belum dapat mengcover apabila masih terdapat data yang kurang lengkap."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="None">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="35" y="3" width="62" height="14"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="Arial" isUnderline="true" pdfFontName="Helvetica" pdfEncoding="Cp1251"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Catatan"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

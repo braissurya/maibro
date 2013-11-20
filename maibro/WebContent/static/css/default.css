@@ -1,0 +1,24 @@
+/* tables */
+.inTable {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.inTable th {
+  font-weight: bold;
+  text-align: left;
+  background: none;
+   margin: 0;
+  padding: 0;
+}
+
+
+
+.inTable td {
+  vertical-align: top;
+   background: none;
+    margin: 0;
+  padding: 0;
+}
+
