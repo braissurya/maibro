@@ -520,7 +520,7 @@ public class UploadController extends ParentController{
 			
 			//buat directory di server bila belum ada
 			
-			if(upload.jenisUpload!=25){
+			if(upload.jenisUpload!=25&&upload.jenisUpload!=12){
 				String path = props.getProperty("upload.polis")+"\\"+tmpPolicy.getBank().mst_bank_id+"\\"+tmpPolicy.getBank().mst_cab_bank_id+"\\"+tmpPolicy.getSpaj_no()+"\\";
 				File directory = new File(path);
 				if(!directory.exists()) directory.mkdirs();
@@ -552,7 +552,7 @@ public class UploadController extends ParentController{
 				policy.getProduct().premi_extra=policy.getExtrapremi();
 				policy.setMode("AKSEPTASI");
 				String pesan = "";
-				if(upload.jenisUpload!=25)pesan="File [" + upload.uploadFile.getOriginalFilename() + "] berhasil diupload &";
+				if(upload.jenisUpload!=25&&upload.jenisUpload!=12)pesan="File [" + upload.uploadFile.getOriginalFilename() + "] berhasil diupload &";
 				if(policy.getJenis()==1)
 					pesan+=dbService.savePolisAJK(policy, currentUser);
 				else if(policy.getJenis()==2)

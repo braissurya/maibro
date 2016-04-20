@@ -46,6 +46,16 @@
 		 		</tr>
 		 		<tr>
 		 			<th style="width: 200px;text-align: left;padding-left: 20px" >
+		 				<label>Periode (Tgl Akseptasi)  </label>
+					</th>
+					<td style="text-align: left;">
+						<input type="text" value="${tgl_aksep }" name="tgl_aksep" class="text_field datepicker"> s/d 
+						<input type="text" value="${tgl_aksep_end }" name="tgl_aksep_end" class="text_field datepicker">
+									
+		 			</td>
+		 		</tr>	
+		 		<tr>
+		 			<th style="width: 200px;text-align: left;padding-left: 20px" >
 		 				<label>Periode (Tgl Mulai Asuransi)  </label>
 					</th>
 					<td style="text-align: left;">
@@ -171,9 +181,10 @@
 										<td style="border: none;width: 50%;">
 											<table class="inTable">
 												<tr><th nowrap="nowrap">No. Spaj</th><th> :</th><td nowrap="nowrap"> ${p.spaj_no}</td> </tr>
+												<c:if test="${p.jenis eq 3}"><tr><th nowrap="nowrap">No. PK </th><th> :</th><td nowrap="nowrap"> ${p.no_pk}</td> </tr></c:if>
 												<c:if test="${not empty p.policy_no}"><tr><th nowrap="nowrap">No. Polis </th><th> :</th><td nowrap="nowrap"> ${p.policy_no}</td> </tr></c:if>
 												<tr><th nowrap="nowrap">Produk</th><th> :</th><td nowrap="nowrap">${p.produk}</td> </tr>
-												<tr><th nowrap="nowrap">Debitur </th><th> :</th><td  nowrap="nowrap"> ${p.debitur}</td> </tr>
+												<tr><th nowrap="nowrap">Debitur </th><th> :</th><td  > ${p.debitur}</td> </tr>
 												<tr><th nowrap="nowrap">Beg Date </th><th> :</th><td nowrap="nowrap">  <fmt:formatDate value="${p.beg_date}" pattern="dd-MM-yyyy"/></td> </tr>
 											</table>
 										</td>

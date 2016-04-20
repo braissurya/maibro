@@ -176,6 +176,22 @@
 								<td>
 									<div class="group">
 										<div class="fieldWithErrors">
+											<form:label path="polisMicro.no_pk" cssClass="label" cssErrorClass="label labelError">No PK / No Pengajuan</form:label>
+											<form:errors path="polisMicro.no_pk" cssClass="error" />
+										</div>
+										<form:input path="polisMicro.no_pk" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="50" size="50"/>
+										<span class="description"></span>
+									</div></td>
+								<td class="gap"></td>
+								<td>
+								</td>
+								<td class="gap"></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<div class="group">
+										<div class="fieldWithErrors">
 											<form:label path="polisMicro.customer.nama" cssClass="label" cssErrorClass="label labelError">Nama Lengkap<span class="mandatory" title="Wajib diisi"> *</span></form:label>
 											<form:errors path="polisMicro.customer.nama" cssClass="error" />
 										</div>

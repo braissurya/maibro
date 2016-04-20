@@ -93,6 +93,7 @@ public interface DbMapper {
 			@Param("posisi") Integer posisi,
 			@Param("begdate") String begdate,@Param("enddate") String enddate,
 			@Param("begdatepaid") String begdatepaid,@Param("enddatepaid") String enddatepaid,
+			@Param("tgl_aksep") String tgl_aksep,@Param("tgl_aksep_end") String tgl_aksep_end,
 			@Param("paid") Integer paid, @Param("cab_bank") Integer cab_bank, @Param("asuransi_id") Integer asuransi_id
 			) throws DataAccessException;
 	public Integer selectListPolisPagingCount(@Param("groupjenis") Integer groupjenis,
@@ -100,6 +101,7 @@ public interface DbMapper {
 			@Param("posisi") Integer posisi,
 			@Param("begdate") String begdate,@Param("enddate") String enddate,
 			@Param("begdatepaid") String begdatepaid,@Param("enddatepaid") String enddatepaid,
+			@Param("tgl_aksep") String tgl_aksep,@Param("tgl_aksep_end") String tgl_aksep_end,
 			@Param("paid") Integer paid, @Param("cab_bank") Integer cab_bank, @Param("asuransi_id") Integer asuransi_id) throws DataAccessException;
 	
 	public Integer insertMstBank(MstBank mstBank) throws DataAccessException;

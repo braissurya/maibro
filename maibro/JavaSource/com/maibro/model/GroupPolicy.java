@@ -38,7 +38,7 @@ public class GroupPolicy implements Serializable {
 	public Policy polisMicro=new Policy();
 	public boolean microCheck;
 	
-	public String life_policy_no, life_debitur, life_produk; 
+	public String life_policy_no, life_debitur, life_produk, life_no_pk; 
 	public String fire_policy_no, fire_debitur, fire_produk;
 	
 	public String nama_agent;
@@ -258,6 +258,14 @@ public class GroupPolicy implements Serializable {
 
 	public void setJabatan_agent(String jabatan_agent) {
 		this.jabatan_agent = jabatan_agent;
+	}
+
+	public String getLife_no_pk() {
+		return life_no_pk;
+	}
+
+	public void setLife_no_pk(String life_no_pk) {
+		this.life_no_pk = life_no_pk;
 	}
 
 	

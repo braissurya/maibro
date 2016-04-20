@@ -112,7 +112,7 @@
 	<!-- list polis -->
 	<select id="selectListPolisPaging" resultType="Policy">
 			select * from (
-		  		SELECT p.* , c.nama debitur, mp.nama produk,mp.jenis , u.username createuser,
+		  		SELECT p.* , c.nama debitur, mp.nama produk,mp.jenis , u.username createuser,pr.mst_product_id,
 		  			    pr.nominal_paid,pr.tgl_paid, pr.premi,pr.flag_paid, pr.nominal_remain , pr.up, pr.rate, u2.username inputpayuser,  
 						mba.nama namaasuransi, mba.diskon_premi, mba.ppn_premi,mba.pph_premi, 
 						ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi) diskon,
@@ -182,6 +182,9 @@
 				</if>
 				<if test="begdate != null"> 
 					AND DATE(p.beg_date) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
+				</if>
+				<if test="tgl_aksep != null and tgl_aksep_end != null"> 
+					AND DATE(p.tgl_aksep) BETWEEN STR_TO_DATE(#{tgl_aksep}, '%d-%m-%Y') and STR_TO_DATE(#{tgl_aksep_end}, '%d-%m-%Y')
 				</if>
 			) x			
 			<if test="search != null">                                  
@@ -259,6 +262,9 @@
 					<if test="begdate != null"> 
 						AND DATE(p.beg_date) BETWEEN STR_TO_DATE(#{begdate}, '%d-%m-%Y') and STR_TO_DATE(#{enddate}, '%d-%m-%Y')
 					</if>
+					<if test="tgl_aksep != null and tgl_aksep_end != null"> 
+					AND DATE(p.tgl_aksep) BETWEEN STR_TO_DATE(#{tgl_aksep}, '%d-%m-%Y') and STR_TO_DATE(#{tgl_aksep_end}, '%d-%m-%Y')
+				</if>
 			<if test="search != null">                                  
 					AND (p.id LIKE CONCAT('%', #{search}, '%') OR p.spaj_no LIKE CONCAT('%', #{search}, '%') OR p.policy_no LIKE CONCAT('%', #{search}, '%') OR
 							 c.nama  LIKE CONCAT('%', #{search}, '%') OR mp.nama  LIKE CONCAT('%', #{search}, '%') OR u.username  LIKE CONCAT('%', #{search}, '%')  )
@@ -312,7 +318,7 @@
 	
 	<select id="selectPolicyById" resultType="Policy">
 		SELECT 
-			p.spaj_no, p.policy_no, p.beg_date, p.end_date, p.asuransi_id, p.customer_id, p.ins_period,
+			p.spaj_no, p.policy_no, p.beg_date, p.end_date, p.asuransi_id, p.customer_id, p.ins_period, p.no_pk,
 			m.keterangan posisiKet, pr.premi, pr.up, b.namabank, b.namacabbank,  
 			c.nama namacustomer, pr.nama namaproduk, asu.nama namaasuransi
 		FROM policy p
@@ -703,14 +709,14 @@
 	<select id="selectListGroupPolicyPaging" resultType="GroupPolicy">
 		SELECT * FROM (
 			SELECT 
-				gp.id,life.id life_id, life.policy_no life_policy_no,life.spaj_no life_spaj_no, life.debitur life_debitur, life.produk life_produk, 
+				gp.id,life.id life_id, life.policy_no life_policy_no,life.spaj_no life_spaj_no, life.debitur life_debitur, life.produk life_produk, life.no_pk life_no_pk,
 				fire.id fire_id, fire.policy_no fire_policy_no,fire.spaj_no fire_spaj_no,  fire.debitur fire_debitur, fire.produk fire_produk,
 				u.username createuser, gp.createdate
 			FROM 
 				group_policy gp
 				INNER JOIN user u on gp.createby = u.id 
 				LEFT OUTER JOIN
-					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id
+					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id,p.no_pk,
 					FROM policy p, product pr, mst_product mp, customer c
 					WHERE p.customer_id = c.id
 					AND p.id = pr.policy_id
@@ -723,7 +729,7 @@
 					</if>
 					) life ON gp.id = life.group_policy_id
 				LEFT OUTER JOIN 
-					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id
+					(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk,p.group_policy_id, p.no_pk
 					FROM policy p, product pr, mst_product mp, customer c
 					WHERE p.customer_id = c.id
 					AND p.id = pr.policy_id
@@ -752,7 +758,7 @@
 		FROM 
 			group_policy gp
 			LEFT OUTER JOIN
-				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id
+				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id, p.no_pk
 				FROM policy p, product pr, mst_product mp, customer c
 				WHERE p.customer_id = c.id
 				AND p.id = pr.policy_id
@@ -766,7 +772,7 @@
 				</if>
 				) life ON gp.id = life.group_policy_id
 			LEFT OUTER JOIN 
-				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id
+				(SELECT p.id, p.spaj_no, p.policy_no, c.nama debitur, mp.nama produk, p.group_policy_id, p.no_pk
 				FROM policy p, product pr, mst_product mp, customer c
 				WHERE p.customer_id = c.id
 				AND p.id = pr.policy_id
@@ -853,7 +859,7 @@
 		  		SELECT cl.*, p.posisi posisipolis,
 						p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
 						p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
-						p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+						p.gol_debitur, p.kode_cabang, p.username, p.dealref, p.no_pk,
 						c.nama namacustomer, 
 						pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
 						mp.kode, mp.nama namaproduk, u.username klaimusername,
@@ -882,7 +888,7 @@
   		SELECT cl.*, p.posisi posisipolis,
 				p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
 				p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
-				p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+				p.gol_debitur, p.kode_cabang, p.username, p.dealref, p.no_pk,
 				c.nama namacustomer, 
 				pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
 				mp.kode, mp.nama namaproduk, u.username klaimusername,
@@ -951,7 +957,7 @@
   		SELECT cl.*, p.posisi posisipolis,
 				p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
 				p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
-				p.gol_debitur, p.kode_cabang, p.username, p.dealref,
+				p.gol_debitur, p.kode_cabang, p.username, p.dealref,p.no_pk,
 				c.nama namacustomer, 
 				pr.premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
 				mp.kode, mp.nama namaproduk, u.username klaimusername,

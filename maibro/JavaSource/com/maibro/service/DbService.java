@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -188,12 +189,22 @@ public class DbService {
 	
 	public List<Policy> selectListPolisPaging(Integer groupjenis,Integer jenis, String search, 
 			Integer offset, Integer rowcount, String sort, String sort_type,Integer posisi,
+			String begdate, String enddate,String begdatepaid,String enddatepaid, String tgl_aksep,String tgl_aksep_end,Integer paid, Integer cab_bank, Integer asuransi_id)  {
+		return dbMapper.selectListPolisPaging(groupjenis,jenis, search, offset, rowcount, sort, sort_type,posisi,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end, paid, cab_bank,asuransi_id);
+	}
+
+	public Integer selectListPolisPagingCount(Integer groupjenis,Integer jenis, String search,Integer posisi,String begdate, String enddate,String begdatepaid,String enddatepaid,String tgl_aksep,String tgl_aksep_end,Integer paid, Integer cab_bank, Integer asuransi_id)  {
+		return dbMapper.selectListPolisPagingCount(groupjenis,jenis, search,posisi,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end,  paid, cab_bank,asuransi_id);
+	}
+	
+	public List<Policy> selectListPolisPaging(Integer groupjenis,Integer jenis, String search, 
+			Integer offset, Integer rowcount, String sort, String sort_type,Integer posisi,
 			String begdate, String enddate,String begdatepaid,String enddatepaid,Integer paid, Integer cab_bank, Integer asuransi_id)  {
-		return dbMapper.selectListPolisPaging(groupjenis,jenis, search, offset, rowcount, sort, sort_type,posisi,begdate,enddate,begdatepaid,enddatepaid, paid, cab_bank,asuransi_id);
+		return dbMapper.selectListPolisPaging(groupjenis,jenis, search, offset, rowcount, sort, sort_type,posisi,begdate,enddate,begdatepaid,enddatepaid,null,null, paid, cab_bank,asuransi_id);
 	}
 
 	public Integer selectListPolisPagingCount(Integer groupjenis,Integer jenis, String search,Integer posisi,String begdate, String enddate,String begdatepaid,String enddatepaid,Integer paid, Integer cab_bank, Integer asuransi_id)  {
-		return dbMapper.selectListPolisPagingCount(groupjenis,jenis, search,posisi,begdate,enddate,begdatepaid,enddatepaid, paid, cab_bank,asuransi_id);
+		return dbMapper.selectListPolisPagingCount(groupjenis,jenis, search,posisi,begdate,enddate,begdatepaid,enddatepaid,null,null,  paid, cab_bank,asuransi_id);
 	}
 	
 	public Policy selectPolicy(Integer id,Integer group_policy_id,Integer jenis,String spaj_no){

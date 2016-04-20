@@ -46,11 +46,11 @@
 		INSERT INTO policy
 			(customer_id, spaj_no, policy_no, plafon_kredit, spaj_date, ins_period, ins_period_bln,flag_akseptasi,flag_akseptasi_mb,tgl_aksep,desc_akseptasi,tgl_print_spaj,tgl_upload_spaj,
 			beg_date, end_date, jenis_manfaat, pay_mode, createby, createdate, gol_debitur, kode_cabang, username, dealref, group_policy_id,posisi,asuransi_id,asuransi_desc,
-			filetype_spaj,filetype_kuesioner,filetype_klaim,filetype_ktp)
+			filetype_spaj,filetype_kuesioner,filetype_klaim,filetype_ktp,no_pk)
 		VALUES
 			(#{customer_id}, #{spaj_no}, #{policy_no}, #{plafon_kredit}, #{spaj_date}, #{ins_period}, #{ins_period_bln},#{flag_akseptasi},#{flag_akseptasi_mb},#{tgl_aksep},#{desc_akseptasi},#{tgl_print_spaj},#{tgl_upload_spaj},
 			#{beg_date}, #{end_date}, #{jenis_manfaat}, #{pay_mode}, #{createby}, #{createdate}, #{gol_debitur}, #{kode_cabang}, #{username}, #{dealref}, #{group_policy_id},#{posisi},#{asuransi_id},#{asuransi_desc},
-			#{filetype_spaj},#{filetype_kuesioner},#{filetype_klaim},#{filetype_ktp})
+			#{filetype_spaj},#{filetype_kuesioner},#{filetype_klaim},#{filetype_ktp},#{no_pk})
 	</insert>
 
 	<insert id="insertBeneficiary" parameterType="Beneficiary">
@@ -149,7 +149,7 @@
 	</insert>
 	
 	<insert id="insertClaim" parameterType="Claim" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-		INSERT INTO maibro.claim 
+		INSERT INTO claim 
 			(id, policy_id, posisi, keterangan, createby, createdate, modifyby, modifydate,jumlah_klaim,jumlah_bayar)
 		 VALUES 
 			 ( #{id},  #{policy_id},  #{posisi},  #{keterangan},  #{createby},  #{createdate},  #{modifyby},  #{modifydate},#{jumlah_klaim},#{jumlah_bayar})

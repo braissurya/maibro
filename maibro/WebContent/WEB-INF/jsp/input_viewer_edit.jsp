@@ -155,6 +155,24 @@
 								</table>
 								<h3>I. Data Calon Tertanggung / Debitur </h3>
 								<table class="inputan">
+									<c:if test="${groupPolicy.polisMicro.product.mst_product_id eq 3}">
+									<tr>
+										<td>
+											<div class="group">
+												<div class="fieldWithErrors">
+													<form:label path="polisMicro.no_pk" cssClass="label" cssErrorClass="label labelError">No PK / No Pengajuan</form:label>
+													<form:errors path="polisMicro.no_pk" cssClass="error" />
+												</div>
+												<form:input path="polisMicro.no_pk" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="50" size="50"/>
+												<span class="description"></span>
+											</div></td>
+										<td class="gap"></td>
+										<td>
+										</td>
+										<td class="gap"></td>
+										<td></td>
+									</tr>
+									</c:if>
 									<tr>
 										<td>
 											<div class="group">

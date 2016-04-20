@@ -101,6 +101,7 @@
 			<if test="posisi != null">posisi = #{posisi},</if>
 			<if test="spaj_no != null">spaj_no = #{spaj_no},</if>
 			<if test="policy_no != null">policy_no = #{policy_no},</if>
+			<if test="no_pk != null">no_pk = #{no_pk},</if>
 			<if test="plafon_kredit != null">plafon_kredit = #{plafon_kredit},</if>
 			<if test="spaj_date != null">spaj_date = #{spaj_date},</if>
 			<if test="ins_period != null">ins_period = #{ins_period},</if>

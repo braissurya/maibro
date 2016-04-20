@@ -26,8 +26,8 @@ public class UploadValidator implements Validator {
         Upload upload = (Upload) obj;
         
         
-		    if(upload.jenisUpload!=25){
-		    	if(upload.uploadFile.getSize() == 0){
+		    if(upload.jenisUpload!=25&&upload.jenisUpload!=12){
+		    	if(upload.uploadFile==null||upload.uploadFile.getSize() == 0){
 					e.rejectValue("uploadFile", "NotEmpty", new String[]{""}, "");
 				}else if(upload.uploadFile.getSize() > 500000){
 					e.rejectValue("uploadFile", "","Maksimal upload 500kb");
@@ -47,7 +47,7 @@ public class UploadValidator implements Validator {
 					ValidationUtils.rejectIfEmptyOrWhitespace(e, "policy.premi", "NotEmpty", new String[]{""});
 					ValidationUtils.rejectIfEmptyOrWhitespace(e, "policy.extrapremi", "NotEmpty", new String[]{""});
 					
-					if(upload.jenisUpload!=25)
+					if(upload.jenisUpload!=25&&upload.jenisUpload!=12)
 					if((!upload.uploadFile.getOriginalFilename().toLowerCase().endsWith(".pdf"))){
 						//e.rejectValue("uploadFile", "","Harap upload file dengan format pdf (*.pdf)");
 					}

@@ -75,7 +75,7 @@ public class ViewerController extends ParentController {
 		logger.debug("Halaman: Micro Page, method: SHOW");
 		
 		Integer rowcount = null, totalData = null, totalPage = null, page = null;
-		String search=null, sort="id",sort_type=null,begdate=null,enddate=null,begdatepaid=null,enddatepaid=null;
+		String search=null, sort="id",sort_type=null,begdate=null,enddate=null,begdatepaid=null,enddatepaid=null,tgl_aksep=null,tgl_aksep_end=null;
 		
 		//reference data utk dropdown
 		int[] listNumRows = new int[]{5, 10, 15, 20, 25, 30, 40, 50};
@@ -105,9 +105,12 @@ public class ViewerController extends ParentController {
 		enddate=ServletRequestUtils.getStringParameter(request, "enddate", defaultdate);
 		begdatepaid=ServletRequestUtils.getStringParameter(request, "begdatepaid", defaultbegdate);
 		enddatepaid=ServletRequestUtils.getStringParameter(request, "enddatepaid", defaultdate);
+		tgl_aksep=ServletRequestUtils.getStringParameter(request, "tgl_aksep", defaultbegdate);
+		tgl_aksep_end=ServletRequestUtils.getStringParameter(request, "tgl_aksep_end", defaultbegdate);		
 		
 		if(Utils.isEmpty(begdate))begdate=null;
 		if(Utils.isEmpty(begdatepaid))begdatepaid=null;
+		if(Utils.isEmpty(tgl_aksep))tgl_aksep=null;
 			
 		//perhitungan paging
 		rowcount = ServletRequestUtils.getIntParameter(request, "rowcount",5);
@@ -126,7 +129,7 @@ public class ViewerController extends ParentController {
 		grouppolis=currentUser.getMst_product_id();
 		
 
-		totalData=dbService.selectListPolisPagingCount(grouppolis,jenispolis, search,posisi,begdate,enddate,begdatepaid,enddatepaid,paid, cab_bank,asuransi_id);
+		totalData=dbService.selectListPolisPagingCount(grouppolis,jenispolis, search,posisi,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end,paid, cab_bank,asuransi_id);
 		totalPage = new Double(Math.ceil(new Double(totalData)/ new Double(rowcount))).intValue(); //jml total halaman = (jumlah data / rowcount) dibulatkan keatas
 		page = ServletRequestUtils.getIntParameter(request, "page", 1); //halaman ke X
 		
@@ -137,7 +140,7 @@ public class ViewerController extends ParentController {
 		if(offset<0)offset=0;
 		
 		rowcount=null;
-		List<Policy> listPolicy = dbService.selectListPolisPaging(grouppolis,jenispolis, search, offset, rowcount, sort, sort_type,posisi,begdate,enddate,begdatepaid,enddatepaid,paid, cab_bank,asuransi_id);
+		List<Policy> listPolicy = dbService.selectListPolisPaging(grouppolis,jenispolis, search, offset, rowcount, sort, sort_type,posisi,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end,paid, cab_bank,asuransi_id);
 		model.addAttribute("listPolicy", listPolicy);
 		model.addAttribute("total", Utils.hitTotalPolicy(listPolicy));
 		
@@ -161,6 +164,8 @@ public class ViewerController extends ParentController {
 		model.addAttribute("jenis_produk",jenis_produk);
 		model.addAttribute("begdatepaid",begdatepaid );
 		model.addAttribute("enddatepaid",enddatepaid );
+		model.addAttribute("tgl_aksep",tgl_aksep );
+		model.addAttribute("tgl_aksep_end",tgl_aksep_end );
 		model.addAttribute("sysdate",Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy") );
 		model.addAttribute("paid",paid );
 		model.addAttribute("product_id", currentUser.mst_product_id);

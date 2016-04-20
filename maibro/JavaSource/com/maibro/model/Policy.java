@@ -42,6 +42,7 @@ public class Policy implements Serializable {
 	private Integer flag_akseptasi;
 	private Integer flag_akseptasi_mb;
 	private Date tgl_aksep;
+	private Date tgl_aksep_end;
 	private String desc_akseptasi;
 	private Date tgl_print;
 	private Date tgl_print_spaj;
@@ -110,6 +111,11 @@ public class Policy implements Serializable {
 	private String namacustomer;
 	private String namaproduk;
 	private String keteranganCancel;
+	
+	private String tgl_aksepStr;
+	private String tgl_aksep_endStr;
+	
+	private String no_pk;
 	
 	public String getKeteranganCancel() {
 		return keteranganCancel;
@@ -578,6 +584,9 @@ public class Policy implements Serializable {
 
 	public void setTgl_aksep(Date tgl_aksep) {
 		this.tgl_aksep = tgl_aksep;
+		if(tgl_aksep!=null){
+			tgl_aksepStr=Utils.convertDateToString(tgl_aksep, "dd/MM/yyyy");
+		}
 	}
 
 	public String getDesc_akseptasi() {
@@ -819,6 +828,47 @@ public class Policy implements Serializable {
 
 	public void setFiletype_ktp(String filetype_ktp) {
 		this.filetype_ktp = filetype_ktp;
+	}
+
+	public String getNo_pk() {
+		return no_pk;
+	}
+
+	public void setNo_pk(String no_pk) {
+		this.no_pk = no_pk;
+	}
+
+	public Date getTgl_aksep_end() {
+		return tgl_aksep_end;
+	}
+
+	public void setTgl_aksep_end(Date tgl_aksep_end) {
+		this.tgl_aksep_end = tgl_aksep_end;
+		if(tgl_aksep_end!=null){
+			tgl_aksepStr=Utils.convertDateToString(tgl_aksep_end, "dd/MM/yyyy");
+		}
+	}
+
+	public String getTgl_aksepStr() {
+		return tgl_aksepStr;
+	}
+
+	public void setTgl_aksepStr(String tgl_aksepStr) {
+		this.tgl_aksepStr = tgl_aksepStr;
+		if(!Utils.isEmpty(tgl_aksepStr)){
+			tgl_aksep=Utils.convertStringToDate(tgl_aksepStr, "dd/MM/yyyy");
+		}
+	}
+
+	public String getTgl_aksep_endStr() {
+		return tgl_aksep_endStr;
+	}
+
+	public void setTgl_aksep_endStr(String tgl_aksep_endStr) {
+		this.tgl_aksep_endStr = tgl_aksep_endStr;
+		if(!Utils.isEmpty(tgl_aksep_endStr)){
+			tgl_aksep_end=Utils.convertStringToDate(tgl_aksep_endStr, "dd/MM/yyyy");
+		}
 	}
 
 	
