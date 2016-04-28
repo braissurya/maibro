@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="viewer" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="14da002b-f25f-4ad6-a2f4-368dd7749fe1">
+	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="5"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="5"/>
+	<property name="com.jasperassistant.designer.Margins" value="true"/>
+	<property name="com.jasperassistant.designer.Rulers" value="true"/>
+	<property name="com.jasperassistant.designer.SnapToGuides" value="true"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="450"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="beg_date" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="end_date" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="username" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="param" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["AND 1 =1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="param2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[" "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalData" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namaProduk" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="beg_date1" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="end_date1" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="status_bayar" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="beg_date_bayar" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="end_date_bayar" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="totalAktif" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalPremi" class="java.lang.Double" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Double(10)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalNetPremi" class="java.lang.Double" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Double(10)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bank_jenis" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numberFormat" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.00;(#,##0.00)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalBayar" class="java.lang.Double" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Double(10)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from (
+	SELECT p.* , c.nama debitur, mp.nama produk,mp.jenis , u.username createuser,pr.mst_product_id,
+			pr.nominal_paid,pr.tgl_paid, pr.premi,pr.flag_paid, pr.nominal_remain , pr.up, pr.rate, u2.username inputpayuser,
+			mba.nama namaasuransi, mba.diskon_premi, mba.ppn_premi,mba.pph_premi,
+			ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi) diskon,
+			ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) ppn,
+			ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi)) pph,
+			(pr.premi-ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))
+			-ROUND(ifNull(mba.ppn_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))+ROUND(ifNull(mba.pph_premi,0)/100*ROUND(ifNull(mba.diskon_premi,0)/100*pr.premi))  premi_net,
+			mb.nama namabank, mcb.nama namacabbank,DATEDIFF(p.createdate,p.beg_date) noclaim,
+			(select keterangan from mst_master where id = 1 and jenis = p.posisi) posisiKet
+	FROM policy p left join mst_bank mba on p.asuransi_id = mba.id, product pr left join user u2 on u2.id = pr.inputpayby,
+		mst_product mp, customer c, user u, group_policy gp,
+		bank b, mst_cab_bank mcb, mst_bank mb
+	WHERE p.customer_id = c.id
+	AND p.id = pr.policy_id
+	AND pr.mst_product_id = mp.id
+	AND gp.id= p.group_policy_id
+	AND p.createby = u.id
+	AND p.id = b.policy_id
+	AND b.mst_cab_bank_id = mcb.id
+	AND mcb.mst_bank_id = mb.id
+and mp.jenis=3
+$P!{param}
+) x
+$P!{param2}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customer_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="posisi" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="spaj_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="policy_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_pk" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="asuransi_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="asuransi_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ins_period_bln" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ins period dalam bulan (hanya perlu untuk yg mikro saja)]]></fieldDescription>
+	</field>
+	<field name="plafon_kredit" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="spaj_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="createdate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ins_period" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="beg_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="end_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jenis_manfaat" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pay_mode" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="createby" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modifyby" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modifydate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gol_debitur" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kode_cabang" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="username" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dealref" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="group_policy_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flag_akseptasi" class="java.lang.Integer">
+		<fieldDescription><![CDATA[status akseptasi :
+1 : aksep
+2 : di tolak]]></fieldDescription>
+	</field>
+	<field name="flag_akseptasi_mb" class="java.lang.Integer">
+		<fieldDescription><![CDATA[status akseptasi :
+1 : aksep
+2 : pending
+3 : tolak
+
+lihat mst_master (14)]]></fieldDescription>
+	</field>
+	<field name="tgl_aksep" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[tanggal akseptasi asuransi]]></fieldDescription>
+	</field>
+	<field name="desc_akseptasi" class="java.lang.String">
+		<fieldDescription><![CDATA[keterangan akseptasi]]></fieldDescription>
+	</field>
+	<field name="tgl_print" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[tanggal print polis terakhir]]></fieldDescription>
+	</field>
+	<field name="tgl_print_spaj" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[tanggal print spaj terakhir]]></fieldDescription>
+	</field>
+	<field name="tgl_upload_spaj" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[tanggal upload spaj terakhir]]></fieldDescription>
+	</field>
+	<field name="tgl_upload_kuesioner" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_upload_no_klaim" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_upload_ktp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filetype_spaj" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filetype_kuesioner" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filetype_ktp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filetype_klaim" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_kirim_asuransi" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flag_view_asuransi" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_view_asuransi" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debitur" class="java.lang.String"/>
+	<field name="produk" class="java.lang.String"/>
+	<field name="jenis" class="java.lang.Integer">
+		<fieldDescription><![CDATA[1 = KPR LIFE
+2 = KPR FIRE
+3 = MICRO LIFE]]></fieldDescription>
+	</field>
+	<field name="createuser" class="java.lang.String"/>
+	<field name="mst_product_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nominal_paid" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tgl_paid" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="premi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flag_paid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[1= pas
+2= lebih bayar
+3= kurang bayar]]></fieldDescription>
+	</field>
+	<field name="nominal_remain" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="up" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="inputpayuser" class="java.lang.String"/>
+	<field name="namaasuransi" class="java.lang.String"/>
+	<field name="diskon_premi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ppn_premi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pph_premi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="diskon" class="java.math.BigDecimal"/>
+	<field name="ppn" class="java.math.BigDecimal"/>
+	<field name="pph" class="java.math.BigDecimal"/>
+	<field name="premi_net" class="java.math.BigDecimal"/>
+	<field name="namabank" class="java.lang.String"/>
+	<field name="namacabbank" class="java.lang.String"/>
+	<field name="noclaim" class="java.lang.Integer"/>
+	<field name="posisiKet" class="java.lang.String"/>
+	<title>
+		<band height="176">
+			<textField isBlankWhenNull="true">
+				<reportElement x="1015" y="38" width="144" height="20" uuid="8bcea4ed-d96e-4e4f-8e36-38a7a3e3a7bc"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="919" y="38" width="96" height="20" uuid="38f2dd46-18be-4879-aa35-2393cf0353da"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[User:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="919" y="58" width="96" height="20" uuid="93e4d34e-949b-4f94-a099-a6d005271b71"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Waktu:]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true">
+				<reportElement x="1015" y="58" width="144" height="20" uuid="929ff9cd-40f8-4d60-bf3c-0142f61d3f40"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="1159" height="33" uuid="b73ada8d-b5cb-44c0-bc03-719bf8f08c8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Viewer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="38" width="160" height="20" uuid="5862048c-f437-475c-aee3-e7eb2e618293"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periode (Tgl Akseptasi)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="58" width="160" height="20" uuid="97d8fcba-5333-46b8-b354-9436e1ba0e34"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periode (Tgl Mulai Asuransi)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="58" width="308" height="20" uuid="9e147adb-eef5-4f8e-840e-c6086b88e722"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[($P{beg_date}==null?"":$P{beg_date}) + " s/d " + ($P{end_date}==null?"":$P{end_date})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="38" width="308" height="20" uuid="074adeea-ca3d-4507-9eac-3fd5c4d2477b"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[($P{beg_date1}==null?"":$P{beg_date1}) + " s/d " + ($P{end_date1}==null?"":$P{end_date1})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="78" width="308" height="20" uuid="c036d034-c38d-4cc8-bac6-6f28148e5c55"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[$P{namaProduk}==null?"":$P{namaProduk}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="78" width="160" height="20" uuid="1d80f57d-1b46-42c6-9384-b6d0e17fbc11"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Jenis Produk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="98" width="160" height="20" uuid="e463b052-b4d4-4356-ad9c-450a673637ba"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Status Bayar ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="98" width="308" height="20" uuid="201961ef-c51e-4e87-abf7-abe245c3e21d"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[$P{status_bayar}==0?"Outstanding":$P{status_bayar}==1?"Paid":$P{status_bayar}==2?"Lebih Bayar":$P{status_bayar}==3?"Kurang Bayar":"ALL"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="118" width="308" height="20" uuid="aecbf9b0-a464-4875-a342-17685517cb1d"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[($P{beg_date_bayar}==null?"":$P{beg_date_bayar}) + " s/d " + ($P{end_date_bayar}==null?"":$P{end_date_bayar})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="118" width="160" height="20" uuid="eb233848-ada9-4351-9618-80dee4f9ed92"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periode (Pembayaran)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="148" width="131" height="20" uuid="c1b6fc9c-b431-4d8c-b028-4e158c1bed80"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Data : "+new DecimalFormat("#,##0;(#,##0)" ).format($P{totalData})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="148" width="131" height="20" uuid="049adb3b-fe57-470a-92ba-8cd82f40e834"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Aktif : "+new DecimalFormat( "#,##0;(#,##0)" ).format($P{totalAktif})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="148" width="238" height="20" uuid="68f798f7-9e54-4fcf-ac57-23d097c4cd3f"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Premi : "+new DecimalFormat( $P{numberFormat} ).format($P{totalPremi})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="503" y="148" width="238" height="20" uuid="b93348ff-1bf8-4007-81c3-f20127e3245c"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Net Premi : "+new DecimalFormat( $P{numberFormat} ).format($P{totalNetPremi})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="741" y="148" width="238" height="20" uuid="5d5c0e83-a1bb-4a2c-a689-6eeee5cde1ee"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Bayar : "+new DecimalFormat( $P{numberFormat} ).format($P{totalBayar})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="38" width="6" height="20" uuid="5d536997-c107-47d1-b4b5-d2fcad35efc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="58" width="6" height="20" uuid="3a279962-e5b9-497a-985f-3082f5bf3e84"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="78" width="6" height="20" uuid="c5959d6c-74cf-44f5-9242-511daee84a43"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="98" width="6" height="20" uuid="3c4999d6-5b8a-4aa6-84e8-38c8eb1a46a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="118" width="6" height="20" uuid="c1b43e68-b61e-4c1e-940e-50dbe47e4369"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="31" height="20" uuid="9a900923-7fdd-46b6-808f-634703d03ae4"/>
+				<box padding="2">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="0" width="121" height="20" uuid="cabf570d-8d37-48e8-a201-2884c89db206"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="0" width="121" height="20" uuid="1e0723fd-73cf-46d2-a71d-7ced4c2dd504"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="0" width="377" height="20" uuid="5f933f43-4b0b-48a5-98ab-6a2418b9333d"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Polis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1052" y="0" width="107" height="20" uuid="6876e5a7-370c-4802-8212-fe6a76fbc331"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Posisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="767" y="0" width="152" height="20" uuid="3063ed13-29d2-41cb-8451-8b176cf738c4"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="919" y="0" width="133" height="20" uuid="fc7d7db8-58d6-437b-a3a4-2dd55dffcc88"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asuransi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="650" y="0" width="116" height="20" uuid="1269c7b3-d2e8-4416-b35d-b7c4361353bc"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Bayar]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<elementGroup/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="31" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="7a81a876-6f8e-4a3f-bf60-a3df9b2c03c4"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="408" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="c65e02eb-f5f7-4b4e-b8b3-ddbe2cdc4d42"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{tgl_paid}!=null?(
+    $F{flag_paid}==1?"Paid":$F{flag_paid}==2?"Lebih Bayar":$F{flag_paid}==3?"Kurang Bayar":"Outstanding"
+):""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="31" y="0" width="190" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="6128601b-9a9f-47c0-90ed-d498e904c64d"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA["No. SPAJ : "+$F{spaj_no}+"\n"+
+($F{jenis}==3?"No. PK     : "+($F{dealref}==null?"":$F{dealref})+"\n":"")+
+(($F{policy_no}!=null&&!$F{policy_no}.equals(""))?"No. Polis  : "+$F{policy_no}+"\n":"")+
+"Produk     : "+$F{produk}+"\n"+
+"Debitur     : "+$F{debitur}+"\n"+
+"Beg Date  : "+new SimpleDateFormat("dd-MM-yyyy").format($F{beg_date})+"\n"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="221" y="0" width="187" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="3ceb739e-a0dc-45b8-afd0-cdf1191242b0"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA["Plafon Kredit  : "+($F{up}==null?"":new DecimalFormat( $P{numberFormat} ).format($F{up}))+"\n"+
+"Rate               : "+($F{rate}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{rate}))+"\n"+
+"Premi             : "+($F{premi}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{premi}))+"\n"+
+($P{bank_jenis}!=1?
+"Diskon Premi : "+($F{diskon}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{diskon}))+"\n"+
+"PPN               : "+($F{ppn}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{ppn}))+"\n"+
+"PPH               : "+($F{pph}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{pph}))+"\n"+
+"Net Premi       : "+($F{premi_net}==null?"":new DecimalFormat( $P{numberFormat} ).format( $F{premi_net}))
+:"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="529" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f5f249c7-a3e6-4704-9276-8b8b53f9f777"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[($F{nominal_paid}==null?"":new DecimalFormat( $P{numberFormat} ).format($F{nominal_paid}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="650" y="0" width="116" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="b995574d-1247-4d38-962c-61cd54117670"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{tgl_paid}!=null?(
+   new SimpleDateFormat("dd-MM-yyyy").format($F{tgl_paid})
+):""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="767" y="0" width="152" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="637bb5de-94c0-4d77-874a-a8993c11e1ea"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{namabank}+"\n"+
+$F{namacabbank}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="919" y="0" width="133" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="ffb64637-9695-46fa-bd0c-91aa60748670"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{namaasuransi}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="1052" y="0" width="107" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="a58f22ef-9fcf-4b24-8fa4-2a87b1addc21"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{bank_jenis}.equals("1")?
+    ($F{posisi}>1?"Filling":$F{posisiKet})
+    :$F{posisiKet}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
