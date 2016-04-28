@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.maibro.model.History;
@@ -104,17 +107,27 @@ public class ReportController extends ParentController{
 	 * @throws JRException
 	 * @throws IOException
 	 */
-	private String generateReport(String jenis, Map params, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws JRException, IOException{
+	private String generateReport(String jenis, Map params, HttpSession session, HttpServletRequest request, HttpServletResponse response,List dataCollection) throws JRException, IOException{
 		ServletContext context = session.getServletContext();
 		String format = (String) params.get("format");
 		
 		//Generate report
-		JasperPrint jasperPrint = JasperFillManager.fillReport(
+		/*JasperPrint jasperPrint = JasperFillManager.fillReport(
 			context.getRealPath("/WEB-INF/classes/" + props.getProperty("dir.report") + "/" +  
 			props.getProperty("report." + jenis) + ".jasper"), //report path 
 			params, //report parameters
 			getConnection() //connection object
-			);
+			);*/
+		
+		// Generate report
+		JasperPrint jasperPrint=null;
+		if(dataCollection==null)
+		 jasperPrint = JasperFillManager.fillReport(context.getRealPath("/WEB-INF/classes/" + props.getProperty("dir.report") + "/" + props.getProperty("report." + jenis) + ".jasper"),
+			params, getConnection());
+		else {
+		    JRDataSource beanDatasource= new JRBeanCollectionDataSource(dataCollection,true);
+		    jasperPrint = JasperFillManager.fillReport(context.getRealPath("/WEB-INF/classes/" + props.getProperty("dir.report") + "/" + props.getProperty("report." + jenis) + ".jasper"), params, beanDatasource);
+		}
 
 		//Put generated report into session
 		session.setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
@@ -302,7 +315,7 @@ public class ReportController extends ParentController{
 			params.put("param3", param3);
 			params.put("username", currentUser.username);	
 			
-			return generateReport(jenisReport, params, session, request, response);
+			return generateReport(jenisReport, params, session, request, response,null);
 		}else{
 			
 			model.addAttribute("jenis_user", currentUser.bank_jenis);
@@ -438,7 +451,7 @@ public class ReportController extends ParentController{
 			params.put("param2", param2);
 			params.put("username", currentUser.username);	
 			
-			return generateReport(jenisReport, params, session, request, response);
+			return generateReport(jenisReport, params, session, request, response,null);
 		}else{
 			model.addAttribute("jenis_user", currentUser.bank_jenis);
 			model.addAttribute("jenis_user_cab", currentUser.cab_bank_jenis);
@@ -561,7 +574,7 @@ public class ReportController extends ParentController{
 			params.put("status", status);					
 			params.put("username", currentUser.username);
 			
-			return generateReport(jenisReport, params, session, request, response);
+			return generateReport(jenisReport, params, session, request, response,null);
 		}else{
 			
 			model.addAttribute("jenis_user", currentUser.bank_jenis);
@@ -771,7 +784,7 @@ public class ReportController extends ParentController{
 		
 		
 		
-		return generateReport(jenisReport, params, session, request, response);
+		return generateReport(jenisReport, params, session, request, response,null);
 		
 	}
 	
@@ -819,8 +832,146 @@ public class ReportController extends ParentController{
 		}
 		params.put("param", param);
 		
-		return generateReport(jenisReport, params, session, request, response);
+		return generateReport(jenisReport, params, session, request, response,null);
 		
+	}
+	
+	@RequestMapping(value="/viewer/print",method={RequestMethod.GET, RequestMethod.POST})
+	public String reportViewer(HttpSession session, HttpServletResponse response,HttpServletRequest request) throws ServletRequestBindingException, JRException, IOException {
+		logger.debug("Halaman: Viewer Page, method: Report");
+		String jenisReport = "viewer";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("format", ServletRequestUtils.getRequiredStringParameter(request, "format")); //format report
+		
+		String search=null,begdatepaid=null,enddatepaid=null,tgl_aksep=null,tgl_aksep_end=null;
+		
+		
+		Integer jenis_produk=ServletRequestUtils.getIntParameter(request, "jenis_produk",0);
+		Integer paid=ServletRequestUtils.getIntParameter(request, "paid",-1);
+		
+		Integer grouppolis=null;
+		Integer jenispolis=null;
+		
+		if(jenis_produk!=0){
+			jenispolis=jenis_produk;
+		}else{
+			grouppolis=null;
+			jenispolis=null;
+		}
+		
+		
+
+		search=ServletRequestUtils.getStringParameter(request, "s", "").equals("")?null :ServletRequestUtils.getStringParameter(request, "s", "");
+		String defaultbegdate=null;
+		String defaultdate=null;
+		String begdate=ServletRequestUtils.getStringParameter(request, "begdate", defaultbegdate);
+		String enddate=ServletRequestUtils.getStringParameter(request, "enddate", defaultdate);
+		begdatepaid=ServletRequestUtils.getStringParameter(request, "begdatepaid", defaultbegdate);
+		enddatepaid=ServletRequestUtils.getStringParameter(request, "enddatepaid", defaultdate);
+		tgl_aksep=ServletRequestUtils.getStringParameter(request, "tgl_aksep", defaultbegdate);
+		tgl_aksep_end=ServletRequestUtils.getStringParameter(request, "tgl_aksep_end", defaultbegdate);		
+		
+		if(Utils.isEmpty(begdate))begdate=null;
+		if(Utils.isEmpty(begdatepaid))begdatepaid=null;
+		if(Utils.isEmpty(tgl_aksep))tgl_aksep=null;
+			
+		//perhitungan paging
+		
+		//bila user bank (jenis = 1) dan user KC / KCP (jenis = 1 atau 2), maka user hanya bisa melihat yg ada di cabangnya saja
+		User currentUser = (User) request.getSession().getAttribute("currentUser");
+		Integer cab_bank = null;
+		Integer asuransi_id = null;
+		if(currentUser.getBank_jenis().intValue() == 1 && (currentUser.getCab_bank_jenis().intValue() == 1 || currentUser.getCab_bank_jenis().intValue() == 2)){
+			cab_bank = currentUser.getCab_bank_id();
+		}else if(currentUser.getBank_jenis().intValue() == 2||currentUser.getBank_jenis().intValue() == 4){
+			asuransi_id=currentUser.getBank_id();
+		}
+		
+		String param1="",param2="";
+		
+		grouppolis=currentUser.getMst_product_id();
+		
+		if(cab_bank!=null){
+			param1+=" AND mcb.id = "+cab_bank;
+		}
+		
+		if(asuransi_id!=null){
+			param1+=" AND p.asuransi_id = "+asuransi_id;
+		}
+		
+		if(paid!=null){
+			if(paid==1){
+				param1+=" AND pr.tgl_paid is not null "
+						+ " AND pr.flag_paid =1 ";
+				if(Utils.isEmpty(begdatepaid)){
+					param1+=" AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE('"+begdatepaid+"', '%d-%m-%Y') and STR_TO_DATE('"+enddatepaid+"', '%d-%m-%Y') ";
+				}
+			}else if(paid==2){
+				param1+=" AND pr.tgl_paid is not null "
+						+ " AND pr.flag_paid =2 ";
+				if(Utils.isEmpty(begdatepaid)){
+					param1+=" AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE('"+begdatepaid+"', '%d-%m-%Y') and STR_TO_DATE('"+enddatepaid+"', '%d-%m-%Y') ";
+				}
+			}else if(paid==3){
+				param1+=" AND pr.tgl_paid is not null "
+						+ " AND pr.flag_paid =3 ";
+				if(Utils.isEmpty(begdatepaid)){
+					param1+=" AND DATE(pr.tgl_paid) BETWEEN STR_TO_DATE('"+begdatepaid+"', '%d-%m-%Y') and STR_TO_DATE('"+enddatepaid+"', '%d-%m-%Y') ";
+				}
+			}else if(paid==0){
+				param1+=" AND pr.tgl_paid is  null ";
+			}
+		}
+		
+		if(grouppolis!=null){
+			param1+=" and gp.jenis = "+grouppolis;
+		}
+		
+		if(jenispolis!=null){
+			param1+=" and mp.jenis = "+jenispolis;
+		}
+		
+		if(!Utils.isEmpty(begdate)){
+			param1+=" AND DATE(p.beg_date) BETWEEN STR_TO_DATE('"+begdate+"', '%d-%m-%Y') and STR_TO_DATE('"+enddate+"', '%d-%m-%Y')";
+		}
+		
+		if(!Utils.isEmpty(tgl_aksep)&& !Utils.isEmpty(tgl_aksep_end)){
+			param1+=" AND DATE(p.tgl_aksep) BETWEEN STR_TO_DATE('"+tgl_aksep+"', '%d-%m-%Y') and STR_TO_DATE('"+tgl_aksep_end+"', '%d-%m-%Y')";
+		}
+		Integer totalData=dbService.selectListPolisPagingCount(grouppolis,jenispolis, search,null,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end,paid, cab_bank,asuransi_id);
+		List<Policy> listPolicy = dbService.selectListPolisPaging(grouppolis,jenispolis, search, 0, null, "id", null,null,begdate,enddate,begdatepaid,enddatepaid,tgl_aksep,tgl_aksep_end,paid, cab_bank,asuransi_id);
+		HashMap total=Utils.hitTotalPolicy(listPolicy);
+		
+		if(!Utils.isEmpty(search)){
+			param2=" where (id LIKE CONCAT('%', '"+search+"', '%') OR spaj_no LIKE CONCAT('%', '"+search+"', '%') OR policy_no LIKE CONCAT('%', '"+search+"', '%') OR"+
+				 " debitur LIKE CONCAT('%', '"+search+"', '%') OR  produk LIKE CONCAT('%', '"+search+"', '%') OR  createuser LIKE CONCAT('%', '"+search+"', '%')  )";
+		}
+		
+		param2=" order by id";
+		
+		params.put("namaProduk",dbService.selectMstProductName(jenis_produk) );
+		params.put("username",currentUser.getUsername() );
+		params.put("totalData",totalData );
+		params.put("totalAktif",total.get("aktif") );
+		params.put("totalPremi",total.get("premi") );
+		params.put("totalNetPremi",total.get("premi_net") );
+		params.put("totalBayar",total.get("bayar") );
+		params.put("beg_date",begdate );
+		params.put("end_date",enddate );
+		params.put("jenis_produk",jenis_produk);
+		params.put("beg_date_bayar",begdatepaid );
+		params.put("end_date_bayar",enddatepaid );
+		params.put("beg_date1",tgl_aksep );
+		params.put("end_date1",tgl_aksep_end );
+		params.put("sysdate",Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy") );
+		params.put("paid",paid );
+		params.put("product_id", currentUser.mst_product_id);
+		params.put("bank_jenis", currentUser.bank_jenis);
+		params.put("number_format", "#,##0.00;(#,##0.00)");
+		params.put("param",param1 );
+		params.put("param2",param2 );
+		
+		return generateReport(jenisReport, params, session, request, response,null);
 	}
 
 

@@ -99,14 +99,14 @@ public class ViewerController extends ParentController {
 		search=ServletRequestUtils.getStringParameter(request, "s", "").equals("")?null :ServletRequestUtils.getStringParameter(request, "s", "");
 		sort=ServletRequestUtils.getStringParameter(request, "sort", "").equals("")?sort:ServletRequestUtils.getStringParameter(request, "sort", "");
 		sort_type=ServletRequestUtils.getStringParameter(request, "st", "asc");
-		String defaultbegdate=null;//"01-"+Utils.convertDateToString(dbService.selectSysdate(), "MM-yyyy");
-		String defaultdate=null;//Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy");
+		String defaultbegdate="01-"+Utils.convertDateToString(dbService.selectSysdate(), "MM-yyyy");
+		String defaultdate=Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy");
 		begdate=ServletRequestUtils.getStringParameter(request, "begdate", defaultbegdate);
 		enddate=ServletRequestUtils.getStringParameter(request, "enddate", defaultdate);
-		begdatepaid=ServletRequestUtils.getStringParameter(request, "begdatepaid", defaultbegdate);
-		enddatepaid=ServletRequestUtils.getStringParameter(request, "enddatepaid", defaultdate);
-		tgl_aksep=ServletRequestUtils.getStringParameter(request, "tgl_aksep", defaultbegdate);
-		tgl_aksep_end=ServletRequestUtils.getStringParameter(request, "tgl_aksep_end", defaultbegdate);		
+		begdatepaid=ServletRequestUtils.getStringParameter(request, "begdatepaid", null);
+		enddatepaid=ServletRequestUtils.getStringParameter(request, "enddatepaid", null);
+		tgl_aksep=ServletRequestUtils.getStringParameter(request, "tgl_aksep", null);
+		tgl_aksep_end=ServletRequestUtils.getStringParameter(request, "tgl_aksep_end", null);		
 		
 		if(Utils.isEmpty(begdate))begdate=null;
 		if(Utils.isEmpty(begdatepaid))begdatepaid=null;

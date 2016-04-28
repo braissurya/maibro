@@ -18,6 +18,55 @@
 			$('table.table').delegate('input:checkbox', 'click', calculate);
 		});
 	</script>
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery('#exportPDFButton').click( function(){
+			jQuery('#_FormatExport').val("pdf");
+				myPost(reportUrl, getParam());
+		});
+	
+		jQuery('#exportExcelButton').click( function(){
+			jQuery('#_FormatExport').val("xls");
+				myPost(reportUrl, getParam());
+		});
+	});
+	var reportUrl = "${path}/report/viewer/print";
+	function myPost(path, params) {
+		var form = document.createElement("form");
+		form.setAttribute("method", "POST");
+		form.setAttribute("name", "formpost");
+		form.setAttribute("target", "_blank");
+		form.setAttribute("action", reportUrl);
+		for( var key in params ) {
+			if( params.hasOwnProperty(key) ) {
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", key);
+				hiddenField.setAttribute("value", params[key]);
+				form.appendChild(hiddenField);
+			}
+		}
+		
+		document.body.appendChild(form);
+		form.submit();
+	}
+	
+	function getParam() {
+		var params = {};
+		params['tgl_aksep'] = jQuery('#id_tgl_aksep').val(),
+		params['tgl_aksep_end'] = jQuery('#id_tgl_aksep_end').val(),
+		params['begdate'] = jQuery('#id_begdate').val(),
+		params['enddate'] = jQuery('#id_enddate').val(),
+		params['begdatepaid'] = jQuery('#id_begdatepaid').val(),
+		params['enddatepaid'] = jQuery('#id_enddatepaid').val();
+		params['format'] = jQuery('#_FormatExport').val();
+		params['s'] =jQuery('#id_s').val();
+		params['jenis_produk'] =$('input[name=jenis_produk]:checked').val();
+		params['paid'] =$('input[name=paid]:checked').val();
+		
+		return params;
+	}
+	</script>
 </head>
 <body>
 	<form name="form" id="form" method="post">
@@ -49,8 +98,8 @@
 		 				<label>Periode (Tgl Akseptasi)  </label>
 					</th>
 					<td style="text-align: left;">
-						<input type="text" value="${tgl_aksep }" name="tgl_aksep" class="text_field datepicker"> s/d 
-						<input type="text" value="${tgl_aksep_end }" name="tgl_aksep_end" class="text_field datepicker">
+						<input type="text" value="${tgl_aksep }" name="tgl_aksep" id="id_tgl_aksep" class="text_field datepicker"> s/d 
+						<input type="text" value="${tgl_aksep_end }" name="tgl_aksep_end" id="id_tgl_aksep_end"  class="text_field datepicker">
 									
 		 			</td>
 		 		</tr>	
@@ -59,8 +108,8 @@
 		 				<label>Periode (Tgl Mulai Asuransi)  </label>
 					</th>
 					<td style="text-align: left;">
-						<input type="text" value="${begdate }" name="begdate" class="text_field datepicker"> s/d 
-						<input type="text" value="${enddate }" name="enddate" class="text_field datepicker">
+						<input type="text" value="${begdate }" name="begdate" id="id_begdate" class="text_field datepicker"> s/d 
+						<input type="text" value="${enddate }" name="enddate" id="id_enddate" class="text_field datepicker">
 									
 		 			</td>
 		 		</tr>
@@ -104,8 +153,8 @@
 		 				<label>Periode (Pembayaran)  </label>
 					</th>
 					<td style="text-align: left;">
-						<input type="text" value="${begdatepaid }" name="begdatepaid" class="text_field datepicker"> s/d 
-						<input type="text" value="${enddatepaid }" name="enddatepaid" class="text_field datepicker">
+						<input type="text" value="${begdatepaid }" name="begdatepaid" id="id_begdatepaid" class="text_field datepicker"> s/d 
+						<input type="text" value="${enddatepaid }" name="enddatepaid" id="id_enddatepaid"  class="text_field datepicker">
 									
 		 			</td>
 		 		</tr>
@@ -118,6 +167,9 @@
 		 			</th>
 					<td style="text-align: left;" >
 						<input type="submit" value="Show">
+						<input id="exportPDFButton" type="button"  value="Export to PDF">
+						<input id="exportExcelButton" type="button"  value="Export to Excel">
+						<input type="hidden" id="_FormatExport">
 					</td>
 				</tr>
 		 		<tr>
@@ -128,7 +180,7 @@
 			            <div class="total">Total Net Premi : <fmt:formatNumber>${total.premi_net } </fmt:formatNumber> </div>
 			            <div class="total">Total Bayar : <fmt:formatNumber>${total.bayar } </fmt:formatNumber> </div>
 			            <div class="search">
-			            	<input type="text" name="s"  value="${search}" size="30" class="textfield">
+			            	<input type="text" name="s" id="id_s"  value="${search}" size="30" class="textfield">
 			            	<input type="submit" name="btsearch"  value=" " class="btsearch" title="search">
 			            	
 			            </div>
@@ -181,7 +233,7 @@
 										<td style="border: none;width: 50%;">
 											<table class="inTable">
 												<tr><th nowrap="nowrap">No. Spaj</th><th> :</th><td nowrap="nowrap"> ${p.spaj_no}</td> </tr>
-												<c:if test="${p.jenis eq 3}"><tr><th nowrap="nowrap">No. PK </th><th> :</th><td nowrap="nowrap"> ${p.no_pk}</td> </tr></c:if>
+												<c:if test="${p.jenis eq 3}"><tr><th nowrap="nowrap">No. PK </th><th> :</th><td nowrap="nowrap"> ${p.dealref}</td> </tr></c:if>
 												<c:if test="${not empty p.policy_no}"><tr><th nowrap="nowrap">No. Polis </th><th> :</th><td nowrap="nowrap"> ${p.policy_no}</td> </tr></c:if>
 												<tr><th nowrap="nowrap">Produk</th><th> :</th><td nowrap="nowrap">${p.produk}</td> </tr>
 												<tr><th nowrap="nowrap">Debitur </th><th> :</th><td  > ${p.debitur}</td> </tr>
@@ -321,5 +373,6 @@
         </div>
 		
 	</div>
+	
 </body>
 </html>

@@ -111,7 +111,7 @@
 	
 	<!-- list polis -->
 	<select id="selectListPolisPaging" resultType="Policy">
-			select * from (
+				select * from (
 		  		SELECT p.* , c.nama debitur, mp.nama produk,mp.jenis , u.username createuser,pr.mst_product_id,
 		  			    pr.nominal_paid,pr.tgl_paid, pr.premi,pr.flag_paid, pr.nominal_remain , pr.up, pr.rate, u2.username inputpayuser,  
 						mba.nama namaasuransi, mba.diskon_premi, mba.ppn_premi,mba.pph_premi, 

@@ -1,6 +1,7 @@
 package com.maibro.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.maibro.utils.Utils;
@@ -217,6 +218,10 @@ public class Policy implements Serializable {
 		this.plafon_kredit=plafondkredit;
 		
 		this.dealref=dealref;
+		if(!Utils.isEmpty(dealref)&&dealref.toUpperCase().contains("E")){
+			BigDecimal bd = new BigDecimal(dealref);
+			this.dealref=bd.toPlainString();
+		}
 		this.gol_debitur=goldebitur;		
 		this.username=username;
 		

@@ -160,10 +160,10 @@
 										<td>
 											<div class="group">
 												<div class="fieldWithErrors">
-													<form:label path="polisMicro.no_pk" cssClass="label" cssErrorClass="label labelError">No PK / No Pengajuan</form:label>
-													<form:errors path="polisMicro.no_pk" cssClass="error" />
+													<form:label path="polisMicro.dealref" cssClass="label" cssErrorClass="label labelError">No PK / No Pengajuan</form:label>
+													<form:errors path="polisMicro.dealref" cssClass="error" />
 												</div>
-												<form:input path="polisMicro.no_pk" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="50" size="50"/>
+												<form:input path="polisMicro.dealref" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="50" size="50"/>
 												<span class="description"></span>
 											</div></td>
 										<td class="gap"></td>
