@@ -46,7 +46,7 @@ public class Emailer {
 		helper.setText(message);
 		//
 		try{
-		//	mailSender.send(helper.getMimeMessage());
+			mailSender.send(helper.getMimeMessage());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -73,7 +73,7 @@ public class Emailer {
 		helper.setText(message);
 		//
 		try{
-			//mailSender.send(helper.getMimeMessage());
+			mailSender.send(helper.getMimeMessage());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -101,7 +101,7 @@ public class Emailer {
 		helper.setText(message);
 		//
 		try{
-			//mailSender.send(helper.getMimeMessage());
+			mailSender.send(helper.getMimeMessage());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

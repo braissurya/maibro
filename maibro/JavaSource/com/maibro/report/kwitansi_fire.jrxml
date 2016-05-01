@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kwitansi_fire" pageWidth="595" pageHeight="500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="10" scriptletClass="com.maibro.utils.JasperScriptlet">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kwitansi_fire" pageWidth="595" pageHeight="500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="10" scriptletClass="com.maibro.utils.JasperScriptlet" uuid="fc8dbc50-e289-4196-8f29-98c8aeff51d8">
 	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
 	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
 	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(276)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="bank_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT  p.id,p.posisi posisipolis,
-		p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date, 
-		p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,  
+		p.spaj_no, p.policy_no, p.asuransi_id, plafon_kredit, p.spaj_date,
+		p.ins_period, p.beg_date, p.end_date, p.jenis_manfaat, p.pay_mode,
 		p.gol_debitur, p.kode_cabang, p.username, p.dealref,
 		c.nama namacustomer, mb.polis_induk,
 		IFNULL(pr.premi,0) premi, pr.up, pr.rate, pr.tgl_paid, pr.nominal_paid,
-		mp.kode, mp.nama namaproduk, 	
-		mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank, 
+		mp.kode, mp.nama namaproduk,
+		mb.nama namaasuransi, mcb.nama namacabang, mb2.nama namabank,
 		a.alamat_rumah, o.alamat_rumah alamat_objek,
-		a.telp_rumah, a.telp_kantor,IFNULL( pr.biaya_admin,0)  biaya_admin, o.penggunaan_bangunan,oku.keterangan okupasi 
+		a.telp_rumah, a.telp_kantor,IFNULL( pr.biaya_admin,0)  biaya_admin, o.penggunaan_bangunan,oku.keterangan okupasi
 FROM policy p left join mst_bank mb on p.asuransi_id = mb.id ,customer c
 	 LEFT JOIN address a ON c.address_id = a.id
 	 LEFT JOIN address o ON c.objek_pertanggungan = o.id
-	 LEFT JOIN mst_master oku ON o.jenis_bangunan = oku.jenis AND oku.id = 5, 
-	 product pr, mst_product mp, group_policy gp, 
+	 LEFT JOIN mst_master oku ON o.jenis_bangunan = oku.jenis AND oku.id = 5,
+	 product pr, mst_product mp, group_policy gp,
 	 bank b, mst_cab_bank mcb, mst_bank mb2
 where gp.id = p.group_policy_id
 and p.customer_id = c.id
@@ -78,139 +80,139 @@ and p.id=$P{id}
 	<detail>
 		<band height="397">
 			<staticText>
-				<reportElement positionType="Float" mode="Transparent" x="115" y="67" width="328" height="20"/>
+				<reportElement positionType="Float" mode="Transparent" x="115" y="67" width="328" height="20" uuid="b7555182-c4fb-4b78-a0f2-1073b7a859b1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true" pdfFontName="Courier"/>
 				</textElement>
 				<text><![CDATA[KWITANSI PREMI ASURANSI KEBAKARAN]]></text>
 			</staticText>
-			<image hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="386" y="1" width="169" height="47"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\1.gif")]]></imageExpression>
+			<image>
+				<reportElement positionType="Float" mode="Transparent" x="386" y="1" width="169" height="47" uuid="d61d329b-0edc-4717-b1c7-0e814dfaa405"/>
+				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\1.gif")]]></imageExpression>
 			</image>
-			<image hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="1" y="1" width="169" height="47"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\" + $F{asuransi_id} + ".gif")]]></imageExpression>
+			<image>
+				<reportElement positionType="Float" mode="Transparent" x="1" y="1" width="169" height="47" uuid="db38f4e2-9bef-4e5c-afbb-34629cd7b37b"/>
+				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\" + $F{asuransi_id} + ".gif")]]></imageExpression>
 			</image>
 			<elementGroup>
-				<textField hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="109" width="136" height="16"/>
+				<textField>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="109" width="136" height="16" uuid="7b2a823e-2ce0-43d3-b2ea-e671b546244a"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Terima dari"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Terima dari"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="109" width="362" height="16"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="109" width="362" height="16" uuid="b569f37d-3582-4ae2-8f89-424ef7418890"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{namabank} + " " + $F{namacabang} + " QQ " + $F{namacustomer} +"\n"+
+					<textFieldExpression><![CDATA[$F{namabank} + " " + $F{namacabang} + " QQ " + $F{namacustomer} +"\n"+
 $F{alamat_objek}]]></textFieldExpression>
 				</textField>
-				<textField hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="109" width="20" height="16"/>
+				<textField>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="109" width="20" height="16" uuid="302056c2-ca56-41a4-bf75-50fef3113ac0"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
 			</elementGroup>
 			<elementGroup/>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="288" width="336" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="288" width="336" height="16" uuid="6f4201e7-ee36-43e3-b2c1-dffd4b5944a8"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_rumah}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat_rumah}]]></textFieldExpression>
 			</textField>
 			<elementGroup>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="129" width="136" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="129" width="136" height="16" uuid="d481c524-5810-41b0-a4f5-2fdee0b6a534"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Uang Sejumlah"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Uang Sejumlah"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="129" width="20" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="129" width="20" height="16" uuid="cb761fd1-6940-4c5a-93ac-b00bd0f085e1"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="129" width="362" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="129" width="362" height="16" uuid="c0bbeab4-1dba-4ea6-8214-7558dda57eeb"/>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.formatTerbilang($V{total_premi}, "01")]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.formatTerbilang($V{total_premi}, "01")]]></textFieldExpression>
 				</textField>
 			</elementGroup>
 			<elementGroup/>
 			<elementGroup/>
 			<elementGroup>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="151" width="20" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="151" width="20" height="16" uuid="4f427e80-cb84-4a35-a961-bde45c0fef72"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="151" width="136" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="151" width="136" height="16" uuid="71699589-62d7-4592-b152-24606edb3b0e"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Jumlah Pertanggungan"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Jumlah Pertanggungan"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="151" width="28" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="151" width="28" height="16" uuid="57c665e4-3aa4-4253-9f83-3094f0e42bc9"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Rp.  "]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Rp.  "]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.###" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="204" y="151" width="202" height="16"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0.###">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="204" y="151" width="202" height="16" uuid="6f3a89af-e2e3-4a96-92cc-3b9b01a5ebd2"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{up}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{up}]]></textFieldExpression>
 				</textField>
 			</elementGroup>
-			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="198" width="110" height="22"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="202" y="198" width="110" height="22" uuid="49624bbf-aa07-4c61-bb8b-dcbb11022def"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -220,10 +222,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" isUnderline="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{premi}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="198" width="136" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="20" y="198" width="136" height="22" uuid="daf60bf6-c82f-428d-a52f-b3e9c75e0a68"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -233,10 +235,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Premi"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Premi"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="198" width="20" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="156" y="198" width="20" height="22" uuid="8108dd7e-c43a-47af-818b-4773d8364edb"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -246,10 +248,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="198" width="26" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="176" y="198" width="26" height="22" uuid="ab99d9cd-59a7-4670-9417-b6de1eeaf2d4"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -259,23 +261,23 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Rp."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Rp."]]></textFieldExpression>
 			</textField>
 			<elementGroup/>
 			<elementGroup/>
 			<elementGroup/>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="220" width="20" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="156" y="220" width="20" height="22" uuid="88996a5e-615e-49e9-8317-d5213d5ce295"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="220" width="136" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="20" y="220" width="136" height="22" uuid="8d3b52ec-0dd5-4832-b7d0-b73aed987f71"/>
 				<box padding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -285,10 +287,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Biaya Administrasi"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Biaya Administrasi"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="220" width="110" height="22"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="202" y="220" width="110" height="22" uuid="61368513-16f0-4f23-8915-b1539c0654a9"/>
 				<box padding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -298,20 +300,20 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" isUnderline="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{biaya_admin}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{biaya_admin}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="220" width="26" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="176" y="220" width="26" height="22" uuid="824e14b8-98e3-4a14-80ba-bfb62382e533"/>
 				<box padding="0">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Rp."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Rp."]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="242" width="20" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="156" y="242" width="20" height="22" uuid="f6bdc253-8147-43ff-821f-f6c03702fc51"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -321,10 +323,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="242" width="136" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="20" y="242" width="136" height="22" uuid="945625b1-ac30-491d-b601-a8798b2abf8c"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -334,10 +336,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Total"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="242" width="110" height="22"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="202" y="242" width="110" height="22" uuid="3a644f4d-3099-4601-97b0-677e9441d972"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -347,10 +349,10 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" isUnderline="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total_premi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{total_premi}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="242" width="26" height="22"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="176" y="242" width="26" height="22" uuid="45d3395a-28c2-4a14-80ba-d3619a14ae6a"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -360,123 +362,123 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Rp."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Rp."]]></textFieldExpression>
 			</textField>
 			<elementGroup>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="20" y="174" width="136" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="20" y="174" width="136" height="16" uuid="21a5b5ee-30d7-428e-bc71-1545f725e94c"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Masa Pertanggungan"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Masa Pertanggungan"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="156" y="174" width="20" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="156" y="174" width="20" height="16" uuid="c47a52aa-bc81-41c4-bc2e-9ab797c6f400"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" hyperlinkType="None">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="174" width="362" height="16"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="174" width="362" height="16" uuid="99f9fe19-d843-4dd0-bf5e-04876666578c"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.formatDateIndonesian($F{beg_date})+
+					<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.formatDateIndonesian($F{beg_date})+
 " s/d " +  $P{REPORT_SCRIPTLET}.formatDateIndonesian($F{end_date})]]></textFieldExpression>
 				</textField>
 			</elementGroup>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="344" y="220" width="190" height="22"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="344" y="220" width="190" height="22" uuid="adbfe02c-65da-4ba1-b6db-46743a9b7b03"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{namaasuransi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{namaasuransi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="344" y="198" width="190" height="22"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Transparent" x="344" y="198" width="190" height="22" uuid="84a52ade-cb48-42c6-8e3c-89844e500d7a"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Bandung, " +$P{REPORT_SCRIPTLET}.formatDateIndonesian(new Date())]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Bandung, " +$P{REPORT_SCRIPTLET}.formatDateIndonesian(new Date())]]></textFieldExpression>
 			</textField>
-			<image hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="364" y="250" width="162" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\"+$F{asuransi_id}+"_ttd.gif")]]></imageExpression>
+			<image>
+				<reportElement positionType="Float" mode="Transparent" x="364" y="250" width="162" height="58" uuid="489ea92e-9c9c-4f4d-8246-cd7331f7fba5"/>
+				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\"+$F{asuransi_id}+"_ttd.gif")]]></imageExpression>
 			</image>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="272" width="136" height="16"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="20" y="272" width="136" height="16" uuid="9d967408-ccc6-4077-9f85-babc365bf1a5"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Alamat Tagih"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Alamat Tagih"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="155" y="272" width="20" height="16"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="155" y="272" width="20" height="16" uuid="e815b7db-5d65-421e-b722-5e28cd9cbebb"/>
 				<box padding="0">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="304" width="29" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="304" width="29" height="16" uuid="c996263b-101c-45f0-b242-576ccbb616c9"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["[R]"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["[R]"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="49" y="304" width="107" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="49" y="304" width="107" height="16" uuid="ff28aecf-f922-4f4f-a15d-203e717cd8b5"/>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{telp_rumah}==null?"-":$F{telp_rumah}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{telp_rumah}==null?"-":$F{telp_rumah}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="304" width="29" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="304" width="29" height="16" uuid="d6ef52bb-3520-4269-b405-bf45f89ee0f4"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["[K]"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["[K]"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="185" y="304" width="107" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="185" y="304" width="107" height="16" uuid="012e5c49-38b7-4662-a5a8-505a4e699d12"/>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{telp_kantor}==null?"-":$F{telp_kantor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{telp_kantor}==null?"-":$F{telp_kantor}]]></textFieldExpression>
 			</textField>
-			<textField hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="322" width="136" height="16"/>
+			<textField>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="322" width="136" height="16" uuid="7580ce7a-2bf1-428e-a5b9-6ad47dc1fbf7"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["No. A/C"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["No. A/C"]]></textFieldExpression>
 			</textField>
-			<textField hyperlinkType="None">
-				<reportElement positionType="Float" mode="Transparent" x="155" y="322" width="20" height="16"/>
+			<textField>
+				<reportElement positionType="Float" mode="Transparent" x="155" y="322" width="20" height="16" uuid="91327e56-474e-4c9b-8f44-297463c18198"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

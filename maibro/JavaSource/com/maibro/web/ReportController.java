@@ -3,6 +3,7 @@ package com.maibro.web;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jolbox.bonecp.BoneCPDataSource;
+import com.maibro.model.DropDown;
 import com.maibro.model.History;
 import com.maibro.model.MstCabBank;
 import com.maibro.model.Policy;
@@ -972,6 +974,120 @@ public class ReportController extends ParentController{
 		params.put("param2",param2 );
 		
 		return generateReport(jenisReport, params, session, request, response,null);
+	}
+	
+	/**
+	 * Misal data masuk bln January 2016 ada 100 pst, sedangkan yang terbit dibulan January itu Hanya 50 pst yang sudah terbit polis,
+                      maka yang keluar Nota Tagihan hanya yang 50pst yang sudah terbit polis saja, misal 50pst lg terbit di bln February 2016.
+                      lalu pada bulan berikutnya February 2016 ada produksi baru sejumlah 120pst dan yang sudah terbit di bln Feb 2016 hanya 50pst
+                      maka yang diterbitkan Nota Tagihan hanya 50pst utk bln Feb 2016
+                      Kesimpulan utk bln January Keluar Nota Tagih     = 50pst dr 100pst (prod Jan)
+                                            utk bln February ada 2 Nota Tagih    = 50pst (prod sisa Jan) dan 50pst(prod Feb)
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws JRException
+	 * @throws IOException
+	 * @throws ServletRequestBindingException
+	 * @date 29042016
+	 * @author Bertho
+	 */
+	@RequestMapping("/nota_tagihan")
+	public String nota_tagihan(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) 
+			throws JRException, IOException, ServletRequestBindingException {
+		
+		//currently logged in user
+		User currentUser = (User) request.getSession(false).getAttribute("currentUser");
+		
+		String jenisReport = "nota_tagihan";
+		String param = "", param2 = "";
+		String bank = "", cab_bank = "", asuransi = "", jenis_terbit = "", jenis_produk = "";
+		/*String tgl_awal = Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy");
+		String tgl_akhir = Utils.convertDateToString(dbService.selectSysdate(), "dd-MM-yyyy");*/
+		
+		logger.debug("Halaman: " + jenisReport);
+		
+		if(request.getParameter("show") != null){			
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("format", ServletRequestUtils.getRequiredStringParameter(request, "format")); //format report
+			String begdate1=ServletRequestUtils.getRequiredStringParameter(request, "beg_date1");
+			params.put("beg_date1", begdate1);
+			bank = ServletRequestUtils.getRequiredStringParameter(request, "bank");
+			cab_bank = ServletRequestUtils.getStringParameter(request, "cab_bank");
+			asuransi = ServletRequestUtils.getStringParameter(request, "asuransi");
+			String username=ServletRequestUtils.getStringParameter(request, "pejabat","....................");
+			param="";
+			
+			
+			if(!Utils.isEmpty(begdate1)){
+				param += " and DATE_FORMAT(tgl_aksep, '%M %Y')='"+begdate1+"'";
+			}
+			
+			//filter jenis produk
+			if(jenis_produk != ""){
+				param = param + " AND pro.id = " + jenis_produk;
+			}else{
+				if(currentUser.mst_product_id != null){
+					//kalau ada isinya maka harus baca ke mst_master id 3 (group_product)
+					param = param + " AND pro.group_product = " + currentUser.mst_product_id;
+				}
+			}
+			
+			//filter bank
+			if(bank != ""){
+				param = param + " AND ba.id = " + bank;
+			}	
+			
+			//filter cabang bank
+			if(cab_bank != "" && cab_bank != null){
+				param = param + " AND cb.id = " + cab_bank;
+			}
+			
+			//tampilan data, ini digunakan pada saat RIGHT JOIN supaya data yg ditampilkan gk ALL (khusus yg login bukan Broker)
+			if(currentUser.bank_jenis == 2 || currentUser.bank_jenis == 4){
+				param2 = " AND b.id = " + asuransi;	//ASURANSI JIWA & ASURANSI KERUGIAN
+			}
+						
+			params.put("param", param);
+			params.put("param2", param2);
+			params.put("username", Utils.isEmpty(username)?"................................":username);	
+			
+			return generateReport(jenisReport, params, session, request, response,null);
+		}else{
+			model.addAttribute("jenis_user", currentUser.bank_jenis);
+			model.addAttribute("jenis_user_cab", currentUser.cab_bank_jenis);
+			model.addAttribute("bank_id", currentUser.bank_id);
+			model.addAttribute("bank_nama", dbService.selectListMstBank(currentUser.getBank_id()).get(0).nama);
+			List<MstCabBank> lsCabbank=dbService.selectListMstCabBank(currentUser.getCab_bank_id(), currentUser.getBank_id(),null);
+			if(!lsCabbank.isEmpty()){
+				model.addAttribute("cab_nama",lsCabbank.get(0).nama);
+				model.addAttribute("cab_id",lsCabbank.get(0).id);
+			}
+			
+			/*List<DropDown> monthList=new ArrayList<DropDown>();
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Februari","Februari"));
+			monthList.add(new DropDown("Maret","Maret"));
+			monthList.add(new DropDown("April","April"));
+			monthList.add(new DropDown("Mei","Juni"));
+			monthList.add(new DropDown("Juli","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));
+			monthList.add(new DropDown("Januari","Januari"));*/
+			
+			
+			model.addAttribute("product_id", currentUser.mst_product_id);
+			model.addAttribute("product_name", dbService.selectListMstProduct(currentUser.getMst_product_id(), null, null,null).get(0).nama);
+			model.addAttribute("tgl_awal", Utils.convertDateToString(new java.util.Date(), "MMMMM yyyy"));
+			/*model.addAttribute("tgl_awal", tgl_awal);
+			model.addAttribute("tgl_akhir", tgl_akhir);*/
+			return jenisReport;
+		}
 	}
 
 

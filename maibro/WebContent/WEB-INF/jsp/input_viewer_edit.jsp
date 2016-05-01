@@ -226,6 +226,7 @@
 										<td class="gap"></td>
 										<td></td>
 									</tr>
+									<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 									<tr>
 										<td>
 											<div class="group">
@@ -249,6 +250,7 @@
 										<td class="gap"></td>
 										<td></td>
 									</tr>
+									</c:if>
 									<tr>
 										<td>
 											<div class="group">
@@ -268,6 +270,7 @@
 												<form:input path="polisMicro.customer.bagian" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="200" size="65"/>
 											</div></td>
 									</tr>
+									<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 									<tr>
 										<td>
 											<div class="group">
@@ -296,6 +299,7 @@
 												<form:input path="polisMicro.customer.address.kodepos_kantor" cssClass="text_field" cssErrorClass="text_field inputError" />
 											</div></td>
 									</tr>
+									</c:if>
 									<tr>
 										<td>
 											<div class="group">
@@ -307,23 +311,30 @@
 											</div></td>
 										<td class="gap"></td>
 										<td>
+											<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 											<div class="group">
 												<div class="fieldWithErrors">
 													<form:label path="polisMicro.customer.address.kota_rumah" cssClass="label" cssErrorClass="label labelError">Kota</form:label>
 													<form:errors path="polisMicro.customer.address.kota_rumah" cssClass="error" />
 												</div>
 												<form:input path="polisMicro.customer.address.kota_rumah" cssClass="text_field" cssErrorClass="text_field inputError" />
-											</div></td>
+											</div>
+											</c:if>
+										</td>
 										<td class="gap"></td>
 										<td>
+											<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 											<div class="group">
 												<div class="fieldWithErrors">
 													<form:label path="polisMicro.customer.address.kodepos_rumah" cssClass="label" cssErrorClass="label labelError">Kode Pos</form:label>
 													<form:errors path="polisMicro.customer.address.kodepos_rumah" cssClass="error" />
 												</div>
 												<form:input path="polisMicro.customer.address.kodepos_rumah" cssClass="text_field" cssErrorClass="text_field inputError" />
-											</div></td>
+											</div>
+											</c:if>
+										</td>
 									</tr>
+									<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 									<tr>
 										<td>
 											<div class="group">
@@ -360,6 +371,7 @@
 													cssClass="text_field" cssErrorClass="text_field inputError" />
 											</div></td>
 									</tr>
+									</c:if>
 									<tr>
 										<td>
 											<div class="group">
@@ -523,6 +535,7 @@
 									</tr>
 									--%>
 								</table>
+								<c:if test="${groupPolicy.polisMicro.product.mst_product_id ne 3}">
 								<h3>II. KETERANGAN KESEHATAN</h3>
 								<table class="inputan">
 									<tr>
@@ -631,6 +644,7 @@
 										<td><form:textarea path="polisMicro.customer.q5_desc" cssClass="textarea" cssErrorClass="textarea inputError" /></td>
 									</tr>
 								</table>
+								</c:if>
 									<c:if test="${groupPolicy.mode eq 'VALIDASI'}">
 									<br/><br/>
 									<div class="group">
@@ -658,10 +672,10 @@
 									</div>
 								</c:if>
 							</div>
-		
+						
 						</div>
 					</div>
-		
+	
 				</div>
 		
 			</c:when>

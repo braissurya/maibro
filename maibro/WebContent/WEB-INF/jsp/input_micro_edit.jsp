@@ -241,7 +241,7 @@
 								<td class="gap"></td>
 								<td></td>
 							</tr>
-							<tr>
+							<%-- <tr>
 								<td>
 									<div class="group">
 										<div class="fieldWithErrors">
@@ -263,7 +263,7 @@
 									</div></td>
 								<td class="gap"></td>
 								<td></td>
-							</tr>
+							</tr> --%>
 							<tr>
 								<td>
 									<div class="group">
@@ -283,7 +283,7 @@
 										<form:input path="polisMicro.customer.bagian" cssClass="text_field" cssErrorClass="text_field inputError" maxlength="200" size="65"/>
 									</div></td>
 							</tr>
-							<tr>
+							<%-- <tr>
 								<td>
 									<div class="group">
 										<div class="fieldWithErrors">
@@ -310,7 +310,7 @@
 										</div>
 										<form:input path="polisMicro.customer.address.kodepos_kantor" cssClass="text_field" cssErrorClass="text_field inputError" />
 									</div></td>
-							</tr>
+							</tr> --%>
 							<tr>
 								<td>
 									<div class="group">
@@ -322,24 +322,24 @@
 									</div></td>
 								<td class="gap"></td>
 								<td>
-									<div class="group">
+									<%-- <div class="group">
 										<div class="fieldWithErrors">
 											<form:label path="polisMicro.customer.address.kota_rumah" cssClass="label" cssErrorClass="label labelError">Kota</form:label>
 											<form:errors path="polisMicro.customer.address.kota_rumah" cssClass="error" />
 										</div>
 										<form:input path="polisMicro.customer.address.kota_rumah" cssClass="text_field" cssErrorClass="text_field inputError" />
-									</div></td>
+									</div> --%></td>
 								<td class="gap"></td>
 								<td>
-									<div class="group">
+									<%-- <div class="group">
 										<div class="fieldWithErrors">
 											<form:label path="polisMicro.customer.address.kodepos_rumah" cssClass="label" cssErrorClass="label labelError">Kode Pos</form:label>
 											<form:errors path="polisMicro.customer.address.kodepos_rumah" cssClass="error" />
 										</div>
 										<form:input path="polisMicro.customer.address.kodepos_rumah" cssClass="text_field" cssErrorClass="text_field inputError" />
-									</div></td>
+									</div> --%></td>
 							</tr>
-							<tr>
+							<%-- <tr>
 								<td>
 									<div class="group">
 										<div class="fieldWithErrors">
@@ -374,7 +374,7 @@
 										<form:input path="polisMicro.customer.address.telp_rumah"
 											cssClass="text_field" cssErrorClass="text_field inputError" />
 									</div></td>
-							</tr>
+							</tr> --%>
 							<tr>
 								<td>
 									<div class="group">
@@ -547,7 +547,7 @@
 							</tr>
 							--%>
 						</table>
-						<h3>II. KETERANGAN KESEHATAN</h3>
+						<%-- <h3>II. KETERANGAN KESEHATAN</h3>
 						<table class="inputan">
 							<tr>
 								<td>1.</td>
@@ -589,7 +589,7 @@
 										<label for="q2t">Tidak</label>
 									</div></td>
 								<td><form:textarea path="polisMicro.customer.q2_desc" cssClass="textarea" cssErrorClass="textarea inputError"/></td>
-							</tr>
+							</tr> --%>
 							<%--
 							<tr>
 								<td>3.</td>
@@ -612,7 +612,7 @@
 								<td><form:textarea path="polisMicro.customer.q3_desc" cssClass="textarea" cssErrorClass="textarea inputError" /></td>
 							</tr>
 							--%>
-							<tr>
+							<%-- <tr>
 								<td>3.</td>
 								<td><div class="fieldWithErrors">
 										Apakah Anda pernah atau sedang menderita penyakit: cacat,
@@ -654,7 +654,7 @@
 									</div></td>
 								<td><form:textarea path="polisMicro.customer.q5_desc" cssClass="textarea" cssErrorClass="textarea inputError" /></td>
 							</tr>
-						</table>
+						</table> --%>
 							
 					</div>
 

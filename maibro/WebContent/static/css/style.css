@@ -111,3 +111,7 @@ table.grid th, table.grid td{
 .merah {
 	color: red;
 }
+
+.ui-datepick-calendar {
+    display: none;
+    }

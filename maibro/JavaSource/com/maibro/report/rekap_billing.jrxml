@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_billing" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_billing" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="85912e20-3e76-4ce4-b509-db1eb8cd8a72">
 	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
@@ -9,13 +8,18 @@
 	<property name="com.jasperassistant.designer.Margins" value="true"/>
 	<property name="com.jasperassistant.designer.Rulers" value="true"/>
 	<property name="com.jasperassistant.designer.SnapToGuides" value="true"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="beg_date" class="java.lang.String"/>
 	<parameter name="end_date" class="java.lang.String"/>
 	<parameter name="status" class="java.lang.String">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="username" class="java.lang.String"/>
-	<parameter name="param" class="java.lang.String"/>
+	<parameter name="param" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1=1"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="beg_date1" class="java.lang.String"/>
 	<parameter name="end_date1" class="java.lang.String"/>
 	<queryString>
@@ -24,12 +28,12 @@ p.spaj_date, p.beg_date, p.end_date, pr.premi, pr.rate, pr.tgl_paid, pr.nominal_
 CASE pr.flag_paid
 	WHEN 1 THEN 'LUNAS'
 	WHEN 2 THEN 'LEBIH BAYAR'
-	WHEN 3 THEN 'KURANG BAYAR' 
+	WHEN 3 THEN 'KURANG BAYAR'
 	ELSE 'OUTSTANDING'
 END status_bayar
 FROM policy p, customer c
 LEFT JOIN address tanggung ON c.objek_pertanggungan = tanggung.id
-LEFT JOIN address tinggal ON c.address_id = tinggal.id, 
+LEFT JOIN address tinggal ON c.address_id = tinggal.id,
 product pr, bank b, mst_cab_bank cb, mst_bank ba, mst_product pro, mst_bank ass
 WHERE p.customer_id = c.id
 AND p.id = pr.policy_id
@@ -37,7 +41,7 @@ AND p.id = b.policy_id
 AND b.mst_cab_bank_id = cb.id
 AND cb.mst_bank_id = ba.id
 AND pr.mst_product_id = pro.id
-AND p.asuransi_id = ass.id 
+AND p.asuransi_id = ass.id
 AND $P!{param}
 ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 ;]]>
@@ -64,62 +68,62 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 	</variable>
 	<title>
 		<band height="100">
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="60" width="120" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="132" y="60" width="120" height="20" uuid="f7622aaa-f852-4926-9f4a-bc1066eff4d0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{username}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="60" width="132" height="20"/>
+				<reportElement x="0" y="60" width="132" height="20" uuid="03f94f62-187e-402f-a316-a5fda4f7f8ed"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[User:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="80" width="132" height="20"/>
+				<reportElement x="0" y="80" width="132" height="20" uuid="c87fe270-22e7-4d11-bb46-e06ad0c1ca09"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Waktu:]]></text>
 			</staticText>
-			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="80" width="120" height="20"/>
+			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true">
+				<reportElement x="132" y="80" width="120" height="20" uuid="4dc9323d-ed6c-4fcc-a163-eafc015cbda2"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="132" height="20"/>
+				<reportElement x="0" y="0" width="132" height="20" uuid="6dacf01c-5b4d-4b78-ab10-76b1ca6a347a"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Laporan:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="0" width="382" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="132" y="0" width="382" height="20" uuid="4afc9d93-1c80-4ba9-8a28-1f8b3731927c"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["REKAPITULASI BILLING " + $P{status}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["REKAPITULASI BILLING " + $P{status}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="20" width="132" height="20"/>
+				<reportElement x="0" y="20" width="132" height="20" uuid="1007694c-3949-46db-91dd-d34c086033fc"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode Akseptasi:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="40" width="132" height="20"/>
+				<reportElement x="0" y="40" width="132" height="20" uuid="d355aa17-b74f-4520-9a50-a440add0c03c"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode Asuransi:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="40" width="240" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="132" y="40" width="240" height="20" uuid="19759efd-d764-434e-93e4-743cb1842db7"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{beg_date} + " s/d " + $P{end_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{beg_date} + " s/d " + $P{end_date}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="20" width="240" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="132" y="20" width="240" height="20" uuid="53263805-1a3e-4a70-ae94-086332d99bbf"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{beg_date1} + " s/d " + $P{end_date1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{beg_date1} + " s/d " + $P{end_date1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="0" y="0" width="31" height="20"/>
+				<reportElement x="0" y="0" width="31" height="20" uuid="1423bc0e-6c69-487c-bde0-2e8db7bc9d33"/>
 				<box padding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -129,7 +133,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="132" y="0" width="120" height="20"/>
+				<reportElement x="132" y="0" width="120" height="20" uuid="91af4761-0c06-4d5e-a642-e554e1ff4e7f"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -142,7 +146,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="252" y="0" width="126" height="20"/>
+				<reportElement x="252" y="0" width="126" height="20" uuid="8016d4fe-c0ed-40d3-a35e-5cab1230b784"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -155,7 +159,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Alamat Tanggungan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="378" y="0" width="136" height="20"/>
+				<reportElement x="378" y="0" width="136" height="20" uuid="f045b9a3-a66e-480f-9ead-ae3f67905dbc"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -168,7 +172,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Alamat Tinggal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="514" y="0" width="96" height="20"/>
+				<reportElement x="514" y="0" width="96" height="20" uuid="49ee2396-6b00-4d2c-8abd-ed8017ec0b7c"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -181,7 +185,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Tgl Terima SPPA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="610" y="0" width="121" height="20"/>
+				<reportElement x="610" y="0" width="121" height="20" uuid="565a913d-0522-4892-b3c4-e331ba717c4b"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -194,7 +198,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Premi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="31" y="0" width="101" height="20"/>
+				<reportElement x="31" y="0" width="101" height="20" uuid="acea5d0a-9987-49e3-a24c-2a12cd026df7"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -207,7 +211,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[No Sertifikat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="731" y="0" width="81" height="20"/>
+				<reportElement x="731" y="0" width="81" height="20" uuid="af301350-00d7-4352-a301-104006e2f3d9"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -220,7 +224,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Tgl Bayar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="812" y="0" width="122" height="20"/>
+				<reportElement x="812" y="0" width="122" height="20" uuid="95193162-a167-4a00-a616-30591ed51438"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -233,7 +237,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<text><![CDATA[Premi Bayar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="934" y="0" width="106" height="20"/>
+				<reportElement x="934" y="0" width="106" height="20" uuid="87dff3a1-b2b3-481f-8e2c-7266111314e7"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -250,88 +254,90 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 	<detail>
 		<band height="20">
 			<elementGroup/>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="31" y="0" width="101" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="31" y="0" width="101" height="20" uuid="d821dec6-4a5e-40ae-968f-a509f0b10fb7"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{policy_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{policy_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="0" y="0" width="31" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="31" height="20" uuid="49c33de3-3365-412f-a031-22e151e6afc6"/>
 				<box padding="3">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle" lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="132" y="0" width="120" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="132" y="0" width="120" height="20" uuid="895ec6ba-25b3-4d68-861f-05ea42b58184"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="252" y="0" width="126" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="252" y="0" width="126" height="20" uuid="a6443819-291f-4651-9743-ae16e685f70d"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_tanggung}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat_tanggung}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="378" y="0" width="136" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="378" y="0" width="136" height="20" uuid="f009d668-84d8-4283-acc2-9e0b11244fa7"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat_rumah}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat_rumah}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="514" y="0" width="96" height="20"/>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="514" y="0" width="96" height="20" uuid="5258051c-51f1-4763-9be9-ba7b8d0658f4"/>
 				<box>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{spaj_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{spaj_date}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="610" y="0" width="121" height="20"/>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="610" y="0" width="121" height="20" uuid="e1aa5699-b96f-4405-bb6d-14ea86d98d91"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{premi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{premi}]]></textFieldExpression>
 			</textField>
 			<elementGroup/>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="731" y="0" width="81" height="20"/>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="731" y="0" width="81" height="20" uuid="2f58b610-7e99-40ba-8aeb-38911dc7d0ce"/>
 				<box>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{tgl_paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tgl_paid}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="812" y="0" width="122" height="20"/>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="812" y="0" width="122" height="20" uuid="50000e01-0f98-409a-b305-9be730f40091"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{nominal_paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nominal_paid}]]></textFieldExpression>
 			</textField>
-			<textField hyperlinkType="None">
-				<reportElement x="934" y="0" width="106" height="20"/>
+			<textField>
+				<reportElement x="934" y="0" width="106" height="20" uuid="c8c59d31-0ff4-4660-a2d4-cf4abd090776"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{status_bayar}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{status_bayar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="21">
 			<staticText>
-				<reportElement x="514" y="1" width="96" height="20"/>
+				<reportElement x="514" y="1" width="96" height="20" uuid="4804bdc9-b2af-4cf9-a788-cb2b014b233d"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -340,25 +346,25 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
-			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="610" y="1" width="121" height="20"/>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="610" y="1" width="121" height="20" uuid="9ed9b865-bd3d-47e2-a18f-12df2e3f5047"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totpremi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{totpremi}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="812" y="1" width="122" height="20"/>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="812" y="1" width="122" height="20" uuid="2725350c-5e14-4a7a-a914-b7563c700b50"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totbayar}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{totbayar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

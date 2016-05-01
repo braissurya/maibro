@@ -43,6 +43,16 @@
 			dateFormat: "dd-mm-yy"
 		});
 		
+		$('.date-my').datepicker( {
+	        changeMonth: true,
+	        changeYear: true,
+	        showButtonPanel: true,
+	        dateFormat: 'MM yy',
+	        onClose: function(dateText, inst) { 
+	            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+	        }
+	    });
+		
 		//untuk semua input yg mempunyai class "nominal" akan diformat 3 digit secara otomatis
 		$(".nominal").change(function(){
 			$(this).val(formatCurrency($(this).val()));
