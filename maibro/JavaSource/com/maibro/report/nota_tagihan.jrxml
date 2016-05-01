@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nota_tagihan" pageWidth="600" pageHeight="842" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" scriptletClass="com.maibro.utils.JasperScriptlet" uuid="edca894c-abff-4e27-96ea-28f866e55dba">
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
+<!-- 2016-05-01T23:16:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nota_tagihan" pageWidth="600" pageHeight="842" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" scriptletClass="com.maibro.utils.JasperScriptlet">
 	<property name="com.jasperassistant.designer.DataSource" value="MySql-Maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
@@ -11,6 +13,8 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Maibro"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="username" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["Arista"]]></defaultValueExpression>
 	</parameter>
@@ -274,7 +278,7 @@ WHERE
 		<groupHeader>
 			<band height="71">
 				<staticText>
-					<reportElement x="0" y="50" width="31" height="20" uuid="5d737789-3f39-49bd-962d-c4945511d895"/>
+					<reportElement x="0" y="50" width="31" height="20"/>
 					<box padding="2" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -287,7 +291,7 @@ WHERE
 					<text><![CDATA[No]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="348" y="50" width="212" height="20" uuid="94d128e5-d4a5-46f4-b15a-17ad18949da9"/>
+					<reportElement x="348" y="50" width="212" height="20"/>
 					<box padding="2" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -300,7 +304,7 @@ WHERE
 					<text><![CDATA[Premi]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="293" y="50" width="55" height="20" uuid="4e3ee52d-5388-448b-9a58-e47c9c0d91ac"/>
+					<reportElement x="293" y="50" width="55" height="20"/>
 					<box padding="2" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -313,7 +317,7 @@ WHERE
 					<text><![CDATA[Peserta]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="31" y="50" width="262" height="20" uuid="9ce69364-aa91-4216-91ca-41607e9dd855"/>
+					<reportElement x="31" y="50" width="262" height="20"/>
 					<box padding="2" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -326,78 +330,78 @@ WHERE
 					<text><![CDATA[Nama Asuransi]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="0" width="64" height="20" uuid="41f920d4-7c7d-45ca-a624-9dceadb904c0"/>
+					<reportElement x="0" y="0" width="64" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Bank ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="20" width="64" height="20" uuid="c17dace4-bee6-4488-9a92-ca3d438f4714"/>
+					<reportElement x="0" y="20" width="64" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Cabang]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="65" y="0" width="7" height="20" uuid="7e56fcb6-7e32-40b1-a6aa-217150662b1d"/>
+					<reportElement x="65" y="0" width="7" height="20"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="65" y="20" width="7" height="20" uuid="3953e456-40f8-41e4-a23e-bf16c73ecace"/>
+					<reportElement x="65" y="20" width="7" height="20"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="72" y="0" width="145" height="20" uuid="c3c42dd9-df6d-4689-b017-af058804d5f4"/>
+					<reportElement x="72" y="0" width="145" height="20"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{bank_nama}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="72" y="20" width="145" height="20" uuid="0645e4c9-13f1-48ab-a5dc-c99d7002cc19"/>
+					<reportElement x="72" y="20" width="145" height="20"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{cab_nama}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy HH:mm:ss">
-					<reportElement x="467" y="20" width="93" height="20" uuid="a3d556ca-5252-4405-a1f6-c9f8a19860c7"/>
+					<reportElement x="467" y="20" width="93" height="20"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="459" y="20" width="7" height="20" uuid="467368b7-fc3d-486e-9f6f-7b12f0ab1907"/>
+					<reportElement x="459" y="20" width="7" height="20"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="459" y="0" width="7" height="20" uuid="29c399a6-0f4f-47c5-b96c-74e8ead47957"/>
+					<reportElement x="459" y="0" width="7" height="20"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="382" y="20" width="77" height="20" uuid="bf1168e4-1c78-4aff-acbd-168a4cdee91a"/>
+					<reportElement x="382" y="20" width="77" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Tanggal Cetak]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="382" y="0" width="77" height="20" uuid="a52a6f6e-4eb9-4709-b26b-df54d96daeff"/>
+					<reportElement x="382" y="0" width="77" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Periode Terbit]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="467" y="0" width="93" height="20" uuid="9c219738-fb81-48c9-b6e3-681f0361199f"/>
+					<reportElement x="467" y="0" width="93" height="20"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.formatDateIndonesian($F{tgl_aksep}).substring(2)]]></textFieldExpression>
 				</textField>
@@ -406,7 +410,7 @@ WHERE
 		<groupFooter>
 			<band height="204">
 				<textField>
-					<reportElement x="0" y="0" width="292" height="33" uuid="ffa0be55-79c7-4018-8386-ff1d769d3922"/>
+					<reportElement x="0" y="0" width="292" height="33"/>
 					<box>
 						<pen lineStyle="Double"/>
 						<topPen lineWidth="0.75" lineStyle="Solid"/>
@@ -417,10 +421,10 @@ WHERE
 					<textElement verticalAlignment="Middle" markup="none">
 						<font size="14" isBold="true" isItalic="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["GRAND TOTAL " ]]></textFieldExpression>
+					<textFieldExpression><![CDATA["GRAND TOTAL "]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-					<reportElement x="347" y="0" width="212" height="33" uuid="1240c425-1351-4010-817b-1338ebeb0958"/>
+					<reportElement x="347" y="0" width="212" height="33"/>
 					<box>
 						<pen lineStyle="Double"/>
 						<topPen lineWidth="0.75" lineStyle="Solid"/>
@@ -434,7 +438,7 @@ WHERE
 					<textFieldExpression><![CDATA[$V{tot_premi_produk}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="292" y="0" width="55" height="33" uuid="c9ac8ad9-3cc2-485e-931e-2068cc78e50f"/>
+					<reportElement x="292" y="0" width="55" height="33"/>
 					<box>
 						<pen lineStyle="Double"/>
 						<topPen lineWidth="0.75" lineStyle="Solid"/>
@@ -448,14 +452,14 @@ WHERE
 					<textFieldExpression><![CDATA[$V{tot_jum_polis_produk}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="72" y="48" width="486" height="22" uuid="006d285f-e1aa-412f-ac9c-766e2aaf87d7"/>
+					<reportElement stretchType="RelativeToBandHeight" x="72" y="48" width="486" height="22"/>
 					<textElement textAlignment="Justified">
 						<font size="12" isBold="true" isItalic="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["#"+$P{REPORT_SCRIPTLET}.formatTerbilang($V{tot_premi_produk}, "01")+"#"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToBandHeight" x="1" y="48" width="71" height="22" uuid="655dc502-31aa-4ce5-a280-5c1fb22df713"/>
+					<reportElement stretchType="RelativeToBandHeight" x="1" y="48" width="71" height="22"/>
 					<box>
 						<pen lineStyle="Double"/>
 						<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -469,14 +473,14 @@ WHERE
 					<textFieldExpression><![CDATA["Terbilang : "]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="183" width="188" height="20" uuid="8d9cb326-e2f6-4b29-ae80-d75f1b946b32"/>
+					<reportElement x="0" y="183" width="188" height="20"/>
 					<textElement>
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["("+$P{username}+")"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="79" width="190" height="34" uuid="43b1bc82-2151-4bc8-8cab-e70c6fc3a428"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="79" width="190" height="34"/>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Courier"/>
 					</textElement>
@@ -484,7 +488,7 @@ WHERE
 "\nHormat Kami,"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="207" y="93" width="351" height="110" uuid="28eeb28a-c6df-4877-bb8c-3d73ce88dcac"/>
+					<reportElement stretchType="RelativeToBandHeight" x="207" y="93" width="351" height="110"/>
 					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -504,7 +508,7 @@ WHERE
 		<groupHeader>
 			<band height="21">
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="1" width="558" height="20" uuid="3cd232d1-f735-40c6-91a4-6d110d62c062"/>
+					<reportElement x="0" y="1" width="558" height="20"/>
 					<box padding="2" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 						<pen lineWidth="0.0" lineStyle="Solid"/>
 						<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -520,7 +524,7 @@ WHERE
 		<groupFooter>
 			<band height="21">
 				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-					<reportElement x="347" y="0" width="212" height="20" uuid="858ce76a-d2cf-4916-a88b-557bb450891e"/>
+					<reportElement x="347" y="0" width="212" height="20"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -531,7 +535,7 @@ WHERE
 					<textFieldExpression><![CDATA[$V{tot_premi_periode}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="292" y="0" width="55" height="20" uuid="faa23393-1f6d-445f-925c-b4b9e7e35084"/>
+					<reportElement x="292" y="0" width="55" height="20"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -542,7 +546,7 @@ WHERE
 					<textFieldExpression><![CDATA[$V{tgl mulai_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="0" width="292" height="20" uuid="539f35c5-0ba0-476f-a871-62cda22dcf9a"/>
+					<reportElement x="0" y="0" width="292" height="20"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -558,7 +562,7 @@ WHERE
 	<pageHeader>
 		<band height="53">
 			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="0" width="145" height="25" uuid="795552b1-8829-44c6-adc9-7be08c708a84"/>
+				<reportElement x="415" y="0" width="145" height="25"/>
 				<box leftPadding="1">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -571,7 +575,7 @@ WHERE
 				<textFieldExpression><![CDATA["NOTA TAGIHAN"]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="182" height="52" uuid="277e7aa1-1677-4480-bb8d-6b1d52774269"/>
+				<reportElement x="0" y="0" width="182" height="52"/>
 				<imageExpression><![CDATA["C:\\maibro\\company\\logo\\1.gif"]]></imageExpression>
 			</image>
 		</band>
@@ -580,7 +584,7 @@ WHERE
 		<band height="20">
 			<elementGroup/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="31" y="0" width="261" height="20" uuid="87fd7dbe-b8c2-48a3-a4d3-f253ae8080ad"/>
+				<reportElement x="31" y="0" width="261" height="20"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -588,7 +592,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{jenis_produk} + " " + $F{ass_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="31" height="20" uuid="ea513f09-deaf-4611-b8e8-c1303b784f55"/>
+				<reportElement x="0" y="0" width="31" height="20"/>
 				<box padding="3"/>
 				<textElement verticalAlignment="Middle">
 					<paragraph lineSpacing="Single"/>
@@ -596,13 +600,13 @@ WHERE
 				<textFieldExpression><![CDATA[$V{cabang_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement x="347" y="0" width="123" height="20" uuid="46582902-c887-43af-9677-02a5f67c94f5"/>
+				<reportElement x="347" y="0" width="123" height="20"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{premi}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="292" y="0" width="55" height="20" uuid="90bf2c1d-3016-4cb4-8b55-75fd983239a3"/>
+				<reportElement x="292" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jum_polis}]]></textFieldExpression>
 			</textField>

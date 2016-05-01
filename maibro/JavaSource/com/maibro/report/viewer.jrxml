@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="viewer" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="14da002b-f25f-4ad6-a2f4-368dd7749fe1">
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
+<!-- 2016-05-01T23:18:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="viewer" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
 	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
@@ -11,7 +13,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="450"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Maibro"/>
 	<parameter name="beg_date" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="end_date" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="username" class="java.lang.String" isForPrompting="false"/>
@@ -269,139 +271,143 @@ lihat mst_master (14)]]></fieldDescription>
 	<title>
 		<band height="176">
 			<textField isBlankWhenNull="true">
-				<reportElement x="1015" y="38" width="144" height="20" uuid="8bcea4ed-d96e-4e4f-8e36-38a7a3e3a7bc"/>
+				<reportElement x="1015" y="38" width="144" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="919" y="38" width="96" height="20" uuid="38f2dd46-18be-4879-aa35-2393cf0353da"/>
+				<reportElement x="919" y="38" width="96" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[User:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="919" y="58" width="96" height="20" uuid="93e4d34e-949b-4f94-a099-a6d005271b71"/>
+				<reportElement x="919" y="58" width="96" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Waktu:]]></text>
 			</staticText>
 			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true">
-				<reportElement x="1015" y="58" width="144" height="20" uuid="929ff9cd-40f8-4d60-bf3c-0142f61d3f40"/>
+				<reportElement x="1015" y="58" width="144" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="1159" height="33" uuid="b73ada8d-b5cb-44c0-bc03-719bf8f08c8d"/>
+				<reportElement x="0" y="0" width="1159" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="26" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Viewer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="38" width="160" height="20" uuid="5862048c-f437-475c-aee3-e7eb2e618293"/>
+				<reportElement x="0" y="38" width="160" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode (Tgl Akseptasi)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="58" width="160" height="20" uuid="97d8fcba-5333-46b8-b354-9436e1ba0e34"/>
+				<reportElement x="0" y="58" width="160" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode (Tgl Mulai Asuransi)]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="168" y="58" width="308" height="20" uuid="9e147adb-eef5-4f8e-840e-c6086b88e722"/>
+				<reportElement x="168" y="58" width="308" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[($P{beg_date}==null?"":$P{beg_date}) + " s/d " + ($P{end_date}==null?"":$P{end_date})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="168" y="38" width="308" height="20" uuid="074adeea-ca3d-4507-9eac-3fd5c4d2477b"/>
+				<reportElement x="168" y="38" width="308" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[($P{beg_date1}==null?"":$P{beg_date1}) + " s/d " + ($P{end_date1}==null?"":$P{end_date1})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="168" y="78" width="308" height="20" uuid="c036d034-c38d-4cc8-bac6-6f28148e5c55"/>
+				<reportElement x="168" y="78" width="308" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[$P{namaProduk}==null?"":$P{namaProduk}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="78" width="160" height="20" uuid="1d80f57d-1b46-42c6-9384-b6d0e17fbc11"/>
+				<reportElement x="0" y="78" width="160" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Jenis Produk ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="98" width="160" height="20" uuid="e463b052-b4d4-4356-ad9c-450a673637ba"/>
+				<reportElement x="0" y="98" width="160" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Status Bayar ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="168" y="98" width="308" height="20" uuid="201961ef-c51e-4e87-abf7-abe245c3e21d"/>
+				<reportElement x="168" y="98" width="308" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[$P{status_bayar}==0?"Outstanding":$P{status_bayar}==1?"Paid":$P{status_bayar}==2?"Lebih Bayar":$P{status_bayar}==3?"Kurang Bayar":"ALL"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="168" y="118" width="308" height="20" uuid="aecbf9b0-a464-4875-a342-17685517cb1d"/>
+				<reportElement x="168" y="118" width="308" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[($P{beg_date_bayar}==null?"":$P{beg_date_bayar}) + " s/d " + ($P{end_date_bayar}==null?"":$P{end_date_bayar})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="118" width="160" height="20" uuid="eb233848-ada9-4351-9618-80dee4f9ed92"/>
+				<reportElement x="0" y="118" width="160" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode (Pembayaran)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="148" width="131" height="20" uuid="c1b6fc9c-b431-4d8c-b028-4e158c1bed80"/>
+				<reportElement x="1" y="148" width="131" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Data : "+new DecimalFormat("#,##0;(#,##0)" ).format($P{totalData})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="132" y="148" width="131" height="20" uuid="049adb3b-fe57-470a-92ba-8cd82f40e834"/>
+				<reportElement x="132" y="148" width="131" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Aktif : "+new DecimalFormat( "#,##0;(#,##0)" ).format($P{totalAktif})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="264" y="148" width="238" height="20" uuid="68f798f7-9e54-4fcf-ac57-23d097c4cd3f"/>
+				<reportElement x="264" y="148" width="238" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Premi : "+new DecimalFormat( $P{numberFormat} ).format($P{totalPremi})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="503" y="148" width="238" height="20" uuid="b93348ff-1bf8-4007-81c3-f20127e3245c"/>
+				<reportElement x="503" y="148" width="238" height="20">
+					<printWhenExpression><![CDATA[new Boolean($P{bank_jenis}!=1)]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Net Premi : "+new DecimalFormat( $P{numberFormat} ).format($P{totalNetPremi})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="741" y="148" width="238" height="20" uuid="5d5c0e83-a1bb-4a2c-a689-6eeee5cde1ee"/>
+				<reportElement x="741" y="148" width="238" height="20">
+					<printWhenExpression><![CDATA[new Boolean($P{bank_jenis}!=1)]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Bayar : "+new DecimalFormat( $P{numberFormat} ).format($P{totalBayar})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="160" y="38" width="6" height="20" uuid="5d536997-c107-47d1-b4b5-d2fcad35efc7"/>
+				<reportElement x="160" y="38" width="6" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="58" width="6" height="20" uuid="3a279962-e5b9-497a-985f-3082f5bf3e84"/>
+				<reportElement x="160" y="58" width="6" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="78" width="6" height="20" uuid="c5959d6c-74cf-44f5-9242-511daee84a43"/>
+				<reportElement x="160" y="78" width="6" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="98" width="6" height="20" uuid="3c4999d6-5b8a-4aa6-84e8-38c8eb1a46a8"/>
+				<reportElement x="160" y="98" width="6" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="118" width="6" height="20" uuid="c1b43e68-b61e-4c1e-940e-50dbe47e4369"/>
+				<reportElement x="160" y="118" width="6" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[:]]></text>
 			</staticText>
@@ -410,7 +416,7 @@ lihat mst_master (14)]]></fieldDescription>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="0" y="0" width="31" height="20" uuid="9a900923-7fdd-46b6-808f-634703d03ae4"/>
+				<reportElement x="0" y="0" width="31" height="20"/>
 				<box padding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -420,7 +426,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="408" y="0" width="121" height="20" uuid="cabf570d-8d37-48e8-a201-2884c89db206"/>
+				<reportElement x="408" y="0" width="121" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -433,7 +439,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Status Bayar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="529" y="0" width="121" height="20" uuid="1e0723fd-73cf-46d2-a71d-7ced4c2dd504"/>
+				<reportElement x="529" y="0" width="121" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -446,7 +452,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Jumlah Bayar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="31" y="0" width="377" height="20" uuid="5f933f43-4b0b-48a5-98ab-6a2418b9333d"/>
+				<reportElement x="31" y="0" width="377" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -459,7 +465,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Data Polis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1052" y="0" width="107" height="20" uuid="6876e5a7-370c-4802-8212-fe6a76fbc331"/>
+				<reportElement x="1052" y="0" width="107" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -472,7 +478,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Posisi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="767" y="0" width="152" height="20" uuid="3063ed13-29d2-41cb-8451-8b176cf738c4"/>
+				<reportElement x="767" y="0" width="152" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -485,7 +491,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Bank]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="919" y="0" width="133" height="20" uuid="fc7d7db8-58d6-437b-a3a4-2dd55dffcc88"/>
+				<reportElement x="919" y="0" width="133" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -498,7 +504,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<text><![CDATA[Asuransi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="650" y="0" width="116" height="20" uuid="1269c7b3-d2e8-4416-b35d-b7c4361353bc"/>
+				<reportElement x="650" y="0" width="116" height="20"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -516,7 +522,7 @@ lihat mst_master (14)]]></fieldDescription>
 		<band height="21">
 			<elementGroup/>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="31" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="7a81a876-6f8e-4a3f-bf60-a3df9b2c03c4"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="31" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -527,7 +533,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="408" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="c65e02eb-f5f7-4b4e-b8b3-ddbe2cdc4d42"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="408" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -537,7 +543,7 @@ lihat mst_master (14)]]></fieldDescription>
 ):""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="31" y="0" width="190" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="6128601b-9a9f-47c0-90ed-d498e904c64d"/>
+				<reportElement stretchType="RelativeToBandHeight" x="31" y="0" width="190" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -551,7 +557,7 @@ lihat mst_master (14)]]></fieldDescription>
 "Beg Date  : "+new SimpleDateFormat("dd-MM-yyyy").format($F{beg_date})+"\n"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="221" y="0" width="187" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="3ceb739e-a0dc-45b8-afd0-cdf1191242b0"/>
+				<reportElement stretchType="RelativeToBandHeight" x="221" y="0" width="187" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -568,7 +574,7 @@ lihat mst_master (14)]]></fieldDescription>
 :"")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="529" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f5f249c7-a3e6-4704-9276-8b8b53f9f777"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="529" y="0" width="121" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -576,7 +582,7 @@ lihat mst_master (14)]]></fieldDescription>
 				<textFieldExpression><![CDATA[($F{nominal_paid}==null?"":new DecimalFormat( $P{numberFormat} ).format($F{nominal_paid}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="650" y="0" width="116" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="b995574d-1247-4d38-962c-61cd54117670"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="650" y="0" width="116" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -586,7 +592,7 @@ lihat mst_master (14)]]></fieldDescription>
 ):""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="767" y="0" width="152" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="637bb5de-94c0-4d77-874a-a8993c11e1ea"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="767" y="0" width="152" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -595,7 +601,7 @@ lihat mst_master (14)]]></fieldDescription>
 $F{namacabbank}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="919" y="0" width="133" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="ffb64637-9695-46fa-bd0c-91aa60748670"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="919" y="0" width="133" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -603,7 +609,7 @@ $F{namacabbank}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{namaasuransi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="" stretchType="RelativeToBandHeight" x="1052" y="0" width="107" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="a58f22ef-9fcf-4b24-8fa4-2a87b1addc21"/>
+				<reportElement key="" stretchType="RelativeToBandHeight" x="1052" y="0" width="107" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="5" leftPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>

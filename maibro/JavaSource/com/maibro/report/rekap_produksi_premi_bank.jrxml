@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_produksi_premi_bank" pageWidth="600" pageHeight="842" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="edca894c-abff-4e27-96ea-28f866e55dba">
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
+<!-- 2016-05-01T23:18:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_produksi_premi_bank" pageWidth="600" pageHeight="842" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
 	<property name="com.jasperassistant.designer.DataSource" value="MySql-Maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
@@ -11,6 +13,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Maibro"/>
 	<parameter name="beg_date" class="java.lang.String"/>
 	<parameter name="end_date" class="java.lang.String"/>
 	<parameter name="username" class="java.lang.String"/>
@@ -195,7 +198,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 		<groupFooter>
 			<band height="20">
 				<textField>
-					<reportElement x="30" y="0" width="195" height="20" uuid="ffa0be55-79c7-4018-8386-ff1d769d3922"/>
+					<reportElement x="30" y="0" width="195" height="20"/>
 					<box padding="2"/>
 					<textElement verticalAlignment="Middle" markup="none">
 						<font isBold="true"/>
@@ -203,7 +206,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 					<textFieldExpression><![CDATA["TOTAL " + $F{jenis_produk}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-					<reportElement x="226" y="0" width="121" height="20" uuid="cb8ec36c-4b02-4357-9957-f032e53e1499"/>
+					<reportElement x="226" y="0" width="121" height="20"/>
 					<box padding="2"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
@@ -211,7 +214,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 					<textFieldExpression><![CDATA[$V{tot_up_produk}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-					<reportElement x="347" y="0" width="121" height="20" uuid="1240c425-1351-4010-817b-1338ebeb0958"/>
+					<reportElement x="347" y="0" width="121" height="20"/>
 					<box padding="2"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
@@ -219,7 +222,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 					<textFieldExpression><![CDATA[$V{tot_premi_produk}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="468" y="0" width="46" height="20" uuid="c9ac8ad9-3cc2-485e-931e-2068cc78e50f"/>
+					<reportElement x="468" y="0" width="46" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
@@ -231,52 +234,52 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 	<title>
 		<band height="99">
 			<textField isBlankWhenNull="true">
-				<reportElement x="106" y="59" width="120" height="20" uuid="94a7ae43-7343-41f8-9a67-74d782bf54a4"/>
+				<reportElement x="106" y="59" width="120" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="59" width="106" height="20" uuid="5bbd6da3-2232-4229-b7a1-829a2b5f464c"/>
+				<reportElement x="0" y="59" width="106" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[User:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="79" width="106" height="20" uuid="7fb3f8d5-ee49-43ec-b8ce-ca2f7f883950"/>
+				<reportElement x="0" y="79" width="106" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Waktu:]]></text>
 			</staticText>
 			<textField pattern="dd-MMM-yyyy [HH:mm:ss]" isBlankWhenNull="true">
-				<reportElement x="106" y="79" width="120" height="20" uuid="668e979a-6b2c-47f9-b71c-634eafdecb05"/>
+				<reportElement x="106" y="79" width="120" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="106" height="20" uuid="94e4335f-a959-4180-923f-c2828a0c0a09"/>
+				<reportElement x="0" y="0" width="106" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Laporan:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="106" y="0" width="240" height="20" uuid="795552b1-8829-44c6-adc9-7be08c708a84"/>
+				<reportElement x="106" y="0" width="240" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA["REKAPITULASI PRODUKSI PREMI "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="20" width="106" height="20" uuid="00945f26-7d25-4054-9011-07a02bb3a1bd"/>
+				<reportElement x="0" y="20" width="106" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode Akseptasi:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="40" width="106" height="20" uuid="be55f804-58a0-493d-ba6b-0e347d994ff4"/>
+				<reportElement x="0" y="40" width="106" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Periode Asuransi:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="106" y="40" width="240" height="20" uuid="2bf1dbec-5f8d-4733-9d19-c15cf866650b"/>
+				<reportElement x="106" y="40" width="240" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[$P{beg_date} + " s/d " + $P{end_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="106" y="20" width="240" height="20" uuid="1d686213-c313-4212-a5b8-71fd74fa8554"/>
+				<reportElement x="106" y="20" width="240" height="20"/>
 				<textElement verticalAlignment="Middle" markup="none"/>
 				<textFieldExpression><![CDATA[$P{beg_date1} + " s/d " + $P{end_date1}]]></textFieldExpression>
 			</textField>
@@ -285,7 +288,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 	<columnHeader>
 		<band height="40">
 			<staticText>
-				<reportElement x="0" y="0" width="31" height="40" uuid="5d737789-3f39-49bd-962d-c4945511d895"/>
+				<reportElement x="0" y="0" width="31" height="40"/>
 				<box padding="2">
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -295,7 +298,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="226" y="0" width="121" height="40" uuid="bb0d6f69-cdaf-43b0-8084-dd8a597954d4"/>
+				<reportElement x="226" y="0" width="121" height="40"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -309,7 +312,7 @@ GROUP BY ass.jenis_produk, ass.ass_name, ass.diskon_premi, ass.diskon_brokerage,
 Pertanggungan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="0" width="121" height="40" uuid="94d128e5-d4a5-46f4-b15a-17ad18949da9"/>
+				<reportElement x="347" y="0" width="121" height="40"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -322,7 +325,7 @@ Pertanggungan]]></text>
 				<text><![CDATA[Premi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="468" y="0" width="46" height="40" uuid="4e3ee52d-5388-448b-9a58-e47c9c0d91ac"/>
+				<reportElement x="468" y="0" width="46" height="40"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -335,7 +338,7 @@ Pertanggungan]]></text>
 				<text><![CDATA[Peserta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="31" y="0" width="195" height="40" uuid="9ce69364-aa91-4216-91ca-41607e9dd855"/>
+				<reportElement x="31" y="0" width="195" height="40"/>
 				<box padding="2">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -354,7 +357,7 @@ Asuransi]]></text>
 		<band height="20">
 			<elementGroup/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="31" y="0" width="195" height="20" uuid="87fd7dbe-b8c2-48a3-a4d3-f253ae8080ad"/>
+				<reportElement x="31" y="0" width="195" height="20"/>
 				<box padding="2">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -362,7 +365,7 @@ Asuransi]]></text>
 				<textFieldExpression><![CDATA[$F{jenis_produk} + " " + $F{ass_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="31" height="20" uuid="ea513f09-deaf-4611-b8e8-c1303b784f55"/>
+				<reportElement x="0" y="0" width="31" height="20"/>
 				<box padding="3"/>
 				<textElement verticalAlignment="Middle">
 					<paragraph lineSpacing="Single"/>
@@ -370,19 +373,19 @@ Asuransi]]></text>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement x="226" y="0" width="121" height="20" uuid="fa8cf92b-7738-4c09-977b-721e4f88801c"/>
+				<reportElement x="226" y="0" width="121" height="20"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{up}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement x="347" y="0" width="121" height="20" uuid="46582902-c887-43af-9677-02a5f67c94f5"/>
+				<reportElement x="347" y="0" width="121" height="20"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{premi}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="468" y="0" width="46" height="20" uuid="90bf2c1d-3016-4cb4-8b55-75fd983239a3"/>
+				<reportElement x="468" y="0" width="46" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jum_polis}]]></textFieldExpression>
 			</textField>
@@ -391,7 +394,7 @@ Asuransi]]></text>
 	<summary>
 		<band height="20">
 			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement x="226" y="0" width="121" height="20" uuid="16a5e7b3-ba6b-4aaf-b2f1-7d6a2c8856e8"/>
+				<reportElement x="226" y="0" width="121" height="20"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -399,7 +402,7 @@ Asuransi]]></text>
 				<textFieldExpression><![CDATA[$V{tot_up}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement x="347" y="0" width="121" height="20" uuid="ef306183-3a94-4e0c-aa56-4fe42ac539b9"/>
+				<reportElement x="347" y="0" width="121" height="20"/>
 				<box padding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -407,7 +410,7 @@ Asuransi]]></text>
 				<textFieldExpression><![CDATA[$V{tot_premi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="31" y="0" width="195" height="20" uuid="561def97-7f11-4cdb-85fb-ee2babc6d3c8"/>
+				<reportElement x="31" y="0" width="195" height="20"/>
 				<box padding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -415,7 +418,7 @@ Asuransi]]></text>
 				<text><![CDATA[GRAND TOTAL]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="468" y="0" width="46" height="20" uuid="481c6e6e-f776-4176-b8ec-c59f6916c896"/>
+				<reportElement x="468" y="0" width="46" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

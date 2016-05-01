@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kwitansi_fire" pageWidth="595" pageHeight="500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="10" scriptletClass="com.maibro.utils.JasperScriptlet" uuid="fc8dbc50-e289-4196-8f29-98c8aeff51d8">
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
+<!-- 2016-05-01T23:10:55 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kwitansi_fire" pageWidth="595" pageHeight="500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="10" scriptletClass="com.maibro.utils.JasperScriptlet">
 	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
@@ -8,6 +10,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(276)]]></defaultValueExpression>
 	</parameter>
@@ -80,23 +83,23 @@ and p.id=$P{id}
 	<detail>
 		<band height="397">
 			<staticText>
-				<reportElement positionType="Float" mode="Transparent" x="115" y="67" width="328" height="20" uuid="b7555182-c4fb-4b78-a0f2-1073b7a859b1"/>
+				<reportElement positionType="Float" mode="Transparent" x="115" y="67" width="328" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="14" isBold="true" pdfFontName="Courier"/>
 				</textElement>
 				<text><![CDATA[KWITANSI PREMI ASURANSI KEBAKARAN]]></text>
 			</staticText>
 			<image>
-				<reportElement positionType="Float" mode="Transparent" x="386" y="1" width="169" height="47" uuid="d61d329b-0edc-4717-b1c7-0e814dfaa405"/>
+				<reportElement positionType="Float" mode="Transparent" x="386" y="1" width="169" height="47"/>
 				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\1.gif")]]></imageExpression>
 			</image>
 			<image>
-				<reportElement positionType="Float" mode="Transparent" x="1" y="1" width="169" height="47" uuid="db38f4e2-9bef-4e5c-afbb-34629cd7b37b"/>
+				<reportElement positionType="Float" mode="Transparent" x="1" y="1" width="169" height="47"/>
 				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\" + $F{asuransi_id} + ".gif")]]></imageExpression>
 			</image>
 			<elementGroup>
 				<textField>
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="109" width="136" height="16" uuid="7b2a823e-2ce0-43d3-b2ea-e671b546244a"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="109" width="136" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -106,7 +109,7 @@ and p.id=$P{id}
 					<textFieldExpression><![CDATA["Terima dari"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="109" width="362" height="16" uuid="b569f37d-3582-4ae2-8f89-424ef7418890"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="109" width="362" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -117,7 +120,7 @@ and p.id=$P{id}
 $F{alamat_objek}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="109" width="20" height="16" uuid="302056c2-ca56-41a4-bf75-50fef3113ac0"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="109" width="20" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -129,7 +132,7 @@ $F{alamat_objek}]]></textFieldExpression>
 			</elementGroup>
 			<elementGroup/>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="288" width="336" height="16" uuid="6f4201e7-ee36-43e3-b2c1-dffd4b5944a8"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="288" width="336" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -140,7 +143,7 @@ $F{alamat_objek}]]></textFieldExpression>
 			</textField>
 			<elementGroup>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="129" width="136" height="16" uuid="d481c524-5810-41b0-a4f5-2fdee0b6a534"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="129" width="136" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -150,7 +153,7 @@ $F{alamat_objek}]]></textFieldExpression>
 					<textFieldExpression><![CDATA["Uang Sejumlah"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="129" width="20" height="16" uuid="cb761fd1-6940-4c5a-93ac-b00bd0f085e1"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="129" width="20" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -160,7 +163,7 @@ $F{alamat_objek}]]></textFieldExpression>
 					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="129" width="362" height="16" uuid="c0bbeab4-1dba-4ea6-8214-7558dda57eeb"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="129" width="362" height="16"/>
 					<textElement verticalAlignment="Top" markup="none">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
@@ -171,7 +174,7 @@ $F{alamat_objek}]]></textFieldExpression>
 			<elementGroup/>
 			<elementGroup>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="151" width="20" height="16" uuid="4f427e80-cb84-4a35-a961-bde45c0fef72"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="151" width="20" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -181,7 +184,7 @@ $F{alamat_objek}]]></textFieldExpression>
 					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="151" width="136" height="16" uuid="71699589-62d7-4592-b152-24606edb3b0e"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="151" width="136" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -191,7 +194,7 @@ $F{alamat_objek}]]></textFieldExpression>
 					<textFieldExpression><![CDATA["Jumlah Pertanggungan"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="151" width="28" height="16" uuid="57c665e4-3aa4-4253-9f83-3094f0e42bc9"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="176" y="151" width="28" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -201,7 +204,7 @@ $F{alamat_objek}]]></textFieldExpression>
 					<textFieldExpression><![CDATA["Rp.  "]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.###">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="204" y="151" width="202" height="16" uuid="6f3a89af-e2e3-4a96-92cc-3b9b01a5ebd2"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="204" y="151" width="202" height="16"/>
 					<box padding="0">
 						<pen lineWidth="0.0"/>
 					</box>
@@ -212,7 +215,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				</textField>
 			</elementGroup>
 			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="198" width="110" height="22" uuid="49624bbf-aa07-4c61-bb8b-dcbb11022def"/>
+				<reportElement positionType="Float" mode="Transparent" x="202" y="198" width="110" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -225,7 +228,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{premi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="198" width="136" height="22" uuid="daf60bf6-c82f-428d-a52f-b3e9c75e0a68"/>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="198" width="136" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -238,7 +241,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Premi"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="198" width="20" height="22" uuid="8108dd7e-c43a-47af-818b-4773d8364edb"/>
+				<reportElement positionType="Float" mode="Transparent" x="156" y="198" width="20" height="22"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -251,7 +254,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="198" width="26" height="22" uuid="ab99d9cd-59a7-4670-9417-b6de1eeaf2d4"/>
+				<reportElement positionType="Float" mode="Transparent" x="176" y="198" width="26" height="22"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -267,7 +270,7 @@ $F{alamat_objek}]]></textFieldExpression>
 			<elementGroup/>
 			<elementGroup/>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="220" width="20" height="22" uuid="88996a5e-615e-49e9-8317-d5213d5ce295"/>
+				<reportElement positionType="Float" mode="Transparent" x="156" y="220" width="20" height="22"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -277,7 +280,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="220" width="136" height="22" uuid="8d3b52ec-0dd5-4832-b7d0-b73aed987f71"/>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="220" width="136" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -290,7 +293,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Biaya Administrasi"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="220" width="110" height="22" uuid="61368513-16f0-4f23-8915-b1539c0654a9"/>
+				<reportElement positionType="Float" mode="Transparent" x="202" y="220" width="110" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -303,7 +306,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{biaya_admin}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="220" width="26" height="22" uuid="824e14b8-98e3-4a14-80ba-bfb62382e533"/>
+				<reportElement positionType="Float" mode="Transparent" x="176" y="220" width="26" height="22"/>
 				<box padding="0">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -313,7 +316,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Rp."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="156" y="242" width="20" height="22" uuid="f6bdc253-8147-43ff-821f-f6c03702fc51"/>
+				<reportElement positionType="Float" mode="Transparent" x="156" y="242" width="20" height="22"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -326,7 +329,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="242" width="136" height="22" uuid="945625b1-ac30-491d-b601-a8798b2abf8c"/>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="242" width="136" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
@@ -339,7 +342,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="202" y="242" width="110" height="22" uuid="3a644f4d-3099-4601-97b0-677e9441d972"/>
+				<reportElement positionType="Float" mode="Transparent" x="202" y="242" width="110" height="22"/>
 				<box padding="3">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -352,7 +355,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$V{total_premi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="176" y="242" width="26" height="22" uuid="45d3395a-28c2-4a14-80ba-d3619a14ae6a"/>
+				<reportElement positionType="Float" mode="Transparent" x="176" y="242" width="26" height="22"/>
 				<box padding="0">
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
@@ -366,21 +369,21 @@ $F{alamat_objek}]]></textFieldExpression>
 			</textField>
 			<elementGroup>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="20" y="174" width="136" height="16" uuid="21a5b5ee-30d7-428e-bc71-1545f725e94c"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="20" y="174" width="136" height="16"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Masa Pertanggungan"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="156" y="174" width="20" height="16" uuid="c47a52aa-bc81-41c4-bc2e-9ab797c6f400"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="156" y="174" width="20" height="16"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
 					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="174" width="362" height="16" uuid="99f9fe19-d843-4dd0-bf5e-04876666578c"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="176" y="174" width="362" height="16"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="11" pdfFontName="Courier"/>
 					</textElement>
@@ -389,25 +392,25 @@ $F{alamat_objek}]]></textFieldExpression>
 				</textField>
 			</elementGroup>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="344" y="220" width="190" height="22" uuid="adbfe02c-65da-4ba1-b6db-46743a9b7b03"/>
+				<reportElement positionType="Float" mode="Transparent" x="344" y="220" width="190" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{namaasuransi}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" mode="Transparent" x="344" y="198" width="190" height="22" uuid="84a52ade-cb48-42c6-8e3c-89844e500d7a"/>
+				<reportElement positionType="Float" mode="Transparent" x="344" y="198" width="190" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Bandung, " +$P{REPORT_SCRIPTLET}.formatDateIndonesian(new Date())]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement positionType="Float" mode="Transparent" x="364" y="250" width="162" height="58" uuid="489ea92e-9c9c-4f4d-8246-cd7331f7fba5"/>
+				<reportElement positionType="Float" mode="Transparent" x="364" y="250" width="162" height="58"/>
 				<imageExpression><![CDATA[$P{REPORT_SCRIPTLET}.imagePath("C:\\maibro\\company\\logo\\"+$F{asuransi_id}+"_ttd.gif")]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="20" y="272" width="136" height="16" uuid="9d967408-ccc6-4077-9f85-babc365bf1a5"/>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="272" width="136" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -417,7 +420,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Alamat Tagih"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="155" y="272" width="20" height="16" uuid="e815b7db-5d65-421e-b722-5e28cd9cbebb"/>
+				<reportElement positionType="Float" mode="Transparent" x="155" y="272" width="20" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</box>
@@ -427,7 +430,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="304" width="29" height="16" uuid="c996263b-101c-45f0-b242-576ccbb616c9"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="304" width="29" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -437,14 +440,14 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["[R]"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="49" y="304" width="107" height="16" uuid="ff28aecf-f922-4f4f-a15d-203e717cd8b5"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="49" y="304" width="107" height="16"/>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{telp_rumah}==null?"-":$F{telp_rumah}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="304" width="29" height="16" uuid="d6ef52bb-3520-4269-b405-bf45f89ee0f4"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="156" y="304" width="29" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -454,14 +457,14 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["[K]"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="185" y="304" width="107" height="16" uuid="012e5c49-38b7-4662-a5a8-505a4e699d12"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="185" y="304" width="107" height="16"/>
 				<textElement verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="11" pdfFontName="Courier"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{telp_kantor}==null?"-":$F{telp_kantor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" mode="Transparent" x="20" y="322" width="136" height="16" uuid="7580ce7a-2bf1-428e-a5b9-6ad47dc1fbf7"/>
+				<reportElement positionType="Float" mode="Transparent" x="20" y="322" width="136" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -471,7 +474,7 @@ $F{alamat_objek}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["No. A/C"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" mode="Transparent" x="155" y="322" width="20" height="16" uuid="91327e56-474e-4c9b-8f44-297463c18198"/>
+				<reportElement positionType="Float" mode="Transparent" x="155" y="322" width="20" height="16"/>
 				<box padding="0">
 					<pen lineWidth="0.0"/>
 				</box>

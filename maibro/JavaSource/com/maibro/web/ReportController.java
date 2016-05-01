@@ -175,6 +175,7 @@ public class ReportController extends ParentController{
 			
 		//format selain HTML dan TXT
 		}else{
+			response.setHeader("Content-Disposition","attachment; filename=\"report."+format+"\";");
 			return "redirect:/jasper/" + format; //redirect ke JasperReports Servlet sesuai format
 		}		
 	}
@@ -850,6 +851,8 @@ public class ReportController extends ParentController{
 		
 		Integer jenis_produk=ServletRequestUtils.getIntParameter(request, "jenis_produk",0);
 		Integer paid=ServletRequestUtils.getIntParameter(request, "paid",-1);
+		String sort=ServletRequestUtils.getStringParameter(request, "sort","id");
+		String sort_type=ServletRequestUtils.getStringParameter(request, "st", "asc");
 		
 		Integer grouppolis=null;
 		Integer jenispolis=null;
@@ -949,7 +952,7 @@ public class ReportController extends ParentController{
 				 " debitur LIKE CONCAT('%', '"+search+"', '%') OR  produk LIKE CONCAT('%', '"+search+"', '%') OR  createuser LIKE CONCAT('%', '"+search+"', '%')  )";
 		}
 		
-		param2=" order by id";
+		param2=" order by "+sort+" "+sort_type;
 		
 		params.put("namaProduk",dbService.selectMstProductName(jenis_produk) );
 		params.put("username",currentUser.getUsername() );

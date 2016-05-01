@@ -60,6 +60,8 @@
 		params['begdatepaid'] = jQuery('#id_begdatepaid').val(),
 		params['enddatepaid'] = jQuery('#id_enddatepaid').val();
 		params['format'] = jQuery('#_FormatExport').val();
+		params['sort'] = jQuery('#sort').val();
+		params['st'] = jQuery('#st').val();
 		params['s'] =jQuery('#id_s').val();
 		params['jenis_produk'] =$('input[name=jenis_produk]:checked').val();
 		params['paid'] =$('input[name=paid]:checked').val();
@@ -91,6 +93,9 @@
 		 			Filter :
 		 			</th>
 		 			<td>
+		 					<input type="hidden" name="page" id="page" value="${page }">
+                  	<input type="hidden" name="sort" id="sort" value="${sort }">
+                  	<input type="hidden" name="st" id="st" value="${sort_type}">
 		 			</td>
 		 		</tr>
 		 		<tr>
@@ -177,8 +182,10 @@
 			            <div class="total">Total Data : ${totalData } </div>
 			            <div class="total">Total Aktif : ${total.aktif } </div>
 			            <div class="total">Total Premi : <fmt:formatNumber>${total.premi } </fmt:formatNumber> </div>
+			           <c:if test="${sessionScope.currentUser.bank_jenis ne 1}">
 			            <div class="total">Total Net Premi : <fmt:formatNumber>${total.premi_net } </fmt:formatNumber> </div>
 			            <div class="total">Total Bayar : <fmt:formatNumber>${total.bayar } </fmt:formatNumber> </div>
+			           </c:if> 
 			            <div class="search">
 			            	<input type="text" name="s" id="id_s"  value="${search}" size="30" class="textfield">
 			            	<input type="submit" name="btsearch"  value=" " class="btsearch" title="search">
@@ -203,7 +210,20 @@
 							<th>Status Bayar</th>
 							<th>Jumlah Bayar</th>
 							<th>Tanggal Bayar</th>
-							<th>Bank</th>
+							<th>
+								<c:choose>
+			                    	<c:when test="${sort eq 'namacabbank'}">
+				                    	<c:choose>
+							              	<c:when test="${sort_type eq 'asc' }"> <a href="javascript:gotoPage('${page}','namacabbank','desc','form')" class="up" >Bank</a></c:when>
+							              	<c:when test="${sort_type eq 'desc' }"><a href="javascript:gotoPage('${page}','namacabbank','asc','form')" class="down" >Bank</a></c:when>
+							              	<c:otherwise><a href="javascript:gotoPage('${page}','namacabbank','asc','form')"  >Bank</a></c:otherwise>
+						              	</c:choose>
+						            </c:when>
+					              	<c:otherwise>
+					              		<a href="javascript:gotoPage('${page}','namacabbank','asc','form')"  >Bank</a>
+					              	</c:otherwise>
+				              	</c:choose>
+							</th>
 							<th>Asuransi</th>
 							<th>Posisi</th>
 							<th class="last">Actions</th>
