@@ -949,10 +949,11 @@ public class ReportController extends ParentController{
 		
 		if(!Utils.isEmpty(search)){
 			param2=" where (id LIKE CONCAT('%', '"+search+"', '%') OR spaj_no LIKE CONCAT('%', '"+search+"', '%') OR policy_no LIKE CONCAT('%', '"+search+"', '%') OR"+
-				 " debitur LIKE CONCAT('%', '"+search+"', '%') OR  produk LIKE CONCAT('%', '"+search+"', '%') OR  createuser LIKE CONCAT('%', '"+search+"', '%')  )";
+				 " debitur LIKE CONCAT('%', '"+search+"', '%') OR  produk LIKE CONCAT('%', '"+search+"', '%') OR  createuser LIKE CONCAT('%', '"+search+"', '%') OR "
+				 		+ "dealref LIKE CONCAT('%', '"+search+"', '%')  )";
 		}
 		
-		param2=" order by "+sort+" "+sort_type;
+		param2+=" order by "+sort+" "+sort_type;
 		
 		params.put("namaProduk",dbService.selectMstProductName(jenis_produk) );
 		params.put("username",currentUser.getUsername() );

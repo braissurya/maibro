@@ -189,7 +189,8 @@
 			) x			
 			<if test="search != null">                                  
 				where (id LIKE CONCAT('%', #{search}, '%') OR spaj_no LIKE CONCAT('%', #{search}, '%') OR policy_no LIKE CONCAT('%', #{search}, '%') OR
-				 debitur LIKE CONCAT('%', #{search}, '%') OR  produk LIKE CONCAT('%', #{search}, '%') OR  createuser LIKE CONCAT('%', #{search}, '%')  )
+				 debitur LIKE CONCAT('%', #{search}, '%') OR  produk LIKE CONCAT('%', #{search}, '%') OR  createuser LIKE CONCAT('%', #{search}, '%') OR
+				 dealref LIKE CONCAT('%', #{search}, '%') )
 			</if>
 			 <if test="sort != null"> 
 			 order by ${sort} ${sort_type} 
@@ -267,7 +268,8 @@
 				</if>
 			<if test="search != null">                                  
 					AND (p.id LIKE CONCAT('%', #{search}, '%') OR p.spaj_no LIKE CONCAT('%', #{search}, '%') OR p.policy_no LIKE CONCAT('%', #{search}, '%') OR
-							 c.nama  LIKE CONCAT('%', #{search}, '%') OR mp.nama  LIKE CONCAT('%', #{search}, '%') OR u.username  LIKE CONCAT('%', #{search}, '%')  )
+							 c.nama  LIKE CONCAT('%', #{search}, '%') OR mp.nama  LIKE CONCAT('%', #{search}, '%') OR u.username  LIKE CONCAT('%', #{search}, '%') OR
+							  dealref LIKE CONCAT('%', #{search}, '%')  )
 	
 			</if> 
 	</select>

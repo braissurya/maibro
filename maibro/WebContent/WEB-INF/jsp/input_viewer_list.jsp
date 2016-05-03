@@ -311,6 +311,7 @@
 							<td>${p.namabank}<br/>${p.namacabbank}</td>
 							<td>${p.namaasuransi}</td>
 							<td>
+								<%-- Request 03052016 --  Field (Posisi) di Viewer & Report saat di Export, tahapan harus sesuai denganproses alur data, misal, proses baru di input dr sisi bank maka sts "Posisi"=Input Bank dan apabila sudah terbit polis dan sudahada pembayaran maka sts "Posisi"=Filling yang artinya proses pengajuan data dar "A" sd "Z" sudah selesai.
 								<c:choose>
 									<c:when test="${sessionScope.currentUser.bank_jenis eq 1}">
 										<c:choose>
@@ -319,8 +320,8 @@
 										</c:choose>
 									</c:when>
 									<c:otherwise>${p.posisiKet}</c:otherwise>
-								</c:choose>
-								
+								</c:choose> --%>
+								${p.posisiKet}
 							</td>
 							<td class="last">
                     			<c:if test="${sessionScope.currentUser.bank_jenis ne\"1\" }"> <%-- BILA USER BUKAN BANK --%>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
-<!-- 2016-05-01T23:18:20 -->
+<!-- 2016-05-03T21:03:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="viewer" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
 	<property name="com.jasperassistant.designer.DataSource" value="maibro"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
@@ -615,9 +615,9 @@ $F{namacabbank}]]></textFieldExpression>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textFieldExpression><![CDATA[$P{bank_jenis}.equals("1")?
+				<textFieldExpression><![CDATA[/*$P{bank_jenis}.equals("1")?
     ($F{posisi}>1?"Filling":$F{posisiKet})
-    :$F{posisiKet}]]></textFieldExpression>
+    :$F{posisiKet}*/$F{posisiKet}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
