@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 4.5.0  -->
-<!-- 2016-05-02T00:07:14 -->
+<!-- 2016-05-08T21:33:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rekap_peserta_asuransi_det" pageWidth="2000" pageHeight="842" columnWidth="1960" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
 	<property name="com.jasperassistant.designer.DataSource" value="MySql"/>
 	<property name="com.jasperassistant.designer.Grid" value="false"/>
@@ -575,7 +575,7 @@ ORDER BY ba.nama, cb.nama, p.spaj_date, p.policy_no
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{tempat_lahir}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="338" y="0" width="80" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{tgl_lahir}]]></textFieldExpression>
